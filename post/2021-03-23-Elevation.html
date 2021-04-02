@@ -1,0 +1,443 @@
+<script src="2021-03-23-Elevation_files/header-attrs-2.6/header-attrs.js"></script>
+<script src="2021-03-23-Elevation_files/accessible-code-block-0.0.1/empty-anchor.js"></script>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#downloading-dem-data">Downloading DEM Data</a></li>
+<li><a href="#deriving-terrain-features">Deriving Terrain Features</a></li>
+<li><a href="#having-some-fun-with-rayshader">Having some Fun with Rayshader</a></li>
+<li><a href="#bathymetry-data">Bathymetry Data</a></li>
+<li><a href="#further-reading">Further Reading</a></li>
+<li><a href="#session-information">Session Information</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Elevation is often an important predictor variable in ecological studies. Thus,
+in this blog post, I will show you how you can easily access elevation data from
+within R. I found this ability to be very useful, especially when considering
+how tedious it can be to download and clean similar data from online portals
+such as from <a href="https://earthexplorer.usgs.gov/">USGS</a>. A workflow that does not
+require you to manully download data also increases the reproducibility of your
+work and therefore the value of your analysis. Besides showing you how to
+download data, I’ll also outline how you can use digital elevation models (DEMs)
+to create beautiful background maps for spatial plots and maps. Finally, we’ll
+have some fun with <code>rayshader</code>, a brilliant r-package that let’s you plot stuff
+in 3D. So let’s get started and download some elevation data!</p>
+</div>
+<div id="downloading-dem-data" class="section level1">
+<h1>Downloading DEM Data</h1>
+<p>First of all, let’s decide on an area of interest. For the purpose of this
+tutorial, we will focus on the country of Switzerland. We can easily get a
+polygon of the country’s borders using the <code>getData()</code> function from the
+<code>raster</code> package. I will also use the opportunity to load some additional
+packages that we’ll use later.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Adjust options for optimal 3d plotting</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">options</span>(<span class="dt">rgl.useNULL =</span> <span class="ot">FALSE</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Load required packages</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(raster)     <span class="co"># To manipulate raster data</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="kw">library</span>(elevatr)    <span class="co"># To download elevation data</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">library</span>(viridis)    <span class="co"># To get nice color palettes</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="kw">library</span>(rayshader)  <span class="co"># To plot maps in 3D</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co"># Download polygon for country (only on the national borders -&gt; level = 0)</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a>swiss &lt;-<span class="st"> </span><span class="kw">getData</span>(<span class="st">&quot;GADM&quot;</span>, <span class="dt">country =</span> <span class="st">&quot;CHE&quot;</span>, <span class="dt">level =</span> <span class="dv">0</span>)</span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="kw">plot</span>(swiss)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>Now that we know the area for which we’d like to download a DEM, we have two
+options:</p>
+<ul>
+<li>Option 1: Use the <code>getData()</code> function from the <code>raster</code> package</li>
+<li>Option 2: Use the <code>get_elev_raster()</code> function from the <code>elevatr</code> package</li>
+</ul>
+<p>If we use the <code>raster</code> package, we can either download data around a <em>desired
+coordinate</em> or for a <em>desired country</em>. Since we already decided for a country,
+we’ll go for the latter and download data for the country of Switzerland. That
+is, we’ll directry tell the function to download a DEM for Switzerland (country
+code <em>CHE</em>).</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Download DEM data for a desired country</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>elev &lt;-<span class="st"> </span><span class="kw">getData</span>(<span class="st">&quot;alt&quot;</span>, <span class="dt">country =</span> <span class="st">&quot;CHE&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Visualize it</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="kw">plot</span>(elev, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>This is super easy and very convenient and suffices for most applications. Note
+that the downloaded raster has a rather low resolution of 925 by 925 meters. We
+can actually calculate the resolution in meters using the approximation that 1
+degree = 111’000 meters.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Calculate resolution of raster (roughly in meters)</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">res</span>(elev) <span class="op">*</span><span class="st"> </span><span class="dv">111000</span></span></code></pre></div>
+<pre><code>## [1] 925 925</code></pre>
+<p>Due to the limited options in the <code>raster::getData()</code> function, I personally
+prefer to use the function <code>get_elev_raster()</code> from the <code>elevatr</code> package. This
+function gives you a bit more flexibility and enables you to change the
+resolution and extent of the downloaded data. As the name suggests, the
+function retrieves an elevation-raster for a desired location. In contrast to
+the <code>raster::getData()</code> function, we can specify the area of interest using our
+previously downloaded shapefile of Switzerland. Furthermore, we can provide a
+zoom factor <code>z</code> that determines the resolution of the downloaded data. The
+higher the zoom-factor, the higher the resolution, but also the longer the
+download will take. Since the package will download data beyond the exact
+shapefile, I’ll crop the downloaded DEM to the area of Switzerland.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Download DEM data and crop downloaded data</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>elev &lt;-<span class="st"> </span><span class="kw">get_elev_raster</span>(swiss, <span class="dt">z =</span> <span class="dv">7</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>elev &lt;-<span class="st"> </span><span class="kw">crop</span>(elev, swiss)</span>
+<span id="cb5-4"><a href="#cb5-4"></a></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co"># Visualize it</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="kw">plot</span>(elev, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Check resolution (could be increased even further)</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="kw">res</span>(elev) <span class="op">*</span><span class="st"> </span><span class="dv">111000</span></span></code></pre></div>
+<pre><code>## [1] 609.39 422.91</code></pre>
+<p>Once we downloaded the DEM in raster format, it’s straight forward to conduct
+further analyses. For instance, we may want to use the DEM to determine the
+elevation at specific locations. To do so, we can define some coordinates and
+use the <code>raster::extract()</code> function to “extract” the elevation at those
+locations. Let’s randomly distribute some spatial points in Switzerland and
+check their elevation.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Randomly distribute points</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>points &lt;-<span class="st"> </span><span class="kw">spsample</span>(swiss, <span class="dt">n =</span> <span class="dv">20</span>, <span class="dt">type =</span> <span class="st">&quot;random&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co"># Identify elevation of each point (extract elevation below points)</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>points<span class="op">$</span>Elevation &lt;-<span class="st"> </span><span class="kw">extract</span>(elev, points)</span>
+<span id="cb8-6"><a href="#cb8-6"></a>points<span class="op">$</span>Elevation &lt;-<span class="st"> </span><span class="kw">round</span>(points<span class="op">$</span>Elevation)</span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co"># Visualize points and add indicate their height using labels</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="kw">plot</span>(elev, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="kw">plot</span>(points, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>)</span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="kw">text</span>(points, <span class="dt">label =</span> <span class="st">&quot;Elevation&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>, <span class="dt">pos =</span> <span class="dv">3</span>, <span class="dt">offset =</span> <span class="fl">0.2</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="deriving-terrain-features" class="section level1">
+<h1>Deriving Terrain Features</h1>
+<p>Besides using the raw elevation data, we can also further process the elevation
+model and calculate the <em>slope</em> (steepness of the terrain) and the <em>aspect</em>
+(direction that a slope faces). From these two, we can finally derive the
+<em>hillshade</em>, which can be used to create some nice relief plots.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Calculate &quot;aspect&quot; and &quot;slope&quot;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>aspect &lt;-<span class="st"> </span><span class="kw">terrain</span>(elev, <span class="st">&quot;aspect&quot;</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>slope &lt;-<span class="st"> </span><span class="kw">terrain</span>(elev, <span class="st">&quot;slope&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co"># And now we can calculate the hillshade</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>hillshade &lt;-<span class="st"> </span><span class="kw">hillShade</span>(<span class="dt">slope =</span> slope, <span class="dt">aspect =</span> aspect)</span>
+<span id="cb9-7"><a href="#cb9-7"></a></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co"># Visualize it</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="kw">plot</span>(hillshade, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>If you want to increase the “strength” of the hillshade, you can introduce a
+<em>modifier</em> that increases the variability in elevation as follows.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Calculate &quot;aspect&quot; and &quot;slope&quot; using a modified DEM</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>modifier &lt;-<span class="st"> </span><span class="dv">2</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>aspect2 &lt;-<span class="st"> </span><span class="kw">terrain</span>(elev <span class="op">^</span><span class="st"> </span>modifier, <span class="st">&quot;aspect&quot;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4"></a>slope2 &lt;-<span class="st"> </span><span class="kw">terrain</span>(elev <span class="op">^</span><span class="st"> </span>modifier, <span class="st">&quot;slope&quot;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5"></a></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co"># And now we can calculate the hillshade</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>hillshade2 &lt;-<span class="st"> </span><span class="kw">hillShade</span>(<span class="dt">slope =</span> slope2, <span class="dt">aspect =</span> aspect2)</span>
+<span id="cb10-8"><a href="#cb10-8"></a></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co"># Visualize it</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="kw">plot</span>(hillshade2, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>You may also be interested in the ruggedness of the terrain. For this, there’s
+the <em>terrain</em> <em>ruggedness</em> <em>index</em> (TRI). The TRI is defined as the square root
+of the average of the squared differences in elevation of a focal cell and its
+eight neighbors (I know this sounds very complicated but it’s actually a very
+simple way to quantify how substantially the elevation varies within a few
+cells). We can calculate the TRI by hand using the <code>focal</code> function. The <code>focal</code>
+function basically creates a moving window containing a 3x3 cells and applies
+the function for terrain ruggedness to this window.</p>
+<div class="figure"><span id="fig:focal"></span>
+<img src="2021-03-23-Elevation_files/figure-html/focal-1.png" alt="\label{fig:focal} Illustration how the focal function works. The function uses a moving window within which a metric can be applied. That is, the new value of the focal cell will be determined by the values within the moving window and the specified function." width="192" />
+<p class="caption">
+Figure 1:  Illustration how the focal function works. The function uses a moving window within which a metric can be applied. That is, the new value of the focal cell will be determined by the values within the moving window and the specified function.
+</p>
+</div>
+<p>We can thus use the <code>focal</code> function to calculate the ruggedness for our study
+area.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Define weights (size of moving window)</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>weights &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>, <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># Function to calculate the terrain ruggedness index</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>ruggedness &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="kw">sum</span>(<span class="kw">abs</span>(x[<span class="op">-</span><span class="dv">5</span>] <span class="op">-</span><span class="st"> </span>x[<span class="dv">5</span>])) <span class="op">/</span><span class="st"> </span><span class="dv">8</span>}</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co"># Apply the function to the moving window</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>tri &lt;-<span class="st"> </span><span class="kw">focal</span>(elev, <span class="dt">w =</span> weights , <span class="dt">fun =</span> ruggedness, <span class="dt">pad =</span> <span class="ot">TRUE</span>, <span class="dt">padValue =</span> <span class="ot">NA</span>)</span>
+<span id="cb11-9"><a href="#cb11-9"></a></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co"># Visualize</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="kw">plot</span>(tri, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>This pretty much covers all the basics that are required to get you started with
+elevation data. Now, we’ll turn to more fun things and try to get some nice
+plots using the <code>rayshader</code> package.</p>
+</div>
+<div id="having-some-fun-with-rayshader" class="section level1">
+<h1>Having some Fun with Rayshader</h1>
+<p>Rayshader is a nice little package developed by <a href="https://www.tylermw.com/">Tyler
+Morgan-Wall</a>. It allows you to turn your elevation
+maps into beautiful 3D plots. There is a fantastic walk-through of the package
+<a href="https://www.rayshader.com/">here</a>. Here, I will use the package to add a bit of
+depth to our map of Switzerland. As a first step, we need to convert the
+elevation raster into a matrix. We can do this using the function
+<code>raster_to_matrix()</code>. We can then already generate a first plot.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Convert the rasters to matrices</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>elmat &lt;-<span class="st"> </span><span class="kw">raster_to_matrix</span>(elev)</span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co"># Simple plot first</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>elmat <span class="op">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p>So far, the map looks somewhat boring. We can make it really pop using two
+modifications. First, we are going to apply a mask and pretend that anything
+outside of Switzerland has an elevation of 0. This will make the country
+literally pop.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Set elevation outside Switzerland to NA</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>elev &lt;-<span class="st"> </span><span class="kw">mask</span>(elev, swiss)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># Convert the raster to a matrix</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>elmat &lt;-<span class="st"> </span><span class="kw">raster_to_matrix</span>(elev)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a><span class="co"># Visualize</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>elmat <span class="op">%&gt;%</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p>This already looks much better. As a second modification, we are going to add
+waterbodies to our plot. This should help to really sell the map. The package
+comes with a function called <code>detect_water(elev)</code> for this. However, I found the
+results to be unsatisfactory. Thus, I’ve prepared a shapefile containing all
+major lakes of Switzerland. We’re going to download the shapefile from github
+and load it into r as follows.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Load watermaps</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>url &lt;-<span class="st"> &quot;https://github.com/DavidDHofmann/MajorWaters/archive/master.zip&quot;</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co"># Specify filename and download directory (we&#39;ll use a temporary directory)</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>dir &lt;-<span class="st"> </span><span class="kw">tempdir</span>()</span>
+<span id="cb14-6"><a href="#cb14-6"></a>file &lt;-<span class="st"> </span><span class="kw">file.path</span>(dir, <span class="st">&quot;water.zip&quot;</span>)</span>
+<span id="cb14-7"><a href="#cb14-7"></a></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co"># Download the data</span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="kw">download.file</span>(<span class="dt">url =</span> url, <span class="dt">destfile =</span> file)</span>
+<span id="cb14-10"><a href="#cb14-10"></a></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co"># Extract the zip file</span></span>
+<span id="cb14-12"><a href="#cb14-12"></a><span class="kw">unzip</span>(file, <span class="dt">exdir =</span> dir)</span>
+<span id="cb14-13"><a href="#cb14-13"></a></span>
+<span id="cb14-14"><a href="#cb14-14"></a><span class="co"># Filepath to the extracted file</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>file &lt;-<span class="st"> </span><span class="kw">file.path</span>(dir, <span class="st">&quot;MajorWaters-master&quot;</span>, <span class="st">&quot;geo_che_water.shp&quot;</span>)</span>
+<span id="cb14-16"><a href="#cb14-16"></a></span>
+<span id="cb14-17"><a href="#cb14-17"></a><span class="co"># Load the data</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a>water &lt;-<span class="st"> </span><span class="kw">shapefile</span>(file)</span>
+<span id="cb14-19"><a href="#cb14-19"></a></span>
+<span id="cb14-20"><a href="#cb14-20"></a><span class="co"># Visualize them</span></span>
+<span id="cb14-21"><a href="#cb14-21"></a><span class="kw">plot</span>(swiss)</span>
+<span id="cb14-22"><a href="#cb14-22"></a><span class="kw">plot</span>(water, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">border =</span> <span class="ot">NA</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p>Rayshader requires that waterbodies are in raster format so we’ll have to
+rasterize them. I don’t really know why, but for some reason we need to “flip”
+the resulting raster (mirror it on the x axis) so that it aligns with the
+elevation raster.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Rasterize waterbodies</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>water &lt;-<span class="st"> </span><span class="kw">rasterize</span>(water, elev, <span class="dt">field =</span> <span class="dv">1</span>, <span class="dt">background =</span> <span class="dv">0</span>)</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co"># For whatever reason we need to flip the water raster</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>water &lt;-<span class="st"> </span><span class="kw">flip</span>(water, <span class="st">&quot;x&quot;</span>)</span>
+<span id="cb15-6"><a href="#cb15-6"></a></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co"># Convert water to a matrix</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>wamat &lt;-<span class="st"> </span><span class="kw">raster_to_matrix</span>(water)</span>
+<span id="cb15-9"><a href="#cb15-9"></a></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="co"># Visualize</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>elmat <span class="op">%&gt;%</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="st">  </span><span class="kw">add_water</span>(., wamat, <span class="dt">color =</span> <span class="st">&quot;lightblue&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p>Awesome! This already looks much cooler. We can give it a final twist by
+putting everything into proper 3d. We’ll also add some shadows, make the water
+slightly transparent, and add depth of field.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Prepare a nice map in 3D</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>elmat <span class="op">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="st">  </span><span class="kw">add_water</span>(., wamat, <span class="dt">color =</span> <span class="st">&quot;lightblue&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="st">  </span><span class="kw">add_shadow</span>(., <span class="kw">ray_shade</span>(elmat), <span class="fl">0.7</span>) <span class="op">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="st">  </span><span class="kw">add_shadow</span>(., <span class="kw">ambient_shade</span>(elmat), <span class="fl">0.7</span>) <span class="op">%&gt;%</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="st">  </span><span class="kw">plot_3d</span>(.</span>
+<span id="cb16-8"><a href="#cb16-8"></a>    , elmat</span>
+<span id="cb16-9"><a href="#cb16-9"></a>    , <span class="dt">zscale         =</span> <span class="dv">200</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a>    , <span class="dt">fov            =</span> <span class="dv">0</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a>    , <span class="dt">theta          =</span> <span class="dv">0</span></span>
+<span id="cb16-12"><a href="#cb16-12"></a>    , <span class="dt">phi            =</span> <span class="dv">30</span></span>
+<span id="cb16-13"><a href="#cb16-13"></a>    , <span class="dt">zoom           =</span> <span class="fl">0.40</span></span>
+<span id="cb16-14"><a href="#cb16-14"></a>    , <span class="dt">windowsize     =</span> <span class="kw">c</span>(<span class="dv">2000</span>, <span class="dv">1000</span>)</span>
+<span id="cb16-15"><a href="#cb16-15"></a>    , <span class="dt">wateralpha     =</span> <span class="fl">0.5</span></span>
+<span id="cb16-16"><a href="#cb16-16"></a>    , <span class="dt">waterlinecolor =</span> <span class="st">&quot;white&quot;</span></span>
+<span id="cb16-17"><a href="#cb16-17"></a>    , <span class="dt">waterlinealpha =</span> <span class="fl">0.5</span></span>
+<span id="cb16-18"><a href="#cb16-18"></a>  )</span>
+<span id="cb16-19"><a href="#cb16-19"></a><span class="kw">Sys.sleep</span>(<span class="fl">0.2</span>)</span>
+<span id="cb16-20"><a href="#cb16-20"></a><span class="kw">render_depth</span>(<span class="dt">focus =</span> <span class="fl">0.6</span>, <span class="dt">focallength =</span> <span class="dv">80</span>, <span class="dt">clear =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+</div>
+<div id="bathymetry-data" class="section level1">
+<h1>Bathymetry Data</h1>
+<p>In some cases, you may be interested in bathymetric data, i.e. the topography of
+seas. For this, there’s a brilliant r-package called <code>marmap</code> which enables you
+to access such data from the NOAA database. For instance, we could easily
+download bathymetry data for the <a href="https://en.wikipedia.org/wiki/Mariana_Trench">Mariana
+Trench</a>. The downloaded file will
+not be in a standard <code>raster</code> format but we can easily coerce it using
+<code>marmap::as.raster()</code>.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Load the marmap package</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="kw">library</span>(marmap)</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co"># Download bathymetry data for the Mariana Trench</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>bathy &lt;-<span class="st"> </span><span class="kw">getNOAA.bathy</span>(</span>
+<span id="cb17-6"><a href="#cb17-6"></a>    <span class="dt">lon1       =</span> <span class="dv">140</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a>  , <span class="dt">lon2       =</span> <span class="dv">155</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a>  , <span class="dt">lat1       =</span> <span class="dv">-13</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a>  , <span class="dt">lat2       =</span> <span class="dv">0</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a>  , <span class="dt">resolution =</span> <span class="dv">4</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a>)</span>
+<span id="cb17-12"><a href="#cb17-12"></a></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="co"># Coerce to a raster</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a>bathy &lt;-<span class="st"> </span>marmap<span class="op">::</span><span class="kw">as.raster</span>(bathy)</span>
+<span id="cb17-15"><a href="#cb17-15"></a></span>
+<span id="cb17-16"><a href="#cb17-16"></a><span class="co"># Visualize it</span></span>
+<span id="cb17-17"><a href="#cb17-17"></a><span class="kw">plot</span>(bathy, <span class="dt">col =</span> <span class="kw">rev</span>(<span class="kw">viridis</span>(<span class="dv">50</span>)), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span></code></pre></div>
+<p><img src="2021-03-23-Elevation_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>The package has many more useful functions to generate publication ready plots.
+You can find all the nifty little tricks and percs of this package in its
+beautiful
+<a href="https://cran.r-project.org/web/packages/marmap/vignettes/marmap-DataAnalysis.pdf">vignette</a>.</p>
+<p>I hope this blog post has given you a decent overview of different packages and
+data sources that help you to handle digital elevation data.</p>
+</div>
+<div id="further-reading" class="section level1">
+<h1>Further Reading</h1>
+<ul>
+<li>Great tutorials on how to use the rayshader package (<a href="https://www.rayshader.com/" class="uri">https://www.rayshader.com/</a>)</li>
+<li>Some further information on terrain characteristics (<a href="http://search.r-project.org/library/raster/html/terrain.html" class="uri">http://search.r-project.org/library/raster/html/terrain.html</a>)</li>
+</ul>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session Information</h1>
+<pre><code>## R version 3.6.3 (2020-02-29)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Linux Mint 19.3
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+## 
+## locale:
+##  [1] LC_CTYPE=de_CH.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_CH.UTF-8        LC_COLLATE=de_CH.UTF-8    
+##  [5] LC_MONETARY=de_CH.UTF-8    LC_MESSAGES=de_CH.UTF-8   
+##  [7] LC_PAPER=de_CH.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_CH.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] marmap_1.0.5      rayshader_0.20.0  viridis_0.5.1     viridisLite_0.3.0
+## [5] elevatr_0.2.0     raster_3.4-5      sp_1.4-5         
+## 
+## loaded via a namespace (and not attached):
+##  [1] httr_1.4.2              bit64_4.0.5             jsonlite_1.7.2         
+##  [4] foreach_1.5.1           shiny_1.5.0             assertthat_0.2.1       
+##  [7] highr_0.8               blob_1.2.1              yaml_2.2.1             
+## [10] progress_1.2.2          pillar_1.5.1            RSQLite_2.2.1          
+## [13] lattice_0.20-41         glue_1.4.2              digest_0.6.27          
+## [16] manipulateWidget_0.10.1 promises_1.1.1          colorspace_2.0-0       
+## [19] htmltools_0.5.1.1       httpuv_1.5.4            plyr_1.8.6             
+## [22] pkgconfig_2.0.3         magick_2.4.0            bookdown_0.20          
+## [25] purrr_0.3.4             xtable_1.8-4            scales_1.1.1           
+## [28] webshot_0.5.2           later_1.1.0.1           tibble_3.1.0           
+## [31] generics_0.1.0          ggplot2_3.3.3           ellipsis_0.3.1         
+## [34] magrittr_2.0.1          crayon_1.4.1            mime_0.9               
+## [37] memoise_1.1.0           evaluate_0.14           adehabitatMA_0.3.14    
+## [40] ncdf4_1.17              fansi_0.4.2             doParallel_1.0.16      
+## [43] blogdown_1.2            tools_3.6.3             prettyunits_1.1.1      
+## [46] hms_1.0.0               lifecycle_1.0.0         stringr_1.4.0          
+## [49] munsell_0.5.0           compiler_3.6.3          rlang_0.4.10           
+## [52] grid_3.6.3              iterators_1.0.13        htmlwidgets_1.5.2      
+## [55] crosstalk_1.1.0.1       miniUI_0.1.1.1          rmarkdown_2.6          
+## [58] gtable_0.3.0            codetools_0.2-16        DBI_1.1.1              
+## [61] curl_4.3                rayimage_0.3.1          reshape2_1.4.4         
+## [64] R6_2.5.0                gridExtra_2.3           knitr_1.31             
+## [67] dplyr_1.0.3             rgdal_1.5-19            bit_4.0.4              
+## [70] fastmap_1.0.1           utf8_1.2.1              shape_1.4.5            
+## [73] stringi_1.5.3           parallel_3.6.3          Rcpp_1.0.6             
+## [76] vctrs_0.3.6             png_0.1-7               rgl_0.100.54           
+## [79] tidyselect_1.1.0        xfun_0.22</code></pre>
+</div>

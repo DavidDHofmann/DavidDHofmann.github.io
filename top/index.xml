@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tops on David D. Hofmann</title>
+    <link>https://daviddhofmann.github.io/top/</link>
+    <description>Recent content in Tops on David D. Hofmann</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 01 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://daviddhofmann.github.io/top/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Gallery</title>
+      <link>https://daviddhofmann.github.io/top/gallery/</link>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/top/gallery/</guid>
+      <description>Not quite sure if these images will show up properly (hover to see)   P7050610
+      P7070872
+                                 </description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://daviddhofmann.github.io/top/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/top/about/</guid>
+      <description>Hi there! My name is David D. Hofmann and I am a PhD student in ecology at the University of Zurich in Switzerland. Prior to my PhD, I did a master’s degree in economics and soonafter a master&amp;rsquo;s degree in environmental sciences. The latter ultimatelly led to my current position as a PhD student. My research interests mainly include spatial data analysis, remote sensing, movement ecology, and conservation science. Together with my colleagues at Popecol, I am currently working on the African wild dog dispersal project in Botswana.</description>
+    </item>
+    
+  </channel>
+</rss>
