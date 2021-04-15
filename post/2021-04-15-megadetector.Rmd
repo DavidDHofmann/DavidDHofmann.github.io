@@ -4,11 +4,10 @@ summary: "In this blog-post, I'm going to illustrate how you can use Microsoft's
 author: "David D. Hofmann"
 date: 2021-04-15T18:00:00-05:00
 categories: ["R"]
-tags: ["R", "deep learning", "cameratrap"]
+tags: ["R", "deep learning", "cameratrap", "megadetector"]
 image: "img/post_megadetector.jpg"
 output:
   blogdown::html_page:
-  # pdf_document:
     highlight: tango
     toc: true
     toc_depth: 2
