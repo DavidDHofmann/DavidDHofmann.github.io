@@ -184,32 +184,6 @@ simple way to quantify how substantially the elevation varies within a few
 cells). We can calculate the TRI by hand using the `focal` function. The `focal`
 function basically creates a moving window containing a 3x3 cells and applies
 the function for terrain ruggedness to this window.
-
-```{r focal, message = F, warning = F, echo = F, fig.width = 2, fig.height = 2, fig.cap = "\\label{fig:focal} Illustration how the focal function works. The function uses a moving window within which a metric can be applied. That is, the new value of the focal cell will be determined by the values within the moving window and the specified function."}
-
-# Create example raster
-n <- 5
-r <- raster(ncol = n, nrow = n, xmn = 0, xmx = n, ymn = 0, ymx = n)
-rp <- as(r, "SpatialPolygons")
-
-# Select center cell
-center <- 13
-
-# Identify neighbors
-adj <- adjacent(r, center, directions = 8)[, 2]
-
-# Highlight focal cell and its neighbors
-par(mar = c(0, 0, 0, 0))
-plot(rp)
-plot(rp[adj, ], col = "red", add = T)
-plot(rp[center, ], col = "red", border = "yellow", add = T, lwd = 2)
-legend("bottom", c("Focal Cell", "Moving Window"), col = c("yellow", "red"), pch = c(0, 15))
-
-```
-
-We can thus use the `focal` function to calculate the ruggedness for our study
-area.
-
 ```{r, message = F, warning = F}
 
 # Define weights (size of moving window)
