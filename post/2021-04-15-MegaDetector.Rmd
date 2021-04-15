@@ -2,7 +2,7 @@
 title: "Using Microsoft's MegaDetector to Detect Animals on Cameratrap Images"
 summary: "In this blog-post, I'm going to illustrate how you can use Microsoft's MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals."
 author: "David D. Hofmann"
-date: 2021-05-15T18:00:00-05:00
+date: 2021-04-15T18:00:00-05:00
 categories: ["R"]
 tags: ["R", "deep learning", "cameratrap"]
 image: "img/post_megadetector.jpg"
@@ -553,4 +553,5 @@ fun tool that allows us to automatically detect animals on cameratrap images.
 ```{r, echo=F}
 sessionInfo()
 ```
+
 
