@@ -216,14 +216,6 @@ simple way to quantify how substantially the elevation varies within a few
 cells). We can calculate the TRI by hand using the <code>focal</code> function. The <code>focal</code>
 function basically creates a moving window containing a 3x3 cells and applies
 the function for terrain ruggedness to this window.</p>
-<div class="figure"><span id="fig:focal"></span>
-<img src="2021-03-23-Elevation_files/figure-html/focal-1.png" alt="\label{fig:focal} Illustration how the focal function works. The function uses a moving window within which a metric can be applied. That is, the new value of the focal cell will be determined by the values within the moving window and the specified function." width="192" />
-<p class="caption">
-Figure 1:  Illustration how the focal function works. The function uses a moving window within which a metric can be applied. That is, the new value of the focal cell will be determined by the values within the moving window and the specified function.
-</p>
-</div>
-<p>We can thus use the <code>focal</code> function to calculate the ruggedness for our study
-area.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Define weights (size of moving window)</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a>weights &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="dv">1</span>, <span class="dt">nrow =</span> <span class="dv">3</span>, <span class="dt">ncol =</span> <span class="dv">3</span>)</span>
 <span id="cb11-3"><a href="#cb11-3"></a></span>
@@ -424,7 +416,7 @@ data sources that help you to handle digital elevation data.</p>
 ## [25] purrr_0.3.4             xtable_1.8-4            scales_1.1.1           
 ## [28] webshot_0.5.2           later_1.1.0.1           tibble_3.1.0           
 ## [31] generics_0.1.0          ggplot2_3.3.3           ellipsis_0.3.1         
-## [34] magrittr_2.0.1          crayon_1.4.1            mime_0.9               
+## [34] magrittr_2.0.1          crayon_1.4.1            mime_0.10              
 ## [37] memoise_1.1.0           evaluate_0.14           adehabitatMA_0.3.14    
 ## [40] ncdf4_1.17              fansi_0.4.2             doParallel_1.0.16      
 ## [43] blogdown_1.2            tools_3.6.3             prettyunits_1.1.1      
@@ -438,6 +430,6 @@ data sources that help you to handle digital elevation data.</p>
 ## [67] dplyr_1.0.3             rgdal_1.5-19            bit_4.0.4              
 ## [70] fastmap_1.0.1           utf8_1.2.1              shape_1.4.5            
 ## [73] stringi_1.5.3           parallel_3.6.3          Rcpp_1.0.6             
-## [76] vctrs_0.3.6             png_0.1-7               rgl_0.100.54           
+## [76] vctrs_0.3.7             png_0.1-7               rgl_0.100.54           
 ## [79] tidyselect_1.1.0        xfun_0.22</code></pre>
 </div>
