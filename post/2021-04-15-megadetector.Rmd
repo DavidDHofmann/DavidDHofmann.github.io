@@ -554,4 +554,3 @@ fun tool that allows us to automatically detect animals on cameratrap images.
 sessionInfo()
 ```
 
-

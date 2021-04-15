@@ -325,7 +325,7 @@ packages that we’ll use later.</p>
 <span id="cb1-7"><a href="#cb1-7"></a><span class="co"># Download polygon for country (only on the national borders -&gt; level = 0)</span></span>
 <span id="cb1-8"><a href="#cb1-8"></a>swiss &lt;-<span class="st"> </span><span class="kw">getData</span>(<span class="st">&quot;GADM&quot;</span>, <span class="dt">country =</span> <span class="st">&quot;CHE&quot;</span>, <span class="dt">level =</span> <span class="dv">0</span>)</span>
 <span id="cb1-9"><a href="#cb1-9"></a><span class="kw">plot</span>(swiss)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Now that we decided on an area of interest, we have two options to download a
 DEM:</p>
 <ul>
@@ -342,7 +342,7 @@ Switzerland (country code <em>CHE</em>).</p>
 <span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Visualize it</span></span>
 <span id="cb2-5"><a href="#cb2-5"></a><span class="kw">plot</span>(elev, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
 <span id="cb2-6"><a href="#cb2-6"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>The download does not take long at all! While the downloaded raster has a rather
 low resolution of 925 by 925 meters, this should suffice for most purposes (you
 canactually calculate the resolution in meters using the approximation that 1
@@ -369,7 +369,7 @@ downloaded DEM to the exact area of Switzerland.</p>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="co"># Visualize it</span></span>
 <span id="cb5-6"><a href="#cb5-6"></a><span class="kw">plot</span>(elev, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
 <span id="cb5-7"><a href="#cb5-7"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Check resolution (could be increased even further)</span></span>
 <span id="cb6-2"><a href="#cb6-2"></a><span class="kw">res</span>(elev) <span class="op">*</span><span class="st"> </span><span class="dv">111000</span></span></code></pre></div>
 <pre><code>## [1] 609.39 422.91</code></pre>
@@ -392,7 +392,7 @@ the locations and their respective elevation on a nice map.</p>
 <span id="cb8-10"><a href="#cb8-10"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
 <span id="cb8-11"><a href="#cb8-11"></a><span class="kw">plot</span>(locs, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>)</span>
 <span id="cb8-12"><a href="#cb8-12"></a><span class="kw">text</span>(locs, <span class="dt">label =</span> <span class="st">&quot;Elevation&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>, <span class="dt">pos =</span> <span class="dv">3</span>, <span class="dt">offset =</span> <span class="fl">0.2</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="deriving-terrain-features" class="section level1">
 <h1>Deriving Terrain Features</h1>
@@ -410,7 +410,7 @@ the <em>hillshade</em>, which we will use to create some nice relief plots.</p>
 <span id="cb9-8"><a href="#cb9-8"></a><span class="co"># Visualize it</span></span>
 <span id="cb9-9"><a href="#cb9-9"></a><span class="kw">plot</span>(hillshade, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
 <span id="cb9-10"><a href="#cb9-10"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>If you want to increase the “strength” of the hillshade, you can introduce a
 <em>modifier</em> that artificially increases the variability in elevation as follows.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Calculate &quot;aspect&quot; and &quot;slope&quot; using a modified DEM</span></span>
@@ -424,7 +424,7 @@ the <em>hillshade</em>, which we will use to create some nice relief plots.</p>
 <span id="cb10-9"><a href="#cb10-9"></a><span class="co"># Visualize it</span></span>
 <span id="cb10-10"><a href="#cb10-10"></a><span class="kw">plot</span>(hillshade2, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
 <span id="cb10-11"><a href="#cb10-11"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>You may also be interested in the ruggedness of the terrain. For this, there’s
 the <em>terrain</em> <em>ruggedness</em> <em>index</em> (TRI). The TRI is defined as the square root
 of the average of the squared differences in elevation of a focal cell and its
@@ -445,7 +445,7 @@ ruggedness to this window. For our purposes, a 3x3 cell window will suffice.</p>
 <span id="cb11-10"><a href="#cb11-10"></a><span class="co"># Visualize</span></span>
 <span id="cb11-11"><a href="#cb11-11"></a><span class="kw">plot</span>(tri, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
 <span id="cb11-12"><a href="#cb11-12"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>These are just a few examples that should get you started with elevation data.
 We’ll now turn to more fun things and try to get some nice plots using the
 <code>rayshader</code> package.</p>
@@ -467,7 +467,7 @@ the elevation raster into a matrix. We can do this using the function
 <span id="cb12-5"><a href="#cb12-5"></a>elmat <span class="op">%&gt;%</span></span>
 <span id="cb12-6"><a href="#cb12-6"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb12-7"><a href="#cb12-7"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>At this stage, the map looks somewhat boring. We can make it a bit more
 interesting using two modifications. First, we can apply a mask and pretend that
 anything outside of Switzerland has an elevation of 0. This will make the
@@ -482,7 +482,7 @@ country literally pop.</p>
 <span id="cb13-8"><a href="#cb13-8"></a>elmat <span class="op">%&gt;%</span></span>
 <span id="cb13-9"><a href="#cb13-9"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb13-10"><a href="#cb13-10"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>This already looks much better. As a second modification, we can add waterbodies
 to our plot. This should add a bit of colour and really help to sell the map.
 While the <code>rayshader</code> package comes with a function called <code>detect_water(elev)</code>
@@ -511,7 +511,7 @@ download the shapefile from github and load it into R as follows.</p>
 <span id="cb14-20"><a href="#cb14-20"></a><span class="co"># Visualize them on top of the hillshade map</span></span>
 <span id="cb14-21"><a href="#cb14-21"></a><span class="kw">plot</span>(<span class="kw">mask</span>(hillshade, swiss), <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
 <span id="cb14-22"><a href="#cb14-22"></a><span class="kw">plot</span>(water, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">border =</span> <span class="ot">NA</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Rayshader requires that waterbodies are represented in raster format, hence
 we’ll have to rasterize them. In addition (and don’t ask me why) we need to
 “flip” the resulting raster (mirror it on the x axis) so that it aligns with the
@@ -530,7 +530,7 @@ elevation raster.</p>
 <span id="cb15-12"><a href="#cb15-12"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb15-13"><a href="#cb15-13"></a><span class="st">  </span><span class="kw">add_water</span>(., wamat, <span class="dt">color =</span> <span class="st">&quot;lightblue&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb15-14"><a href="#cb15-14"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Awesome! This already looks much cooler. But it’s not really in 3d yet. So let’s
 give it a final twist by putting everything into proper 3d. We’ll also add some
 shadows, make the water slightly transparent, and add bit of depth of field.</p>
@@ -554,7 +554,7 @@ shadows, make the water slightly transparent, and add bit of depth of field.</p>
 <span id="cb16-18"><a href="#cb16-18"></a>  )</span>
 <span id="cb16-19"><a href="#cb16-19"></a><span class="kw">Sys.sleep</span>(<span class="fl">0.2</span>)</span>
 <span id="cb16-20"><a href="#cb16-20"></a><span class="kw">render_depth</span>(<span class="dt">focus =</span> <span class="fl">0.6</span>, <span class="dt">focallength =</span> <span class="dv">80</span>, <span class="dt">clear =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 <div id="bathymetry-data" class="section level1">
 <h1>Bathymetry Data</h1>
@@ -583,7 +583,7 @@ doing so far with it.</p>
 <span id="cb17-15"><a href="#cb17-15"></a></span>
 <span id="cb17-16"><a href="#cb17-16"></a><span class="co"># Visualize it</span></span>
 <span id="cb17-17"><a href="#cb17-17"></a><span class="kw">plot</span>(bathy, <span class="dt">col =</span> <span class="kw">rev</span>(<span class="kw">viridis</span>(<span class="dv">50</span>)), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span></code></pre></div>
-<p><img src="/post/2021-03-23-Elevation_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="/post/2021-03-23-elevation_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>I won’t go into further details but the package offers many more useful
 functions and has great plotting capabilities that allow you to generate
 publication ready plots. You can find out about all the nifty little tricks and
@@ -637,23 +637,23 @@ data in 3d.</p>
 ##  [7] highr_0.8               blob_1.2.1              yaml_2.2.1             
 ## [10] progress_1.2.2          pillar_1.5.1            RSQLite_2.2.1          
 ## [13] lattice_0.20-41         glue_1.4.2              digest_0.6.27          
-## [16] manipulateWidget_0.10.1 promises_1.1.1          colorspace_2.0-0       
-## [19] htmltools_0.5.1.1       httpuv_1.5.4            plyr_1.8.6             
-## [22] pkgconfig_2.0.3         magick_2.4.0            bookdown_0.20          
+## [16] manipulateWidget_0.10.1 promises_1.2.0.1        colorspace_2.0-0       
+## [19] htmltools_0.5.1.1       httpuv_1.5.5            plyr_1.8.6             
+## [22] pkgconfig_2.0.3         magick_2.4.0            bookdown_0.21          
 ## [25] purrr_0.3.4             xtable_1.8-4            scales_1.1.1           
 ## [28] webshot_0.5.2           later_1.1.0.1           tibble_3.1.0           
 ## [31] generics_0.1.0          ggplot2_3.3.3           ellipsis_0.3.1         
 ## [34] magrittr_2.0.1          crayon_1.4.1            mime_0.10              
 ## [37] memoise_1.1.0           evaluate_0.14           adehabitatMA_0.3.14    
 ## [40] ncdf4_1.17              fansi_0.4.2             doParallel_1.0.16      
-## [43] blogdown_1.2            tools_3.6.3             prettyunits_1.1.1      
+## [43] blogdown_1.3.1          tools_3.6.3             prettyunits_1.1.1      
 ## [46] hms_1.0.0               lifecycle_1.0.0         stringr_1.4.0          
 ## [49] munsell_0.5.0           compiler_3.6.3          rlang_0.4.10           
 ## [52] grid_3.6.3              iterators_1.0.13        htmlwidgets_1.5.2      
-## [55] crosstalk_1.1.0.1       miniUI_0.1.1.1          rmarkdown_2.6          
+## [55] crosstalk_1.1.0.1       miniUI_0.1.1.1          rmarkdown_2.7          
 ## [58] gtable_0.3.0            codetools_0.2-16        DBI_1.1.1              
 ## [61] curl_4.3                rayimage_0.3.1          reshape2_1.4.4         
-## [64] R6_2.5.0                gridExtra_2.3           knitr_1.31             
+## [64] R6_2.5.0                gridExtra_2.3           knitr_1.32             
 ## [67] dplyr_1.0.3             rgdal_1.5-19            bit_4.0.4              
 ## [70] fastmap_1.0.1           utf8_1.2.1              shape_1.4.5            
 ## [73] stringi_1.5.3           parallel_3.6.3          Rcpp_1.0.6             
