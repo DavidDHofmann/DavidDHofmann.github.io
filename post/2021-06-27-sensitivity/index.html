@@ -36,7 +36,7 @@
 
     <title>Quick Sensitivity Analyses in R-David D. Hofmann | UZH</title>
 
-    <link rel="canonical" href="/post/2021-06-27-quicksensitivity/">
+    <link rel="canonical" href="/post/2021-06-27-sensitivity/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -387,7 +387,7 @@ set of parameters and temperatures/populations.</p>
 <span id="cb2-20"><a href="#cb2-20"></a>  , <span class="dt">main =</span> <span class="st">&quot;Density Dependence&quot;</span></span>
 <span id="cb2-21"><a href="#cb2-21"></a>  , <span class="dt">las  =</span> <span class="dv">1</span></span>
 <span id="cb2-22"><a href="#cb2-22"></a>)</span></code></pre></div>
-<p><img src="/post/2021-06-27-QuickSensitivity_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="/post/2021-06-27-sensitivity_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>As you can see, with this set of parameters, juvenile survival (<span class="math inline">\(S_j\)</span>) is
 highest at around 20 degrees Celsius. Adult fecundity (<span class="math inline">\(F_a\)</span>), on the other
 hand, is highest when the population size is at its minimum. Thus, there is
@@ -518,8 +518,8 @@ project population dynamics into the future.</p>
 <span id="cb7-36"><a href="#cb7-36"></a>  , <span class="dt">popsize_beta_2 =</span> <span class="dv">0</span></span>
 <span id="cb7-37"><a href="#cb7-37"></a>)</span></code></pre></div>
 <pre><code>##      [,1]      [,2]      [,3]      [,4]     [,5]
-## [1,]   10  7.310586  9.534774  9.428098 10.09804
-## [2,]   10 13.241531 14.753883 17.599609 20.10901</code></pre>
+## [1,]   10  7.310586  9.432219  9.431392 10.01763
+## [2,]   10 13.018077 14.650383 17.097022 19.41975</code></pre>
 </div>
 <div id="sensitivity-analysis" class="section level1">
 <h1>Sensitivity Analysis</h1>
@@ -615,12 +615,12 @@ access simulations as we wish.</p>
 ##  2         0.2           -0.1         1 Adults        1 10   
 ##  3         0.2           -0.1         1 Juveniles     2  7.31
 ##  4         0.2           -0.1         1 Adults        2 10.4 
-##  5         0.2           -0.1         1 Juveniles     3  8.04
-##  6         0.2           -0.1         1 Adults        3  9.63
-##  7         0.2           -0.1         1 Juveniles     4  7.46
-##  8         0.2           -0.1         1 Adults        4  8.79
-##  9         0.2           -0.1         1 Juveniles     5  7.02
-## 10         0.2           -0.1         1 Adults        5  8.82
+##  5         0.2           -0.1         1 Juveniles     3  8.07
+##  6         0.2           -0.1         1 Adults        3 10.2 
+##  7         0.2           -0.1         1 Juveniles     4  7.79
+##  8         0.2           -0.1         1 Adults        4  9.45
+##  9         0.2           -0.1         1 Juveniles     5  7.39
+## 10         0.2           -0.1         1 Adults        5  9.54
 ## # … with 59,990 more rows</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Take a subset and unnest</span></span>
 <span id="cb15-2"><a href="#cb15-2"></a>design <span class="op">%&gt;%</span></span>
@@ -632,13 +632,13 @@ access simulations as we wish.</p>
 ##  1         0.2           -0.5         1 Juveniles     1 10      
 ##  2         0.2           -0.5         1 Adults        1 10      
 ##  3         0.2           -0.5         1 Juveniles     2  0.00911
-##  4         0.2           -0.5         1 Adults        2  9.59   
-##  5         0.2           -0.5         1 Juveniles     3  1.36   
-##  6         0.2           -0.5         1 Adults        3  8.63   
-##  7         0.2           -0.5         1 Juveniles     4  1.03   
-##  8         0.2           -0.5         1 Adults        4  7.90   
-##  9         0.2           -0.5         1 Juveniles     5  1.48   
-## 10         0.2           -0.5         1 Adults        5  7.17   
+##  4         0.2           -0.5         1 Adults        2 10.0    
+##  5         0.2           -0.5         1 Juveniles     3  1.18   
+##  6         0.2           -0.5         1 Adults        3  9.01   
+##  7         0.2           -0.5         1 Juveniles     4  0.986  
+##  8         0.2           -0.5         1 Adults        4  8.26   
+##  9         0.2           -0.5         1 Juveniles     5  1.36   
+## 10         0.2           -0.5         1 Adults        5  7.58   
 ## # … with 19,990 more rows</code></pre>
 </div>
 <div id="visualization" class="section level1">
@@ -659,8 +659,8 @@ dataframe.</p>
 ## 2         0.2           -0.1         1 Adults        1 10   
 ## 3         0.2           -0.1         1 Juveniles     2  7.31
 ## 4         0.2           -0.1         1 Adults        2 10.4 
-## 5         0.2           -0.1         1 Juveniles     3  8.04
-## 6         0.2           -0.1         1 Adults        3  9.63</code></pre>
+## 5         0.2           -0.1         1 Juveniles     3  8.07
+## 6         0.2           -0.1         1 Adults        3 10.2</code></pre>
 <p>Once unnested, we can calculate summary statistics across replicates for each
 specific parameter combination.</p>
 <div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Average counts of juveniles and adults across replicates and calculate</span></span>
@@ -680,11 +680,11 @@ specific parameter combination.</p>
 ##   temp_beta_1 popsize_beta_1 Stage   Year Lower Upper Count
 ##         &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1         0.2           -0.5 Adults     1 10    10    10   
-## 2         0.2           -0.5 Adults     2  9.07 10.5   9.92
-## 3         0.2           -0.5 Adults     3  8.17  9.43  8.93
-## 4         0.2           -0.5 Adults     4  7.55  8.61  8.16
-## 5         0.2           -0.5 Adults     5  6.89  7.84  7.44
-## 6         0.2           -0.5 Adults     6  6.35  7.18  6.83</code></pre>
+## 2         0.2           -0.5 Adults     2  9.07 10.5   9.89
+## 3         0.2           -0.5 Adults     3  8.17  9.43  8.90
+## 4         0.2           -0.5 Adults     4  7.51  8.60  8.12
+## 5         0.2           -0.5 Adults     5  6.87  7.85  7.40
+## 6         0.2           -0.5 Adults     6  6.36  7.20  6.79</code></pre>
 <p>Finally, we can plot the population dynamics for each of the parameter
 combinations.</p>
 <div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Plot</span></span>
@@ -697,7 +697,7 @@ combinations.</p>
 <span id="cb21-8"><a href="#cb21-8"></a>  ) <span class="op">+</span></span>
 <span id="cb21-9"><a href="#cb21-9"></a><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span></span>
 <span id="cb21-10"><a href="#cb21-10"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-<p><img src="/post/2021-06-27-QuickSensitivity_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="/post/2021-06-27-sensitivity_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 <div id="summary" class="section level1">
 <h1>Summary</h1>

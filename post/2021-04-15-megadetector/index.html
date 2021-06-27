@@ -693,7 +693,7 @@ uncertain.</p>
 <span id="cb23-7"><a href="#cb23-7"></a>  , <span class="dt">col    =</span> <span class="st">&quot;cornflowerblue&quot;</span></span>
 <span id="cb23-8"><a href="#cb23-8"></a>  , <span class="dt">border =</span> <span class="ot">NA</span></span>
 <span id="cb23-9"><a href="#cb23-9"></a>)</span></code></pre></div>
-<p><img src="/post/2021-04-15-Megadetector_files/figure-html/unnamed-chunk-21-1.png" width="50%" /></p>
+<p><img src="/post/2021-04-15-megadetector_files/figure-html/unnamed-chunk-21-1.png" width="50%" /></p>
 <p>For now, however, we only care about relatively certain detections, so I’ll
 subset the data accordingly.</p>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Subset to detections with high confidence</span></span>
@@ -816,7 +816,7 @@ everything. We can write a function that allows us to automate these tasks:</p>
 <span id="cb29-47"><a href="#cb29-47"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
 <span id="cb29-48"><a href="#cb29-48"></a>plots &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(i){<span class="kw">showDetection</span>(i)})</span></code></pre></div>
 <div class="figure"><span id="fig:unnamed-chunk-24"></span>
-<img src="/post/2021-04-15-Megadetector_files/figure-html/unnamed-chunk-24-1.png" alt="Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!" width="100%" />
+<img src="/post/2021-04-15-megadetector_files/figure-html/unnamed-chunk-24-1.png" alt="Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!" width="100%" />
 <p class="caption">
 Figure 3: Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!
 </p>
@@ -893,7 +893,7 @@ fun tool that allows us to automatically detect animals on cameratrap images.</p
                     
                     
                     <li class="next">
-                        <a href="/post/2021-06-27-quicksensitivity/" data-toggle="tooltip" data-placement="top" title="Quick Sensitivity Analyses in R">Next
+                        <a href="/post/2021-06-27-sensitivity/" data-toggle="tooltip" data-placement="top" title="Quick Sensitivity Analyses in R">Next
                             Post &rarr;</a>
                     </li>
                     

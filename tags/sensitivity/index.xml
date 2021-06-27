@@ -9,10 +9,10 @@
     <lastBuildDate>Sun, 27 Jun 2021 15:00:00 +0000</lastBuildDate><atom:link href="https://daviddhofmann.github.io/tags/sensitivity/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Quick Sensitivity Analyses in R</title>
-      <link>https://daviddhofmann.github.io/post/2021-06-27-quicksensitivity/</link>
+      <link>https://daviddhofmann.github.io/post/2021-06-27-sensitivity/</link>
       <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
       
-      <guid>https://daviddhofmann.github.io/post/2021-06-27-quicksensitivity/</guid>
+      <guid>https://daviddhofmann.github.io/post/2021-06-27-sensitivity/</guid>
       <description>Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Here, I will show you a relatively simple workflow that will enable you to complete such analysis with clean and short code.</description>
     </item>
     
