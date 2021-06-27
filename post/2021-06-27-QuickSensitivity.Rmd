@@ -1,0 +1,404 @@
+---
+title: "Quick Sensitivity Analyses in R"
+summary: "Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Here, I will show you a relatively simple workflow that will enable you to complete such analysis with clean and short code."
+author: "David D. Hofmann"
+date: 2021-06-27T15:00:00-00:00
+categories: ["R"]
+tags: ["R", "sensitivity", "population"]
+image: "img/post_sensitivity.jpg"
+output:
+  blogdown::html_page:
+    highlight: tango
+    toc: true
+---
+
+# Introduction
+When using a statistical model to predict an outcome of interest, we usually
+rely on point estimates. However, in reality there is often considerable
+uncertainty such that point estimates are always very accurate. Consequently, we
+are sometimes interested in the **sensitivity of our predictions** with respect
+to changes in estimated parameters. This is exactly what we can examine using
+sensitivity analyses. That is, we predict or simulate the outcome of interest
+using different model parameters and check how varying parameters influences our
+results.
+
+Coding a sensitivity analysis can be a bit of a challenge because it involves
+rigorous bookkeeping of employed parameters and corresponding model outputs. It
+is therefore often worthwile to invest a bit of time and effort to create
+compartementalized code, so that we don't need to copy and paste the same code
+over and over again.
+
+In this blog post, I will show you my personal approach to quickly implement a
+sensitivity analysis in R. In short, the approach consists of **two parts**.
+First, writing out a **generalized function** that allows us to predict the
+outcome of interest for a given set of parameters. Second, to **apply the
+function repeatedly** across all combinations of parameters that we want to test
+for. For this, I rely on the [tidyverse](https://www.tidyverse.org/) package. In
+particular, I will make use of 'tibbles', which are tidyverse's alternative to
+dataframes. But enough blabbing, let's get started.
+
+# Model
+For the purpose of this blog post, we will look at a simple [matrix population
+model](https://en.wikipedia.org/wiki/Matrix_population_models). The same
+workflow can of course be applied to most other modeling frameworks too.
+Withouth going into too much detail, matrix population models are used by
+ecologists to project stage- or age-structured populations into the future using
+matrix algrebra. They require two basic ingredients: a *transition matrix* \(A\)
+and an *initial population vector* \(n_0\). While the transition matrix governs
+survival, fecundity, and transtions of the different classes, the initial
+population vector describes the number of individuals contained in each
+stage/age class at time zero. Once these two elements are known, one can predict
+or simulate the initial population into the future using the following equation:
+
+$$
+n_{t + 1} = A * n_{t}
+$$
+
+Here, we will assume a very basic two stage population model with only juveniles
+(subscript \(j\)) and adults (subscript \(a\)), where juveniles develop into
+adults after one timestep. Moreover, we will assume that juvenile survival
+(\(S_j\)) depends on the temperature in the environment and that fecundity of
+adults (\(F_a\)) depends on the size of the population (i.e. adult survival is
+density dependent). Juvenile fecundity, on the other hand, is set to 0, and
+adult survival is set to a probability of 0.9. Hence, the transition matrix will
+look as follows:
+
+$$
+A = \begin{bmatrix}
+  F_j = 0  & F_a(popsize) \\
+  S_j(temp) & S_a = 0.9 \\
+\end{bmatrix}
+$$
+
+Because we assume that \(F_a\) and \(S_j\) are not constant but depend on the
+population size and temperature of the environment, we need to define functions
+that describe the functional forms of these relationships. Let us write two
+functions that make use of a linear-regression model and a logit-link to
+transform predictions onto a range between 0 and 1. Note that we allow for
+non-linear functional forms by enabling second degree polynomials (i.e. \(x +
+x^2\)).
+
+```{r, message = F}
+# Load required libraries
+library(tidyverse)
+
+# Define the logit function
+logit <- function(x){1 / (1 + exp(-x))}
+
+# Function that determines juvenile survival based on the current temperature
+Sj <- function(temp, alpha, beta_1, beta_2){
+  logit(alpha + beta_1 * temp + beta_2 * temp ** 2)
+}
+
+# Function that determines adult fecundity based on the current population size
+Fa <- function(popsize, alpha, beta_1, beta_2){
+  logit(alpha + beta_1 * popsize + beta_2 * popsize ** 2)
+}
+```
+
+As you can see, I have not entered specific values for alpha, beta_1, and beta_2
+in the two funtions. This will allow us to later manipulate the functional forms
+of \(S_j\) and \(F_a\) to see how they influence our model predictions. Using
+the functions it is now straight forward to plot the reaction curves for a given
+set of parameters and temperatures/populations.
+
+```{r}
+# Define the range of potential temperatures and population sizes
+temprange <- c(-5:35)
+poprange <- c(0:100)
+
+# Visualize dependencies
+par(mfrow = c(1, 2))
+plot(Sj(temprange, -3, 0.3, -0.008) ~ temprange
+  , col = "blue"
+  , type = "l"
+  , xlab = "Temperature (degrees Celsius)"
+  , ylab = "Sj"
+  , main = "Temperature Dependence"
+  , las  = 1
+)
+plot(Fa(poprange, 3, -0.1, 0) ~ poprange
+  , col = "blue"
+  , type = "l"
+  , xlab = "Population Size"
+  , ylab = "Fa"
+  , main = "Density Dependence"
+  , las  = 1
+)
+
+```
+
+As you can see, with this set of parameters, juvenile survival (\(S_j\)) is
+highest at around 20 degrees Celsius. Adult fecundity (\(F_a\)), on the other
+hand, is highest when the population size is at its minimum. Thus, there is
+negative density dependence, meaning that fecundity decreases as the population
+size increases. Overall, the transition matrix \(A\) will vary depending on the
+temperature, the population size, and the parameters that define the functional
+forms of \(S_j\) and \(F_a\). Instead of manually defining \(A\) for each
+desired combination of these variables, let's write a function `createMat()`
+that automatically generates the transition matrix \(A\) for a given set of
+parameters and a given temperature and population size. As mentioned above, we
+will later manipulate the parameters that describe the functional forms of
+\(S_j\) and \(F_j\). Hence, the `createMat()` function needs to take those as
+arguements.
+
+```{r}
+# Function to generate the transition matrix for a given temperature, population
+# size, and set of functional form parameters. This is probably the most crucial
+# function!
+createMat <- function(
+    temp             # Temperature at a given time step
+  , popsize          # Population size at a given time step
+  , temp_alpha       # Intercept for temperature effect
+  , temp_beta_1      # Slope one for temperature effect
+  , temp_beta_2      # Slope two for temperature effect (squared effect)
+  , popsize_alpha    # Intercept for population size effect
+  , popsize_beta_1   # Slope one for population size effect
+  , popsize_beta_2   # Slope one for population size effect (squared effect)
+  ){
+    fj <- 0
+    sa <- 0.9
+    fa <- Fa(popsize, popsize_alpha, popsize_beta_1, popsize_beta_2)
+    sj <- Sj(temp, temp_alpha, temp_beta_1, temp_beta_2)
+    A <- matrix(c(fj, fa, sj, sa), nrow = 2, byrow = T)
+    return(A)
+}
+
+# Let's try if the function actually works. To see how the vital rates are
+# affected by these numbers, try out different values.
+createMat(
+    temp           = 20
+  , popsize        = 50
+  , temp_alpha     = -3
+  , temp_beta_1    = 0.3
+  , temp_beta_2    = -0.008
+  , popsize_alpha  = 3
+  , popsize_beta_1 = -0.1
+  , popsize_beta_2 = 0
+)
+```
+
+This is a quite powerful function! We can actually use it to compare the
+transition matrices resulting under different assumptions. For instance, let's
+see how the transition matrix changes when we increase the population size.
+
+```{r}
+# Define a set of different population sizes
+poprange <- c(0, 50, 100)
+
+# Create transition matrix for each of these population sizes
+lapply(poprange, function(x){
+  createMat(
+      temp           = 20
+    , popsize        = x
+    , temp_alpha     = -3
+    , temp_beta_1    = 0.3
+    , temp_beta_2    = -0.008
+    , popsize_alpha  = 3
+    , popsize_beta_1 = -0.1
+    , popsize_beta_2 = 0
+  )
+})
+
+```
+
+As you can see, adult fecundity decreases from 0.95 to 0.11 and 0.0009 when as
+the population size increases.
+
+# Simulation Function
+In order to be able to quickly repeat our simulation multiple times and for
+different parameters, we want to wrap our population projection into a single
+function called `simulation()`. Given an initial population, a vector of
+temperatures, and a set of model parameters, the `simulation()` function will
+project population dynamics into the future.
+
+```{r}
+# Simulation function to project our population into the future. Note that I'll
+# use the "..." in order to pass the arguments needed by the createMat function,
+# i.e. our parameter estimates for density and temperature
+simulation <- function(pop, temp, ...){
+
+  # Prepare empty matrix into which we will store the simulated data. Row one is
+  # for juveniles, row two is for adults. Each column represents one timestep.
+  # Note that the number of simulated iterations is determined by the length of
+  # the "temperature" vector.
+  population <- matrix(NA, nrow = 2, ncol = length(temp))
+
+  # Put initial population into the first column
+  population[, 1] <- pop
+
+  # Loop through each timestep and project population dynamics
+  for (i in 2:ncol(population)){
+
+    # Update transition matrix based on temperature and population density
+    A <- createMat(temp = temp[i], popsize = sum(population[, i - 1]), ...)
+
+    # Project population one step into the future
+    population[, i] <- A %*% population[, i - 1]
+  }
+  return(population)
+}
+
+# Test if the function works
+simulation(
+    pop            = c(10, 10)
+  , temp           = rnorm(n = 5, mean = 20, sd = 5)
+  , temp_alpha     = -3
+  , temp_beta_1    = 0.3
+  , temp_beta_2    = -0.008
+  , popsize_alpha  = 3
+  , popsize_beta_1 = -0.1
+  , popsize_beta_2 = 0
+)
+```
+# Sensitivity Analysis
+Now we are ready for our sensitivity analysis and can project our population
+into the future using different parameters. This is where the power of tibbles
+comes into play. We can actually use the function `grid_expand()` to span a
+design matrix that comprises all combinations of parameters that we want to test
+for. Moreover, we can specify how many replicates of each combination we wish to
+run. While we could vary all six parameters describing the functional forms of
+\(S_j\) and \(F_a\), (i.e. \(\alpha_{temp}, \beta_{1, temp}, \beta_{2, temp},
+\alpha_{popsize}, \beta_{1, popsize}, \beta_{2, popsize}\)), this will result in
+too many different outputs. Hence, we are only going to vary
+\(\beta_{temperature_1}\) and \(\beta_{popsize, 1}\) and we will repeat each
+simulation 100 times (i.e. 100 replicates). Note that the `grid_expand()`
+automatically produces all unique combinations of parameters and replicates.
+
+```{r}
+# Specify the different treatment combinations, as well as the number of
+# replicates
+design <- expand_grid(
+    temp_beta_1    = c(0.2, 0.3, 0.4)
+  , popsize_beta_1 = c(-0.1, -0.3, -0.5)
+  , replicate      = 1:100
+)
+print(design, n = 5)
+
+```
+
+We could now use a "for-loop" to go through each row and apply our
+`simulation()` function. However, I prefer to use the `lapply()` function, which
+directly returns a list comprising the results of each simulation. This allows
+us to conveniently store the resulting output directly in a new column the
+"design" tibble, such that we readily know which simulation belongs to which set
+of parameters.
+
+```{r}
+# Run our simulation for each row of the design dataframe
+design$Simulation <- lapply(1:nrow(design), function(x){
+
+  # Run simulation
+  population <- simulation(
+      pop            = c(10, 10)                         # 10 juveniles, 10 adults
+    , temp           = rnorm(n = 100, mean = 20, sd = 5) # Random temperatures
+    , temp_alpha     = -3
+    , temp_beta_1    = design$temp_beta_1[x]
+    , temp_beta_2    = -0.008
+    , popsize_alpha  = 3
+    , popsize_beta_1 = design$popsize_beta_1[x]
+    , popsize_beta_2 = 0
+  )
+
+  # Tidy the data (cast matrix to dataframe and convert it from wide to long format)
+  population <- as.data.frame(population)
+  population <- cbind(c("Juveniles", "Adults"), population)
+  names(population) <- c("Stage", 1:(ncol(population) - 1))
+  population <- gather(population
+    , key = "Year"
+    , value = "Count"
+    , 2:ncol(population)
+  )
+
+  # Coerce the Year column from character to numeric
+  population$Year <- as.numeric(population$Year)
+
+  # Return the simulated and tidied data
+  return(population)
+})
+
+# Let's take a look at the produced object
+print(design, n = 5)
+
+```
+
+As you can see, each row of the "design" tibble now contains the simulated data
+belonging to the respective parameter set. This makes it very easy to keep track
+of the different simulations and their parameters. Moreover, we can subset and
+access simulations as we wish.
+
+```{r}
+# Take a subset and unnest
+design %>%
+  subset(temp_beta_1 == 0.2) %>%
+  unnest(Simulation)
+
+# Take a subset and unnest
+design %>%
+  subset(temp_beta_1 == 0.2 & popsize_beta_1 == -0.5) %>%
+  unnest(Simulation)
+```
+
+# Visualization
+Finally, we want to visualize the simulated data using ggplot to get an idea how
+the number of juveniles and adults develops over time under the different
+parameters. For this, we unnest all the data, thereby creating single big
+dataframe.
+
+```{r}
+# Let's unnest all data and visualize our simulations
+dat <- unnest(design, Simulation)
+
+# Check it
+head(dat)
+
+```
+
+Once unnested, we can calculate summary statistics across replicates for each
+specific parameter combination.
+
+```{r}
+# Average counts of juveniles and adults across replicates and calculate
+# prediction intervals
+tallied <- dat %>%
+  group_by(temp_beta_1, popsize_beta_1, Stage, Year) %>%
+  summarize(
+      Lower   = quantile(Count, 0.025)
+    , Upper   = quantile(Count, 0.975)
+    , Count   = mean(Count)
+    , .groups = "drop"
+  )
+
+# Check it
+head(tallied)
+```
+
+Finally, we can plot the population dynamics for each of the parameter
+combinations.
+
+```{r}
+# Plot
+ggplot(tallied, aes(x = Year, y = Count, color = Stage, fill = Stage)) +
+  geom_ribbon(aes(ymin = Lower, ymax = Upper), alpha = 0.2, lwd = 0.2) +
+  geom_line(size = 0.1) +
+  facet_wrap(~ temp_beta_1 + popsize_beta_1
+    , labeller = label_both
+    , scales   = "free"
+  ) +
+  theme_classic() +
+  theme(legend.position = "bottom")
+```
+
+# Summary
+In this post we conducted a relatively simple sensitivity analysis of a matrix
+population model. For this, we first wrote a `simulation()` function which
+automated model predictions for a given set of parameters. Afterwards, we
+defined a design matrix comprising all combinations of parameters for which we
+wanted to run the simulation. Finally, we ran the simulation for each set of
+parameters and stored the output neatly in a tibble and plotted the results
+using ggplot.
+
+# Session Information
+```{r, echo=F}
+sessionInfo()
+```
