@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>David D. Hofmann</title>
+    <link>https://daviddhofmann.github.io/</link>
+    <description>Recent content on David D. Hofmann</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 27 Jun 2021 15:00:00 +0000</lastBuildDate><atom:link href="https://daviddhofmann.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Quick Sensitivity Analyses in R</title>
+      <link>https://daviddhofmann.github.io/post/2021-06-27-quicksensitivity/</link>
+      <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2021-06-27-quicksensitivity/</guid>
+      <description>Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Here, I will show you a relatively simple workflow that will enable you to complete such analysis with clean and short code.</description>
+    </item>
+    
+    <item>
+      <title>Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images</title>
+      <link>https://daviddhofmann.github.io/post/2021-04-15-megadetector/</link>
+      <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2021-04-15-megadetector/</guid>
+      <description>In this blog-post, I&amp;rsquo;m going to illustrate how you can use Microsoft&amp;rsquo;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals.</description>
+    </item>
+    
+    <item>
+      <title>Elevation Data in R</title>
+      <link>https://daviddhofmann.github.io/post/2021-03-23-elevation/</link>
+      <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2021-03-23-elevation/</guid>
+      <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
+    </item>
+    
+    <item>
+      <title>Gallery</title>
+      <link>https://daviddhofmann.github.io/top/gallery/</link>
+      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/top/gallery/</guid>
+      <description>   P6161160
+      P7050610
+      P7070872
+                                 </description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://daviddhofmann.github.io/about/</link>
+      <pubDate>Thu, 05 May 2016 21:48:51 -0700</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/about/</guid>
+      <description>This is a &amp;ldquo;hello world&amp;rdquo; example website for the blogdown package. The theme was forked from @jrutheiser/hugo-lithium-theme and modified by Yihui Xie.</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://daviddhofmann.github.io/search/placeholder/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/search/placeholder/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://daviddhofmann.github.io/top/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/top/about/</guid>
+      <description>Hi there! My name is David D. Hofmann and I am a PhD student in ecology at the University of Zurich in Switzerland. Prior to my PhD, I did a master’s degree in economics and soonafter a master&amp;rsquo;s degree in environmental sciences. The latter ultimatelly led to my current position as a PhD student. My research interests mainly include spatial data analysis, remote sensing, movement ecology, and conservation science. Together with my colleagues at Popecol, I am currently working on the African wild dog dispersal project in Botswana.</description>
+    </item>
+    
+  </channel>
+</rss>

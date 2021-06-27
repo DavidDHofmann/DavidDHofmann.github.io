@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on David D. Hofmann</title>
+    <link>https://daviddhofmann.github.io/tags/</link>
+    <description>Recent content in Tags on David D. Hofmann</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 27 Jun 2021 15:00:00 +0000</lastBuildDate><atom:link href="https://daviddhofmann.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>population</title>
+      <link>https://daviddhofmann.github.io/tags/population/</link>
+      <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/population/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>https://daviddhofmann.github.io/tags/r/</link>
+      <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>sensitivity</title>
+      <link>https://daviddhofmann.github.io/tags/sensitivity/</link>
+      <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/sensitivity/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cameratrap</title>
+      <link>https://daviddhofmann.github.io/tags/cameratrap/</link>
+      <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/cameratrap/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>deep learning</title>
+      <link>https://daviddhofmann.github.io/tags/deep-learning/</link>
+      <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/deep-learning/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>megadetector</title>
+      <link>https://daviddhofmann.github.io/tags/megadetector/</link>
+      <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/megadetector/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>3D</title>
+      <link>https://daviddhofmann.github.io/tags/3d/</link>
+      <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/3d/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>elevation data</title>
+      <link>https://daviddhofmann.github.io/tags/elevation-data/</link>
+      <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/elevation-data/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>plotting</title>
+      <link>https://daviddhofmann.github.io/tags/plotting/</link>
+      <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/plotting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>rayshader</title>
+      <link>https://daviddhofmann.github.io/tags/rayshader/</link>
+      <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/rayshader/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
