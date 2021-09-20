@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on David D. Hofmann</title>
+    <link>https://daviddhofmann.github.io/tags/r/</link>
+    <description>Recent content in R on David D. Hofmann</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 27 Jun 2021 15:00:00 +0000</lastBuildDate><atom:link href="https://daviddhofmann.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Quick Sensitivity Analyses in R</title>
+      <link>https://daviddhofmann.github.io/post/2021-06-27-sensitivity/</link>
+      <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2021-06-27-sensitivity/</guid>
+      <description>Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Here, I will show you a relatively simple workflow that will enable you to complete such analysis with clean and short code.</description>
+    </item>
+    
+    <item>
+      <title>Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images</title>
+      <link>https://daviddhofmann.github.io/post/2021-04-15-megadetector/</link>
+      <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2021-04-15-megadetector/</guid>
+      <description>In this blog-post, I&amp;rsquo;m going to illustrate how you can use Microsoft&amp;rsquo;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals.</description>
+    </item>
+    
+    <item>
+      <title>Elevation Data in R</title>
+      <link>https://daviddhofmann.github.io/post/2021-03-23-elevation/</link>
+      <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2021-03-23-elevation/</guid>
+      <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
+    </item>
+    
+  </channel>
+</rss>

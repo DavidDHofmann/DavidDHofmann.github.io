@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="David D. Hofmann">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://daviddhofmann.github.io//img/campanula.JPG">
+    <meta property="twitter:image" content="https://daviddhofmann.github.io//img/campanula.JPG" />
+    
+
+    
+    <meta name="title" content="Quick Sensitivity Analyses in R" />
+    <meta property="og:title" content="Quick Sensitivity Analyses in R" />
+    <meta property="twitter:title" content="Quick Sensitivity Analyses in R" />
+    
+
+    
+    <meta name="description" content="David D. Hofmann&#39;s Personal Website">
+    <meta property="og:description" content="David D. Hofmann&#39;s Personal Website" />
+    <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
+    
+
+    
+    <meta property="twitter:card" content="Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Here, I will show you a relatively simple workflow that will enable you to complete such analysis with clean and short code." />
+    
+    
+
+    <meta name="keyword"  content="David Hofmann, Blog, PhD Student, Ecology, University of Zurich, R, Movement Ecology, Botany">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Quick Sensitivity Analyses in R-David D. Hofmann | UZH</title>
+
+    <link rel="canonical" href="/post/2021-06-27-sensitivity/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">David D. Hofmann</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/">BLOG</a></li>
+                    
+                        <li><a href="/top/gallery/">GALLERY</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/post_sensitivity.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/r" title="R">
+                            R
+                        </a>
+                        
+                        <a class="tag" href="/tags/sensitivity" title="sensitivity">
+                            sensitivity
+                        </a>
+                        
+                        <a class="tag" href="/tags/population" title="population">
+                            population
+                        </a>
+                        
+                    </div>
+                    <h1>Quick Sensitivity Analyses in R</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            David D. Hofmann
+                         
+                        on 
+                        Sunday, June 27, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                
+                
+                
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<script src="/rmarkdown-libs/accessible-code-block/empty-anchor.js"></script>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#model">Model</a></li>
+<li><a href="#simulation-function">Simulation Function</a></li>
+<li><a href="#sensitivity-analysis">Sensitivity Analysis</a></li>
+<li><a href="#visualization">Visualization</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#session-information">Session Information</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>When using a statistical model to predict an outcome of interest, we usually
+rely on point estimates, meaning that we use the coefficients’ estimated mean.
+However, in reality there is often considerable uncertainty such that point
+estimates can be rather inaccurate. Consequently, we are sometimes interested in
+the <strong>sensitivity of our predictions</strong> with respect to employed model
+parameters. This is exactly what we can examine using sensitivity analyses. That
+is, we predict or simulate the outcome of interest using different model
+parameters and check how varying parameters influences our results.</p>
+<p>Coding a sensitivity analysis can be a bit of a challenge because it involves
+rigorous bookkeeping of used parameters and corresponding model outputs. It is
+therefore often worthwile to invest a bit of time and effort to create
+<em>compartementalized</em> code, so that we don’t need to copy and paste the same code
+over and over again. In addition, we want to avoid using loops, as loops tend to
+make things even more complicated.</p>
+<p>In this blog post, I will show you my personal approach to quickly implement a
+sensitivity analysis in R. In principle, the approach consists of <strong>two parts</strong>.
+First, we write out a <strong>generalized function</strong> that allows us to predict the
+outcome of interest for a given set of parameters. Second, we <strong>apply the
+function repeatedly</strong> across different model parameters that we want to
+consider. For this, we heavily rely on the
+<a href="https://www.tidyverse.org/">tidyverse</a> package. In particular, we will make use
+of ‘tibbles’, which are tidyverse’s alternative to dataframes that allow to
+neatly store lists of lists. More on this later. But enough blabbing, let’s get
+started.</p>
+</div>
+<div id="model" class="section level1">
+<h1>Model</h1>
+<p>For the purpose of this blog post, we will consider a simple <a href="https://en.wikipedia.org/wiki/Matrix_population_models">matrix population
+model</a>. The same
+workflow can of course be applied to any other modeling framework. Anyways,
+withouth going into too much detail, matrix population models are used by
+ecologists to project stage- or age-structured populations into the future using
+matrix algrebra. They require two basic ingredients: a <em>transition matrix</em> <span class="math inline">\(A\)</span>
+and an <em>initial population vector</em> <span class="math inline">\(n_0\)</span>. While the transition matrix governs
+survival, fecundity, and transtions of the different classes, the initial
+population vector describes the number of individuals contained in each
+stage/age class at time zero. Once these two elements are known, one can predict
+or simulate the initial population into the future based on the dynamics
+dictated by the transition matrix using the following equation:</p>
+<p><span class="math display">\[
+n_{t + 1} = A * n_{t}
+\]</span></p>
+<p>Here, we will assume a very basic two-stage population model with only juveniles
+(subscript <span class="math inline">\(j\)</span>) and adults (subscript <span class="math inline">\(a\)</span>), where juveniles develop into
+adults after one timestep. Moreover, we will assume that juvenile survival
+(<span class="math inline">\(S_j\)</span>) depends on the temperature and that fecundity of adults (<span class="math inline">\(F_a\)</span>)
+depends on the size of the population (i.e. adult survival is density
+dependent). Juvenile fecundity (<span class="math inline">\(F_j\)</span>) is set to 0, and adult survival
+(<span class="math inline">\(S_a\)</span>) is set to a probability of 0.9. Based on this knowledge, we can
+write out the transition matrix as follows:</p>
+<p><span class="math display">\[
+A = \begin{bmatrix}
+  F_j = 0  &amp; F_a(popsize) \\
+  S_j(temp) &amp; S_a = 0.9 \\
+\end{bmatrix}
+\]</span></p>
+<p>Because we assume that <span class="math inline">\(F_a\)</span> and <span class="math inline">\(S_j\)</span> depend on other factors (the
+population size and temperature of the environment), we need to define functions
+that describe the functional forms of these relationships. Let us write two
+functions that make use of a linear-regression model and a logit-link to
+transform predictions onto a range between 0 and 1. Note that we allow for
+non-linear functional forms by enabling second degree polynomials (i.e. <span class="math inline">\(x + x^2\)</span>).</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Load required libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># Define the logit function</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>logit &lt;-<span class="st"> </span><span class="cf">function</span>(x){<span class="dv">1</span> <span class="op">/</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>x))}</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co"># Function that determines juvenile survival based on the current temperature</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>Sj &lt;-<span class="st"> </span><span class="cf">function</span>(temp, alpha, beta_<span class="dv">1</span>, beta_<span class="dv">2</span>){</span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="kw">logit</span>(alpha <span class="op">+</span><span class="st"> </span>beta_<span class="dv">1</span> <span class="op">*</span><span class="st"> </span>temp <span class="op">+</span><span class="st"> </span>beta_<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>temp <span class="op">**</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a>}</span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co"># Function that determines adult fecundity based on the current population size</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>Fa &lt;-<span class="st"> </span><span class="cf">function</span>(popsize, alpha, beta_<span class="dv">1</span>, beta_<span class="dv">2</span>){</span>
+<span id="cb1-14"><a href="#cb1-14"></a>  <span class="kw">logit</span>(alpha <span class="op">+</span><span class="st"> </span>beta_<span class="dv">1</span> <span class="op">*</span><span class="st"> </span>popsize <span class="op">+</span><span class="st"> </span>beta_<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>popsize <span class="op">**</span><span class="st"> </span><span class="dv">2</span>)</span>
+<span id="cb1-15"><a href="#cb1-15"></a>}</span></code></pre></div>
+<p>As you can see, we have not entered any specific values for alpha, beta_1, and
+beta_2 in the two funtions. This will allow us to later manipulate the
+functional forms of <span class="math inline">\(S_j\)</span> and <span class="math inline">\(F_a\)</span> to see how varying the parameters
+influences our model predictions. Using the functions it is now straight forward
+to plot the reaction curves for a given set of parameters under a given
+temperature and population size.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Define the range of potential temperatures and population sizes</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>temprange &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="op">-</span><span class="dv">5</span><span class="op">:</span><span class="dv">35</span>)</span>
+<span id="cb2-3"><a href="#cb2-3"></a>poprange &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">100</span>)</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="co"># Visualize dependencies</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="kw">plot</span>(<span class="kw">Sj</span>(temprange, <span class="dv">-3</span>, <span class="fl">0.3</span>, <span class="fl">-0.008</span>) <span class="op">~</span><span class="st"> </span>temprange</span>
+<span id="cb2-8"><a href="#cb2-8"></a>  , <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>  , <span class="dt">type =</span> <span class="st">&quot;l&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>  , <span class="dt">xlab =</span> <span class="st">&quot;Temperature (degrees Celsius)&quot;</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a>  , <span class="dt">ylab =</span> <span class="st">&quot;Sj&quot;</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a>  , <span class="dt">main =</span> <span class="st">&quot;Temperature Dependence&quot;</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a>  , <span class="dt">las  =</span> <span class="dv">1</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a>)</span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="kw">plot</span>(<span class="kw">Fa</span>(poprange, <span class="dv">3</span>, <span class="fl">-0.1</span>, <span class="dv">0</span>) <span class="op">~</span><span class="st"> </span>poprange</span>
+<span id="cb2-16"><a href="#cb2-16"></a>  , <span class="dt">col =</span> <span class="st">&quot;blue&quot;</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a>  , <span class="dt">type =</span> <span class="st">&quot;l&quot;</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a>  , <span class="dt">xlab =</span> <span class="st">&quot;Population Size&quot;</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>  , <span class="dt">ylab =</span> <span class="st">&quot;Fa&quot;</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a>  , <span class="dt">main =</span> <span class="st">&quot;Density Dependence&quot;</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a>  , <span class="dt">las  =</span> <span class="dv">1</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>)</span></code></pre></div>
+<p><img src="/post/2021-06-27-sensitivity_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p>As you can see, with this set of parameters, juvenile survival (<span class="math inline">\(S_j\)</span>) is
+highest at around 20 degrees Celsius, whereas adult fecundity (<span class="math inline">\(F_a\)</span>) is
+highest when the population size is at its minimum. Thus, there is negative
+density dependence, meaning that fecundity decreases as the population size
+increases. In general, the transition matrix <span class="math inline">\(A\)</span> will vary depending on the
+temperature, the population size, and the parameters that define the functional
+forms of <span class="math inline">\(S_j\)</span> and <span class="math inline">\(F_a\)</span>. Now instead of manually defining the transition
+matrix <span class="math inline">\(A\)</span> for each desired combination of these variables, let’s write a
+function <code>createMat()</code> that automatically generates the transition matrix <span class="math inline">\(A\)</span>
+for a given set of parameters and a given temperature and population size. Using
+such a generic form of defining the matrix will later allow us to easily
+manipulate the parameters that describe the functional forms of <span class="math inline">\(S_j\)</span> and
+<span class="math inline">\(F_j\)</span>. This also implies that the <code>createMat()</code> function needs to be able to
+take those parameters as arguements.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Function to generate the transition matrix for a given temperature, population</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># size, and set of functional form parameters. This is probably the most crucial</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="co"># function!</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>createMat &lt;-<span class="st"> </span><span class="cf">function</span>(</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    temp             <span class="co"># Temperature at a given time step</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>  , popsize          <span class="co"># Population size at a given time step</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>  , temp_alpha       <span class="co"># Intercept for temperature effect</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>  , temp_beta_<span class="dv">1</span>      <span class="co"># Slope one for temperature effect</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>  , temp_beta_<span class="dv">2</span>      <span class="co"># Slope two for temperature effect (squared effect)</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>  , popsize_alpha    <span class="co"># Intercept for population size effect</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>  , popsize_beta_<span class="dv">1</span>   <span class="co"># Slope one for population size effect</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>  , popsize_beta_<span class="dv">2</span>   <span class="co"># Slope one for population size effect (squared effect)</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>  ){</span>
+<span id="cb3-14"><a href="#cb3-14"></a>    fj &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a>    sa &lt;-<span class="st"> </span><span class="fl">0.9</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a>    fa &lt;-<span class="st"> </span><span class="kw">Fa</span>(popsize, popsize_alpha, popsize_beta_<span class="dv">1</span>, popsize_beta_<span class="dv">2</span>)</span>
+<span id="cb3-17"><a href="#cb3-17"></a>    sj &lt;-<span class="st"> </span><span class="kw">Sj</span>(temp, temp_alpha, temp_beta_<span class="dv">1</span>, temp_beta_<span class="dv">2</span>)</span>
+<span id="cb3-18"><a href="#cb3-18"></a>    A &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">c</span>(fj, fa, sj, sa), <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">byrow =</span> T)</span>
+<span id="cb3-19"><a href="#cb3-19"></a>    <span class="kw">return</span>(A)</span>
+<span id="cb3-20"><a href="#cb3-20"></a>}</span></code></pre></div>
+<p>Let’s try out the function and see how we can generate a transition matrix for a
+given set of parameters and a given temperature and population size.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Let&#39;s try if the function actually works. To see how the vital rates are</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># affected by these numbers, try out different values.</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="kw">createMat</span>(</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="dt">temp           =</span> <span class="dv">20</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  , <span class="dt">popsize        =</span> <span class="dv">50</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>  , <span class="dt">temp_alpha     =</span> <span class="dv">-3</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>  , <span class="dt">temp_beta_1    =</span> <span class="fl">0.3</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>  , <span class="dt">temp_beta_2    =</span> <span class="fl">-0.008</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  , <span class="dt">popsize_alpha  =</span> <span class="dv">3</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>  , <span class="dt">popsize_beta_1 =</span> <span class="fl">-0.1</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>  , <span class="dt">popsize_beta_2 =</span> <span class="dv">0</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>)</span></code></pre></div>
+<pre><code>##          [,1]      [,2]
+## [1,] 0.000000 0.1192029
+## [2,] 0.450166 0.9000000</code></pre>
+<p>This is a quite powerful function! We can, for example, use it to compare the
+transition matrices resulting under different assumptions. For instance, let’s
+see how the transition matrix is affected when the population size increases.
+For this, prepare a vector of different population sizes and use the <code>lapply()</code>
+function to generate transition matrices for each of the values, assuming that
+everything else remains constant.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Define a set of different population sizes</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>poprange &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">100</span>)</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># Create transition matrix for each of these population sizes</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="kw">lapply</span>(poprange, <span class="cf">function</span>(x){</span>
+<span id="cb6-6"><a href="#cb6-6"></a>  <span class="kw">createMat</span>(</span>
+<span id="cb6-7"><a href="#cb6-7"></a>      <span class="dt">temp           =</span> <span class="dv">20</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>    , <span class="dt">popsize        =</span> x    <span class="co"># Here the 0, 50, and 100 will go</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a>    , <span class="dt">temp_alpha     =</span> <span class="dv">-3</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a>    , <span class="dt">temp_beta_1    =</span> <span class="fl">0.3</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a>    , <span class="dt">temp_beta_2    =</span> <span class="fl">-0.008</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a>    , <span class="dt">popsize_alpha  =</span> <span class="dv">3</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>    , <span class="dt">popsize_beta_1 =</span> <span class="fl">-0.1</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a>    , <span class="dt">popsize_beta_2 =</span> <span class="dv">0</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>  )</span>
+<span id="cb6-16"><a href="#cb6-16"></a>})</span></code></pre></div>
+<pre><code>## [[1]]
+##          [,1]      [,2]
+## [1,] 0.000000 0.9525741
+## [2,] 0.450166 0.9000000
+## 
+## [[2]]
+##          [,1]      [,2]
+## [1,] 0.000000 0.1192029
+## [2,] 0.450166 0.9000000
+## 
+## [[3]]
+##          [,1]         [,2]
+## [1,] 0.000000 0.0009110512
+## [2,] 0.450166 0.9000000000</code></pre>
+<p>As you can see, adult fecundity decreases from 0.95 to 0.11 and 0.0009 when as
+the population size increases, which is exactly what we expect given that there
+is density dependence.</p>
+</div>
+<div id="simulation-function" class="section level1">
+<h1>Simulation Function</h1>
+<p>All that is left to do now is to run population projections under different
+model parameters. In order to be able to quickly repeat our simulation multiple
+times and for different parameters, we want to wrap our population projection
+into a single function called <code>simulation()</code>. Given an initial population, a
+vector of temperatures, and a set of model parameters (passed via the “…”),
+the <code>simulation()</code> function will project population dynamics into the future.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Simulation function to project our population into the future. Note that I&#39;ll</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># use the &quot;...&quot; in order to pass the arguments needed by the createMat function,</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co"># i.e. our parameter estimates for density and temperature</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>simulation &lt;-<span class="st"> </span><span class="cf">function</span>(pop, temp, ...){</span>
+<span id="cb8-5"><a href="#cb8-5"></a></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="co"># Prepare empty matrix into which we will store the simulated data. Row one is</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="co"># for juveniles, row two is for adults. Each column represents one timestep.</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="co"># Note that the number of simulated iterations is determined by the length of</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>  <span class="co"># the &quot;temperature&quot; vector.</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>  population &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="ot">NA</span>, <span class="dt">nrow =</span> <span class="dv">2</span>, <span class="dt">ncol =</span> <span class="kw">length</span>(temp))</span>
+<span id="cb8-11"><a href="#cb8-11"></a></span>
+<span id="cb8-12"><a href="#cb8-12"></a>  <span class="co"># Put initial population into the first column</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a>  population[, <span class="dv">1</span>] &lt;-<span class="st"> </span>pop</span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a>  <span class="co"># Loop through each timestep and project population dynamics</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(population)){</span>
+<span id="cb8-17"><a href="#cb8-17"></a></span>
+<span id="cb8-18"><a href="#cb8-18"></a>    <span class="co"># Update transition matrix based on temperature and population density</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a>    A &lt;-<span class="st"> </span><span class="kw">createMat</span>(<span class="dt">temp =</span> temp[i], <span class="dt">popsize =</span> <span class="kw">sum</span>(population[, i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]), ...)</span>
+<span id="cb8-20"><a href="#cb8-20"></a></span>
+<span id="cb8-21"><a href="#cb8-21"></a>    <span class="co"># Project population one step into the future</span></span>
+<span id="cb8-22"><a href="#cb8-22"></a>    population[, i] &lt;-<span class="st"> </span>A <span class="op">%*%</span><span class="st"> </span>population[, i <span class="op">-</span><span class="st"> </span><span class="dv">1</span>]</span>
+<span id="cb8-23"><a href="#cb8-23"></a>  }</span>
+<span id="cb8-24"><a href="#cb8-24"></a>  <span class="kw">return</span>(population)</span>
+<span id="cb8-25"><a href="#cb8-25"></a>}</span></code></pre></div>
+<p>Let us test if the function actually works. For this, we provide an initial
+population vector with 10 juveniles and 10 adults, and we randomly sample a time
+series of temperatures. Note that the length of this time series directly
+determines the number of iterations that we’re going to simulate! Finally, we
+specify a set of model parameters used for the simulation. We will later tweak
+these values.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Test if the function works</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="kw">simulation</span>(</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="dt">pop            =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">10</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a>  , <span class="dt">temp           =</span> <span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">5</span>, <span class="dt">mean =</span> <span class="dv">20</span>, <span class="dt">sd =</span> <span class="dv">5</span>)</span>
+<span id="cb9-5"><a href="#cb9-5"></a>  , <span class="dt">temp_alpha     =</span> <span class="dv">-3</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>  , <span class="dt">temp_beta_1    =</span> <span class="fl">0.3</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a>  , <span class="dt">temp_beta_2    =</span> <span class="fl">-0.008</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a>  , <span class="dt">popsize_alpha  =</span> <span class="dv">3</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>  , <span class="dt">popsize_beta_1 =</span> <span class="fl">-0.1</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a>  , <span class="dt">popsize_beta_2 =</span> <span class="dv">0</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>)</span></code></pre></div>
+<pre><code>##      [,1]      [,2]      [,3]      [,4]      [,5]
+## [1,]   10  7.310586  9.017024  9.426551  9.970626
+## [2,]   10 12.164600 14.219838 16.823074 19.007335</code></pre>
+<p>Great! This works as expected. The function returns a matrix where each column
+shows the number of juveniles and adults at a given point in time. Since we
+provided a temperature vector of length five, the number of simulated iterations
+is also equal to five.</p>
+</div>
+<div id="sensitivity-analysis" class="section level1">
+<h1>Sensitivity Analysis</h1>
+<p>Now we are all settled for our sensitivity analysis and we can project our
+population into the future using different parameters. This is where the power
+of tibbles comes into play. For this, we first span a grid that contains all
+combinations of parameters that we want to test for. This can easily be done
+using the <code>grid_expand()</code> function. Moreover, we can use the function to specify
+how many replicates of each combination we wish to run (this will allow us to
+come up with bootstrap confidence intervals). Although we could now vary all six
+parameters describing the functional forms of <span class="math inline">\(S_j\)</span> and <span class="math inline">\(F_a\)</span>, (i.e.
+<span class="math inline">\(\alpha_{temp}, \beta_{1, temp}, \beta_{2, temp}, \alpha_{popsize}, \beta_{1, popsize}, \beta_{2, popsize}\)</span>), this will result in too many different outputs.
+Hence, we are only going to vary <span class="math inline">\(\beta_{1, temp}\)</span> and <span class="math inline">\(\beta_{1, popsize}\)</span>
+and we will repeat each simulation 100 times (i.e. 100 replicates). Note that
+the <code>grid_expand()</code> automatically produces all unique combinations of parameters
+and replicates.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Specify the different treatment combinations, as well as the number of</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co"># replicates. The function will then automatically generate all unique</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="co"># combinations.</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>design &lt;-<span class="st"> </span><span class="kw">expand_grid</span>(</span>
+<span id="cb11-5"><a href="#cb11-5"></a>    <span class="dt">temp_beta_1    =</span> <span class="kw">c</span>(<span class="fl">0.2</span>, <span class="fl">0.3</span>, <span class="fl">0.4</span>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  , <span class="dt">popsize_beta_1 =</span> <span class="kw">c</span>(<span class="op">-</span><span class="fl">0.1</span>, <span class="fl">-0.3</span>, <span class="fl">-0.5</span>)</span>
+<span id="cb11-7"><a href="#cb11-7"></a>  , <span class="dt">replicate      =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">100</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="kw">print</span>(design, <span class="dt">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 900 x 3
+##   temp_beta_1 popsize_beta_1 replicate
+##         &lt;dbl&gt;          &lt;dbl&gt;     &lt;int&gt;
+## 1         0.2           -0.1         1
+## 2         0.2           -0.1         2
+## 3         0.2           -0.1         3
+## 4         0.2           -0.1         4
+## 5         0.2           -0.1         5
+## # … with 895 more rows</code></pre>
+<p>It is now tempting to use a “for-loop” to go through each row and apply our
+<code>simulation()</code> function. However, for-loops are a nightmare for bookkeeping. In
+addition, we want to make use of these fancy “tibble” dataframes. Thus, I prefer
+to use the <code>lapply()</code> function, which directly returns a list comprising the
+results of each simulation. This allows us to conveniently store the resulting
+output directly in a new column the “design” tibble, such that we readily know
+which simulation belongs to which set of parameters.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Run our simulation for each row of the design dataframe</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>design<span class="op">$</span>Simulation &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(design), <span class="cf">function</span>(x){</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="co"># Run simulation</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  population &lt;-<span class="st"> </span><span class="kw">simulation</span>(</span>
+<span id="cb13-6"><a href="#cb13-6"></a>      <span class="dt">pop            =</span> <span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">10</span>)                         <span class="co"># 10 juveniles, 10 adults</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>    , <span class="dt">temp           =</span> <span class="kw">rnorm</span>(<span class="dt">n =</span> <span class="dv">100</span>, <span class="dt">mean =</span> <span class="dv">20</span>, <span class="dt">sd =</span> <span class="dv">5</span>) <span class="co"># Random temperatures</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>    , <span class="dt">temp_alpha     =</span> <span class="dv">-3</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>    , <span class="dt">temp_beta_1    =</span> design<span class="op">$</span>temp_beta_<span class="dv">1</span>[x]</span>
+<span id="cb13-10"><a href="#cb13-10"></a>    , <span class="dt">temp_beta_2    =</span> <span class="fl">-0.008</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>    , <span class="dt">popsize_alpha  =</span> <span class="dv">3</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>    , <span class="dt">popsize_beta_1 =</span> design<span class="op">$</span>popsize_beta_<span class="dv">1</span>[x]</span>
+<span id="cb13-13"><a href="#cb13-13"></a>    , <span class="dt">popsize_beta_2 =</span> <span class="dv">0</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a>  )</span>
+<span id="cb13-15"><a href="#cb13-15"></a></span>
+<span id="cb13-16"><a href="#cb13-16"></a>  <span class="co"># Tidy the data (cast matrix to dataframe and convert it from wide to long format)</span></span>
+<span id="cb13-17"><a href="#cb13-17"></a>  population &lt;-<span class="st"> </span><span class="kw">as.data.frame</span>(population)</span>
+<span id="cb13-18"><a href="#cb13-18"></a>  population &lt;-<span class="st"> </span><span class="kw">cbind</span>(<span class="kw">c</span>(<span class="st">&quot;Juveniles&quot;</span>, <span class="st">&quot;Adults&quot;</span>), population)</span>
+<span id="cb13-19"><a href="#cb13-19"></a>  <span class="kw">names</span>(population) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;Stage&quot;</span>, <span class="dv">1</span><span class="op">:</span>(<span class="kw">ncol</span>(population) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>))</span>
+<span id="cb13-20"><a href="#cb13-20"></a>  population &lt;-<span class="st"> </span><span class="kw">gather</span>(population</span>
+<span id="cb13-21"><a href="#cb13-21"></a>    , <span class="dt">key   =</span> <span class="st">&quot;Year&quot;</span></span>
+<span id="cb13-22"><a href="#cb13-22"></a>    , <span class="dt">value =</span> <span class="st">&quot;Count&quot;</span></span>
+<span id="cb13-23"><a href="#cb13-23"></a>    , <span class="dv">2</span><span class="op">:</span><span class="kw">ncol</span>(population)</span>
+<span id="cb13-24"><a href="#cb13-24"></a>  )</span>
+<span id="cb13-25"><a href="#cb13-25"></a></span>
+<span id="cb13-26"><a href="#cb13-26"></a>  <span class="co"># Coerce the Year column from character to numeric</span></span>
+<span id="cb13-27"><a href="#cb13-27"></a>  population<span class="op">$</span>Year &lt;-<span class="st"> </span><span class="kw">as.numeric</span>(population<span class="op">$</span>Year)</span>
+<span id="cb13-28"><a href="#cb13-28"></a></span>
+<span id="cb13-29"><a href="#cb13-29"></a>  <span class="co"># Return the simulated and tidied data</span></span>
+<span id="cb13-30"><a href="#cb13-30"></a>  <span class="kw">return</span>(population)</span>
+<span id="cb13-31"><a href="#cb13-31"></a>})</span>
+<span id="cb13-32"><a href="#cb13-32"></a></span>
+<span id="cb13-33"><a href="#cb13-33"></a><span class="co"># Let&#39;s take a look at the produced object</span></span>
+<span id="cb13-34"><a href="#cb13-34"></a><span class="kw">print</span>(design, <span class="dt">n =</span> <span class="dv">5</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 900 x 4
+##   temp_beta_1 popsize_beta_1 replicate Simulation        
+##         &lt;dbl&gt;          &lt;dbl&gt;     &lt;int&gt; &lt;list&gt;            
+## 1         0.2           -0.1         1 &lt;df[,3] [200 × 3]&gt;
+## 2         0.2           -0.1         2 &lt;df[,3] [200 × 3]&gt;
+## 3         0.2           -0.1         3 &lt;df[,3] [200 × 3]&gt;
+## 4         0.2           -0.1         4 &lt;df[,3] [200 × 3]&gt;
+## 5         0.2           -0.1         5 &lt;df[,3] [200 × 3]&gt;
+## # … with 895 more rows</code></pre>
+<p>As you can see, each row of the “design” tibble now contains the simulated data
+belonging to the respective parameter set. This makes it very easy to keep track
+of the different simulations and the employed parameters. Moreover, we can
+subset and access simulations as we wish. For this, we simply subset the data
+according to our likings, and unnest the remaining rows (i.e. un-collapse the
+stored dataframes).</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Take a subset and unnest</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>design <span class="op">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="st">  </span><span class="kw">subset</span>(temp_beta_<span class="dv">1</span> <span class="op">==</span><span class="st"> </span><span class="fl">0.2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="st">  </span><span class="kw">unnest</span>(Simulation)</span></code></pre></div>
+<pre><code>## # A tibble: 60,000 x 6
+##    temp_beta_1 popsize_beta_1 replicate Stage      Year Count
+##          &lt;dbl&gt;          &lt;dbl&gt;     &lt;int&gt; &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt;
+##  1         0.2           -0.1         1 Juveniles     1 10   
+##  2         0.2           -0.1         1 Adults        1 10   
+##  3         0.2           -0.1         1 Juveniles     2  7.31
+##  4         0.2           -0.1         1 Adults        2 10.4 
+##  5         0.2           -0.1         1 Juveniles     3  8.07
+##  6         0.2           -0.1         1 Adults        3 10.2 
+##  7         0.2           -0.1         1 Juveniles     4  7.77
+##  8         0.2           -0.1         1 Adults        4  9.34
+##  9         0.2           -0.1         1 Juveniles     5  7.33
+## 10         0.2           -0.1         1 Adults        5  9.55
+## # … with 59,990 more rows</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Take a subset and unnest</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>design <span class="op">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="st">  </span><span class="kw">subset</span>(temp_beta_<span class="dv">1</span> <span class="op">==</span><span class="st"> </span><span class="fl">0.2</span> <span class="op">&amp;</span><span class="st"> </span>popsize_beta_<span class="dv">1</span> <span class="op">==</span><span class="st"> </span><span class="fl">-0.5</span>) <span class="op">%&gt;%</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="st">  </span><span class="kw">unnest</span>(Simulation)</span></code></pre></div>
+<pre><code>## # A tibble: 20,000 x 6
+##    temp_beta_1 popsize_beta_1 replicate Stage      Year    Count
+##          &lt;dbl&gt;          &lt;dbl&gt;     &lt;int&gt; &lt;fct&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1         0.2           -0.5         1 Juveniles     1 10      
+##  2         0.2           -0.5         1 Adults        1 10      
+##  3         0.2           -0.5         1 Juveniles     2  0.00911
+##  4         0.2           -0.5         1 Adults        2 10.5    
+##  5         0.2           -0.5         1 Juveniles     3  1.01   
+##  6         0.2           -0.5         1 Adults        3  9.43   
+##  7         0.2           -0.5         1 Juveniles     4  0.926  
+##  8         0.2           -0.5         1 Adults        4  8.61   
+##  9         0.2           -0.5         1 Juveniles     5  1.26   
+## 10         0.2           -0.5         1 Adults        5  7.84   
+## # … with 19,990 more rows</code></pre>
+</div>
+<div id="visualization" class="section level1">
+<h1>Visualization</h1>
+<p>Finally, we want to visualize the simulated data using ggplot to get an idea how
+the number of juveniles and adults develops over time under the different
+parameters. For this, we unnest all the data, thereby creating single big
+dataframe.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Let&#39;s unnest all data and visualize our simulations</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>dat &lt;-<span class="st"> </span><span class="kw">unnest</span>(design, Simulation)</span>
+<span id="cb19-3"><a href="#cb19-3"></a></span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="co"># Check it</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="kw">head</span>(dat)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 6
+##   temp_beta_1 popsize_beta_1 replicate Stage      Year Count
+##         &lt;dbl&gt;          &lt;dbl&gt;     &lt;int&gt; &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt;
+## 1         0.2           -0.1         1 Juveniles     1 10   
+## 2         0.2           -0.1         1 Adults        1 10   
+## 3         0.2           -0.1         1 Juveniles     2  7.31
+## 4         0.2           -0.1         1 Adults        2 10.4 
+## 5         0.2           -0.1         1 Juveniles     3  8.07
+## 6         0.2           -0.1         1 Adults        3 10.2</code></pre>
+<p>Once unnested, we can calculate summary statistics across replicates for each
+specific parameter combination. Here, we calculate the mean and the 2.5% and
+97.5% percentiles. We can later use those to generate confidence-bands.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Average counts of juveniles and adults across replicates and calculate</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a><span class="co"># prediction intervals</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>tallied &lt;-<span class="st"> </span>dat <span class="op">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a><span class="st">  </span><span class="kw">group_by</span>(temp_beta_<span class="dv">1</span>, popsize_beta_<span class="dv">1</span>, Stage, Year) <span class="op">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a><span class="st">  </span><span class="kw">summarize</span>(</span>
+<span id="cb21-6"><a href="#cb21-6"></a>      <span class="dt">Lower   =</span> <span class="kw">quantile</span>(Count, <span class="fl">0.025</span>)</span>
+<span id="cb21-7"><a href="#cb21-7"></a>    , <span class="dt">Upper   =</span> <span class="kw">quantile</span>(Count, <span class="fl">0.975</span>)</span>
+<span id="cb21-8"><a href="#cb21-8"></a>    , <span class="dt">Count   =</span> <span class="kw">mean</span>(Count)</span>
+<span id="cb21-9"><a href="#cb21-9"></a>    , <span class="dt">.groups =</span> <span class="st">&quot;drop&quot;</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a>  )</span>
+<span id="cb21-11"><a href="#cb21-11"></a></span>
+<span id="cb21-12"><a href="#cb21-12"></a><span class="co"># Check it</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a><span class="kw">head</span>(tallied)</span></code></pre></div>
+<pre><code>## # A tibble: 6 x 7
+##   temp_beta_1 popsize_beta_1 Stage   Year Lower Upper Count
+##         &lt;dbl&gt;          &lt;dbl&gt; &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1         0.2           -0.5 Adults     1 10    10    10   
+## 2         0.2           -0.5 Adults     2  9.22 10.5   9.90
+## 3         0.2           -0.5 Adults     3  8.30  9.43  8.91
+## 4         0.2           -0.5 Adults     4  7.59  8.62  8.14
+## 5         0.2           -0.5 Adults     5  6.94  7.86  7.42
+## 6         0.2           -0.5 Adults     6  6.38  7.23  6.81</code></pre>
+<p>Finally, we can plot the population dynamics for each of the parameter
+combinations and add the confidence bands previously calculated.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Plot</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">ggplot</span>(tallied, <span class="kw">aes</span>(<span class="dt">x =</span> Year, <span class="dt">y =</span> Count, <span class="dt">color =</span> Stage, <span class="dt">fill =</span> Stage)) <span class="op">+</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a><span class="st">  </span><span class="kw">geom_ribbon</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> Lower, <span class="dt">ymax =</span> Upper), <span class="dt">alpha =</span> <span class="fl">0.2</span>, <span class="dt">lwd =</span> <span class="fl">0.2</span>) <span class="op">+</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">size =</span> <span class="fl">0.1</span>) <span class="op">+</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>temp_beta_<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>popsize_beta_<span class="dv">1</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a>    , <span class="dt">labeller =</span> label_both</span>
+<span id="cb23-7"><a href="#cb23-7"></a>    , <span class="dt">scales   =</span> <span class="st">&quot;free&quot;</span></span>
+<span id="cb23-8"><a href="#cb23-8"></a>  ) <span class="op">+</span></span>
+<span id="cb23-9"><a href="#cb23-9"></a><span class="st">  </span><span class="kw">theme_classic</span>() <span class="op">+</span></span>
+<span id="cb23-10"><a href="#cb23-10"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p><img src="/post/2021-06-27-sensitivity_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p>And there you have it. A nice sensitivity analysis with relatively few lines of
+code.</p>
+</div>
+<div id="summary" class="section level1">
+<h1>Summary</h1>
+<p>In this post we conducted a relatively simple sensitivity analysis of a matrix
+population model. For this, we first wrote a <code>simulation()</code> function which
+automated model predictions for a given set of parameters. Afterwards, we
+defined a design matrix comprising all combinations of parameters for which we
+wanted to run the simulation. Finally, we ran the simulation for each set of
+parameters and stored the output neatly in a tibble and plotted the results
+using ggplot.</p>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session Information</h1>
+<pre><code>## R version 3.6.3 (2020-02-29)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Linux Mint 19.3
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
+## 
+## locale:
+##  [1] LC_CTYPE=de_CH.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_CH.UTF-8        LC_COLLATE=de_CH.UTF-8    
+##  [5] LC_MONETARY=de_CH.UTF-8    LC_MESSAGES=de_CH.UTF-8   
+##  [7] LC_PAPER=de_CH.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_CH.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.3     purrr_0.3.4    
+## [5] readr_1.4.0     tidyr_1.1.2     tibble_3.1.0    ggplot2_3.3.3  
+## [9] tidyverse_1.3.0
+## 
+## loaded via a namespace (and not attached):
+##  [1] tidyselect_1.1.0  xfun_0.22         haven_2.3.1       colorspace_2.0-0 
+##  [5] vctrs_0.3.7       generics_0.1.0    htmltools_0.5.1.1 yaml_2.2.1       
+##  [9] utf8_1.2.1        rlang_0.4.10      pillar_1.5.1      withr_2.4.2      
+## [13] glue_1.4.2        DBI_1.1.1         dbplyr_2.0.0      modelr_0.1.8     
+## [17] readxl_1.3.1      lifecycle_1.0.0   munsell_0.5.0     blogdown_1.3     
+## [21] gtable_0.3.0      cellranger_1.1.0  rvest_1.0.0       evaluate_0.14    
+## [25] labeling_0.4.2    knitr_1.32        ps_1.5.0          fansi_0.4.2      
+## [29] highr_0.8         broom_0.7.3       Rcpp_1.0.6        scales_1.1.1     
+## [33] backports_1.2.1   jsonlite_1.7.2    farver_2.0.3      fs_1.5.0         
+## [37] hms_1.0.0         digest_0.6.27     stringi_1.5.3     bookdown_0.21    
+## [41] grid_3.6.3        cli_2.4.0         tools_3.6.3       magrittr_2.0.1   
+## [45] crayon_1.4.1      pkgconfig_2.0.3   ellipsis_0.3.1    xml2_1.3.2       
+## [49] reprex_1.0.0      lubridate_1.7.9.2 assertthat_0.2.1  rmarkdown_2.7    
+## [53] httr_1.4.2        rstudioapi_0.13   R6_2.5.0          compiler_3.6.3</code></pre>
+</div>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2021-04-15-megadetector/" data-toggle="tooltip" data-placement="top" title="Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:daviddenishofmann@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    <li>
+                        <a href="https://twitter.com/daviddhofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/DavidDHofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; David D. Hofmann 2021
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-200759743-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>
