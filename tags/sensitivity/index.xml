@@ -13,7 +13,7 @@
       <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
       
       <guid>https://daviddhofmann.github.io/post/2021-06-27-sensitivity/</guid>
-      <description>Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Here, I will show you a relatively simple workflow that will enable you to complete such analysis with clean and short code.</description>
+      <description>Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Doing this in R can be incredibly frustrating, especially when a large number of parameters are involved. Here, I will show you a relatively painless and simple workflow that will enable you to complete such analysis with clean and short code using tibbles from the tidyverse.</description>
     </item>
     
   </channel>

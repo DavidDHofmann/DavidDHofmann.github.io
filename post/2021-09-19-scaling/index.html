@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="David D. Hofmann">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://daviddhofmann.github.io//img/campanula.JPG">
+    <meta property="twitter:image" content="https://daviddhofmann.github.io//img/campanula.JPG" />
+    
+
+    
+    <meta name="title" content="Some Insights on Scaling/Standardizing" />
+    <meta property="og:title" content="Some Insights on Scaling/Standardizing" />
+    <meta property="twitter:title" content="Some Insights on Scaling/Standardizing" />
+    
+
+    
+    <meta name="description" content="David D. Hofmann&#39;s Personal Website">
+    <meta property="og:description" content="David D. Hofmann&#39;s Personal Website" />
+    <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
+    
+
+    
+    <meta property="twitter:card" content="When we fit a statistical model, we usually scale our covariates to a mean of zero and standard deviation of one. But how does this actually influence the model and how does scaling change the way in which we need to interpret resulting model coefficients? Moreover, can we backtransform model coefficients from the scaled into the unscaled world? In this blog post, we&#39;ll take a detailed look at scaling and examine why we scale, how to scale, and how to backtransform a model containing scaled covariates." />
+    
+    
+
+    <meta name="keyword"  content="David Hofmann, Blog, PhD Student, Ecology, University of Zurich, R, Movement Ecology, Botany">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Some Insights on Scaling/Standardizing-David D. Hofmann | UZH</title>
+
+    <link rel="canonical" href="/post/2021-09-19-scaling/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">David D. Hofmann</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/">BLOG</a></li>
+                    
+                        <li><a href="/top/gallery/">GALLERY</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/post_scaling.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/r" title="R">
+                            R
+                        </a>
+                        
+                        <a class="tag" href="/tags/scaling" title="scaling">
+                            scaling
+                        </a>
+                        
+                        <a class="tag" href="/tags/standardizing" title="standardizing">
+                            standardizing
+                        </a>
+                        
+                    </div>
+                    <h1>Some Insights on Scaling/Standardizing</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            David D. Hofmann
+                         
+                        on 
+                        Sunday, September 19, 2021
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                
+                
+                
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+<script src="/rmarkdown-libs/accessible-code-block/empty-anchor.js"></script>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<div id="TOC">
+<ul>
+<li><a href="#what-is-scaling">What is Scaling</a></li>
+<li><a href="#why-to-scale">Why to Scale</a></li>
+<li><a href="#a-note-on-interactions">A Note on Interactions</a></li>
+<li><a href="#how-to-backtransform-model-coefficients">How to Backtransform Model Coefficients</a>
+<ul>
+<li><a href="#case-i-unscale-a-model-without-interactions">Case I: Unscale a Model without Interactions</a></li>
+<li><a href="#case-ii-unscale-a-model-with-an-interaction-of-scaled-covariates">Case II: Unscale a Model with an Interaction of Scaled Covariates</a></li>
+</ul></li>
+<li><a href="#further-reading">Further Reading</a></li>
+<li><a href="#session-information">Session Information</a></li>
+</ul>
+</div>
+
+<div id="what-is-scaling" class="section level2">
+<h2>What is Scaling</h2>
+<p>When we run a regression model, we typically scale our covariates prior to
+including them in the model. We usually do this out of habit, without really
+thinking much about happens in the background. In this document, I will try to
+explain the main reasons for scaling and how scaling influences the
+interpretation of the model coefficients. Finally, I will show you how you can
+“back-transform” the coefficients from a linear model in which covariates were
+scaled into the unscaled world.</p>
+<p>Now before we dive into the details, let’s clarify what I really mean by
+“scaling”. When I talk about scaling, I actually refer to “standardizing” a
+covariate to a mean of zero and a standard deviation of one. Standardization is
+achieved by subtracting the covariate’s mean <span class="math inline">\(\mu_x\)</span> and dividing by its
+standard deviation <span class="math inline">\(\sigma_x\)</span>. In R, this can conveniently be achieved using
+the built in function <code>scale()</code>, which by default applies the following formula:</p>
+<p><span class="math display">\[
+X_{scaled} = \frac{X - \mu_x}{\sigma_x}
+\]</span></p>
+<p>To understand how the <code>scale()</code> function works, take a look at the two
+histograms below. The blue histogram shows the distribution of the original
+covariate <span class="math inline">\(X\)</span>, whereas the green histogram depicts the distribution of <span class="math inline">\(X_1\)</span>
+after we scaled it with the <code>scale()</code> function. As you can see, scaling moves
+the distribution to the left and makes it much narrower. In fact, it moves the
+distribution such that it’s mean is at zero and it squeezes the distribution so
+that the standard deviation is equals one. Note, however, that scaling doesn’t
+affect the skewness of the distribution.</p>
+<p><img src="/post/2021-09-19-scaling_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>The idea is then to use the scaled covariate <span class="math inline">\(X_{scaled}\)</span> instead of the
+unscaled covariate <span class="math inline">\(X\)</span> in our regression model. Importantly though, including
+a scaled covariate instead of its unscaled counterpart does <strong>not</strong> affect the
+mathematical structure the final model, which is also the reason why we can
+easily go back and forth between scaled and unscaled model coefficients. We can
+actually proof that the mathematical formula of the model remains the same:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;= \beta_0 + \beta_1 \frac{(X_1 - \mu_1)}{\sigma_1}\\
+  &amp;= \underbrace{\beta_0 - \beta_1 \frac{\mu_1}{\sigma_1}}_{\beta_0&#39;} +
+    \underbrace{\beta_1\frac{X_1}{\sigma_1}}_{\beta_1&#39; X_1}\\
+  &amp;= \beta_0&#39; + \beta_1&#39;X_1
+\end{aligned}
+\]</span></p>
+<p>Instead of influencing the mathematical structure of the model, scaling will
+affect model coefficients (from <span class="math inline">\(\beta_0\)</span> to <span class="math inline">\(\beta_0&#39;\)</span> and from <span class="math inline">\(\beta_1\)</span>
+to <span class="math inline">\(\beta_1&#39;\)</span>). This is essentially because covariates are on different
+scales, which also implies that we need to interpret the <span class="math inline">\(\beta\)</span>s differently.
+We’ll talk about this a bit later. Despite the fact that the model remains
+formally the same, scaling can be beneficial in some cases.</p>
+</div>
+<div id="why-to-scale" class="section level2">
+<h2>Why to Scale</h2>
+<p>There are several reasons why you might want to scale your covariates prior to
+including them in a regression model. Let’s go through them individually:</p>
+<ul>
+<li><p><em>To ease the interpretation of the intercept:</em> If you don’t scale your
+covariates, the intercept of your model is interpreted as the expected value
+of your outcome variable <span class="math inline">\(Y\)</span> when all covariates are set to 0. In many
+cases, covariates set to 0 make little sense (e.g. if you consider age or
+height of a person as covariates) and so the intercept is rather meaningless
+in that case. When all of your covariates are scaled, on the other hand, the
+intercept of your model becomes a meaningful value. It can be interpreted as
+the expected value of Y when all covariates are at their means (e.g. the
+expected weight of a person that is at average age and height). This becomes
+particularly helpful if your model contains interaction terms, which we will
+see later.</p></li>
+<li><p><em>To bring coefficients “closer together”:</em> Sometimes your covariates will be
+on very different scales; some on a very large scale, others on a small scale.
+This can result in regression coefficients that are very dissimilar (some
+extremely small, some very large) and therefore much more difficult to
+interpret. Once covariates are scaled, this will no longer be an issue as
+covariates are essentially “scale free”.</p></li>
+<li><p><em>To help with convergence issues:</em> Some models use gradient descent algorithms
+to iteratively approach the maximul likelihood estimates of the desired
+regression coefficients. Scaling of covariates can substantially increase the
+efficiency of such algorithms and therefore mitigate convergence issues.</p></li>
+<li><p><em>To reduce issues of collinearity:</em> Quite often you will be interested in
+interactions between your covariates. Unfortunately, creating an interaction
+term results in high collinearity between main effects and their respective
+interactions. However, if you scale your variables prior to forming their
+interactions, you can usually prevent this issue. Let’s illustrate this with
+an example:</p></li>
+</ul>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Simulate two covariates</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a>x1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10000</span>, <span class="dv">5</span>, <span class="dv">2</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a>x2 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10000</span>, <span class="dv">15</span>, <span class="dv">2</span>)</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="co"># Scale them</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>x1_scaled &lt;-<span class="st"> </span><span class="kw">scale</span>(x1)</span>
+<span id="cb1-7"><a href="#cb1-7"></a>x2_scaled &lt;-<span class="st"> </span><span class="kw">scale</span>(x2)</span>
+<span id="cb1-8"><a href="#cb1-8"></a></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co"># Check for correlation of x1 with the interaction term for x1 and x2</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="kw">as.vector</span>(<span class="kw">cor</span>(x1, x1 <span class="op">*</span><span class="st"> </span>x2))</span></code></pre></div>
+<pre><code>## [1] 0.9398006</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Correlation becomes much smaller if we scale covariates</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="kw">as.vector</span>(<span class="kw">cor</span>(x1_scaled, x1_scaled <span class="op">*</span><span class="st"> </span>x2_scaled))</span></code></pre></div>
+<pre><code>## [1] 0.02327099</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Check for correlation of x2 with the interaction term for x1 and x2</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="kw">as.vector</span>(<span class="kw">cor</span>(x2, x1 <span class="op">*</span><span class="st"> </span>x2))</span></code></pre></div>
+<pre><code>## [1] 0.3248103</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Correlation becomes much smaller if we scale covariates</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="kw">as.vector</span>(<span class="kw">cor</span>(x2_scaled, x1_scaled <span class="op">*</span><span class="st"> </span>x2_scaled))</span></code></pre></div>
+<pre><code>## [1] 0.007118844</code></pre>
+<p>I hope that by now you are convinced that scaling is a good thing. But let’s
+also look at some more complicated matters. More specifically, let’s evaluate
+how scaling influences the interpretation of interactions and how we can
+back-transform model coefficients obtained through scaled covariates.</p>
+</div>
+<div id="a-note-on-interactions" class="section level2">
+<h2>A Note on Interactions</h2>
+<p>Models containing interaction terms can be incredibly challenging to interpret,
+especially if covariates are not scaled. To motivate this, let’s mathematically
+write down a model that contains interactions. Mathematically, we can represent
+an interaction between two continuous covariates in a linear model as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;= \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2 \\
+\end{aligned}
+\]</span></p>
+<p>That is, in addition to the fixed effects <span class="math inline">\(\beta_1 X_1\)</span> and <span class="math inline">\(\beta_2 X_2\)</span>,
+the linear model now also includes the product of the two covariates (in his
+case <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>), which is called interaction term <span class="math inline">\(\beta_3 X_1 X_2\)</span>.
+But how does this affect our interpretation of the <span class="math inline">\(\beta\)</span>’s? In a model with
+interaction terms, the regression coefficients <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>
+represent conditional relationships, meaning that the influence of <span class="math inline">\(X_1\)</span> on
+<span class="math inline">\(Y\)</span> depends on the value of <span class="math inline">\(X_2\)</span> and vice versa. For instance, if <span class="math inline">\(X_2 = 0\)</span> our model simplifies to:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;= \beta_0 + \beta_1 X_1 + \beta_2 * 0 + \beta_3 X_1 * 0 \\
+  &amp;= \beta_0 + \beta_1 X_1
+\end{aligned}
+\]</span></p>
+<p>Hence, if <span class="math inline">\(X_2 = 0\)</span>, a one unit increase in <span class="math inline">\(X_1\)</span> results in a <span class="math inline">\(\beta_1\)</span>
+increase in <span class="math inline">\(Y\)</span>. Stated differently, when <span class="math inline">\(X_2 = 0\)</span>, then <span class="math inline">\(\beta_1\)</span>
+indicates how a one unit increase in <span class="math inline">\(X_1\)</span> effects <span class="math inline">\(Y\)</span>. However, in case we
+have <span class="math inline">\(X_2 = 2\)</span>, the model turns into:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;= \beta_0 + \beta_1 X_1 + \beta_2 * 2 + \beta_3 X_1 * 2 \\
+  &amp;= \beta_0 + X_1(\beta_1 + 2\beta_3) + 2 * \beta_2
+\end{aligned}
+\]</span></p>
+<p>In this case, a one unit increase in <span class="math inline">\(X_1\)</span> results in a <span class="math inline">\(\beta_1 + 2\beta_3\)</span>
+unit increase in <span class="math inline">\(Y\)</span>. As we can see, unless 0 represents a reasonable
+covariate value, we can’t meaningfully interpret the main effect estimators
+(i.e. <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span>). But how does this change once we scale our
+covariates?</p>
+<p>Initially, I have been struggling to understand how to properly scale
+interactions and how scaling influences the interpretation of our model
+estimates. In particular, I was confused about the differences between
+<code>scale(x1):scale(x2)</code> and <code>scale(x1:x2)</code>. In the first case, we scale the
+covariates prior to forming their product. In the second case, we first form the
+product (i.e. the interaction) and only scale the product afterwards. I used to
+follow the first approach but I was getting insecure when I found that Ben
+Bolker applied the second approach in a
+<a href="https://stackoverflow.com/questions/24268031/unscale-and-uncenter-glmer-parameters?rq=1">post</a>
+on stackoverflow.</p>
+<p>Besides this, I was also getting sceptical that <code>scale(x1):scale(x2)</code> would mess
+up the “direction” of effects. For example, let’s assume that we measured two
+covariates that are always positive. Without scaling, the interaction of two
+high values will always be high (e.g. <span class="math inline">\(5 * 5 = 25\)</span>), whereas the interaction
+of two low values will always be low (<span class="math inline">\(0.5 * 0.5 = 0.25\)</span>). However, once we
+scale the two covariates this logic no longer applies. When scaled, both
+covariates also cover negative values. As such, the interaction of two low
+values (<span class="math inline">\(-5 * -5 = 25\)</span>) can be the same as the interaction of two high values
+(<span class="math inline">\(5 * 5 = 25\)</span>). Similarly, two very different combinations can result in the
+same interaction (<span class="math inline">\(-5 * 5 = -25\)</span> and <span class="math inline">\(5 * -5 = -25\)</span>). This may seem
+confusing as we can suddenly no longer differentiate between high and low
+covariate values based on the value of the interaction. However, this
+differentiation is not the point of interactions. The point of interactions is
+to see if joint extremes of the two covariates explains variability in our
+outcome. In fact, when we scale our covariates prior to forming the interaction,
+the interaction term becomes the index of how deviant the joint combination of
+the two covariates is. This is exactly what we want. Consequently, I would
+advise to go for the first approach and use <code>scale(x1):scale(x2)</code>.</p>
+<p>A second reason to opt for <code>scale(x1):scale(x2)</code> is the fact that <code>scale(x1:x2)</code>
+introduces substantial collinearity among covariates, whereas using
+<code>scale(x1):scale(x2)</code> effectively mitigates this risk. We can exemplify this as
+follows:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Simulate two covariates</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>x1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10000</span>, <span class="dv">5</span>, <span class="dv">2</span>)</span>
+<span id="cb9-3"><a href="#cb9-3"></a>x2 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(<span class="dv">10000</span>, <span class="dv">15</span>, <span class="dv">2</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a>  <span class="co"># Scale all of the variables</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a>x1_scaled &lt;-<span class="st"> </span><span class="kw">scale</span>(x1)</span>
+<span id="cb9-7"><a href="#cb9-7"></a>x2_scaled &lt;-<span class="st"> </span><span class="kw">scale</span>(x2)</span>
+<span id="cb9-8"><a href="#cb9-8"></a>x1x2_scaled &lt;-<span class="st"> </span><span class="kw">scale</span>(x1 <span class="op">*</span><span class="st"> </span>x2)</span>
+<span id="cb9-9"><a href="#cb9-9"></a></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co"># Check for correlation with interaction term</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="kw">as.vector</span>(<span class="kw">cor</span>(x1, x1 <span class="op">*</span><span class="st"> </span>x2))</span></code></pre></div>
+<pre><code>## [1] 0.9419914</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">as.vector</span>(<span class="kw">cor</span>(x1_scaled, x1_scaled <span class="op">*</span><span class="st"> </span>x2_scaled))</span></code></pre></div>
+<pre><code>## [1] -0.002424096</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="kw">as.vector</span>(<span class="kw">cor</span>(x1_scaled, x1x2_scaled))</span></code></pre></div>
+<pre><code>## [1] 0.9419914</code></pre>
+<p>Consequently, you should always scale your covariates <em>prior</em> to forming their
+interactions.</p>
+<p>The cool thing is, once the covariates are scaled, interpretation of model
+coefficients becomes much easier. For instance, <span class="math inline">\(\beta_1\)</span> now indicates the
+effect of a one unit increase of <span class="math inline">\(X_1\)</span> on <span class="math inline">\(Y\)</span> when <span class="math inline">\(X_2\)</span> (unscaled) is at
+its average (instead of at 0). Similarly, <span class="math inline">\(\beta_2\)</span> indicates the effect of a
+one unit increase of <span class="math inline">\(X_2\)</span> on <span class="math inline">\(Y\)</span> when <span class="math inline">\(X_1\)</span> (unscaled) is at its average.
+Consequently, scaling the covariates allows you to interpret the main effects
+<span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> for more realistic values of <span class="math inline">\(X_1\)</span> and <span class="math inline">\(X_2\)</span>. In
+addition, the intercept can now be interpreted as the expected value of <span class="math inline">\(Y\)</span>
+when all other covariates are at their means (instead of 0). Again, it is
+important to understand that the model itself and its predictions remain the
+same. Scaling only influences the way in which we can interpret the model
+coefficients.</p>
+</div>
+<div id="how-to-backtransform-model-coefficients" class="section level2">
+<h2>How to Backtransform Model Coefficients</h2>
+<p>In some cases, you may want to be able to convert your model output from the
+<em>scaled</em> world back into the <em>unscaled</em> world. This could be the case when you
+<em>only scaled because you had convergence issues, but actually prefer to report
+</em>your results on the unscaled covariate. Here, I want to show how you can
+*achieve this for two different cases.</p>
+<ul>
+<li><p><em>Case I:</em> The model contains no interactions:</p>
+<p><span class="math inline">\(Y = \beta_0 + \beta_1 X_{1, scaled} + \beta_2 X_{2, scaled}\)</span></p></li>
+<li><p><em>Case II:</em> The model contains interactions of scaled covariates:</p>
+<p><span class="math inline">\(Y = \beta_0 + \beta_1 X_{1, scaled} +\)</span>
+<span class="math inline">\(\beta_2 X_{2, scaled} + \beta_3 X_{1, scaled} X_{2, scaled}\)</span></p></li>
+</ul>
+<p>For each case, we’ll start by writing out the formula of the original, unscaled
+model. We then scale the covariates and try to rearrange everything so that we
+can describe the relationshipt between the coefficients from the scaled and
+unscaled model.</p>
+<div id="case-i-unscale-a-model-without-interactions" class="section level3">
+<h3>Case I: Unscale a Model without Interactions</h3>
+<div id="the-math" class="section level4">
+<h4>The Math</h4>
+<p>Let’s write out our basic model and do some rearrangements to see the
+relationshipt between the coefficients from the scaled model (<span class="math inline">\(\beta&#39;\)</span>) and
+the coefficients of the unscaled model (<span class="math inline">\(\beta\)</span>).</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;= \beta_0 + \beta_1 X_1 + \beta_2 X_2 \\
+  &amp;= \beta_0&#39; + \beta_1&#39; \frac{X_1 - \mu_1}{\sigma_1} +
+  \beta_2&#39; \frac{X_2 - \mu_2}{\sigma_2} \\
+  &amp;= \underbrace{
+   \beta_0&#39; - \beta_1&#39;\frac{\mu_1}{\sigma_1} - \beta_2&#39;\frac{\mu_2}{\sigma_2}
+  }_{\beta_0} +
+  \underbrace{\beta_1&#39;\frac{X_1}{\sigma_1}}_{\beta_1X_1} +
+  \underbrace{\beta_2&#39;\frac{X_2}{\sigma_2}}_{\beta_2X_2} \\
+\end{aligned}
+\]</span></p>
+<p>Hence, we can rewrite the model coefficients as follows:</p>
+<p><span class="math display">\[
+\beta_0 = \beta_0&#39;
+  - \beta_1&#39;\frac{\mu_1}{\sigma_1}
+  - \beta_2&#39;\frac{\mu_2}{\sigma_2}
+\qquad \beta_1 = \frac{\beta_1&#39;}{\sigma_1}
+\qquad \beta_2 = \frac{\beta_2&#39;}{\sigma_2}
+\]</span></p>
+<p>We can generalize this to a model with many more covariates:</p>
+<p><span class="math display">\[
+\beta_0 = \beta_0&#39; - \sum_i\beta_i&#39;\frac{\mu_i}{\sigma_i} \qquad \beta_i = \frac{\beta_i&#39;}{\sigma_i}
+\]</span></p>
+</div>
+<div id="example" class="section level4">
+<h4>Example</h4>
+<p>Let’s proof that this actually works using some simulated data.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Simulate some data without interactions</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>n &lt;-<span class="st"> </span><span class="fl">1e5</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>x1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> <span class="dv">5</span>, <span class="dt">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb15-4"><a href="#cb15-4"></a>x2 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> <span class="dv">-2</span>, <span class="dt">sd =</span> <span class="fl">0.2</span>)</span>
+<span id="cb15-5"><a href="#cb15-5"></a>e &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb15-6"><a href="#cb15-6"></a>y &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span><span class="dv">3</span> <span class="op">*</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>e</span>
+<span id="cb15-7"><a href="#cb15-7"></a>dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(y, x1, x2)</span>
+<span id="cb15-8"><a href="#cb15-8"></a></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co"># Run a model without scaling and extract the model coefficients</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>mod1 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2, <span class="dt">data =</span> dat)</span>
+<span id="cb15-11"><a href="#cb15-11"></a>coefs1 &lt;-<span class="st"> </span><span class="kw">coef</span>(mod1)</span>
+<span id="cb15-12"><a href="#cb15-12"></a></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co"># Run a model with scaling and extract the model coefficients</span></span>
+<span id="cb15-14"><a href="#cb15-14"></a>mod2 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">scale</span>(x1) <span class="op">+</span><span class="st"> </span><span class="kw">scale</span>(x2), <span class="dt">data =</span> dat)</span>
+<span id="cb15-15"><a href="#cb15-15"></a>coefs2 &lt;-<span class="st"> </span><span class="kw">coef</span>(mod2)</span>
+<span id="cb15-16"><a href="#cb15-16"></a></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="co"># Try to backtransform the coefficients from the scaled model</span></span>
+<span id="cb15-18"><a href="#cb15-18"></a><span class="co"># Intercept</span></span>
+<span id="cb15-19"><a href="#cb15-19"></a>coefs1[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## (Intercept) 
+##    1.011663</code></pre>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>coefs2[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>coefs2[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x1) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x1) <span class="op">-</span><span class="st"> </span>coefs2[<span class="dv">3</span>] <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x2) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x2)</span></code></pre></div>
+<pre><code>## (Intercept) 
+##    1.011663</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Coefficient for x1</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>coefs1[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>##       x1 
+## 1.999911</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>coefs2[<span class="dv">2</span>] <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x1)</span></code></pre></div>
+<pre><code>## scale(x1) 
+##  1.999911</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Coefficient for x2</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>coefs1[<span class="dv">3</span>]</span></code></pre></div>
+<pre><code>##       x2 
+## 3.006133</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>coefs2[<span class="dv">3</span>] <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x2)</span></code></pre></div>
+<pre><code>## scale(x2) 
+##  3.006133</code></pre>
+</div>
+</div>
+<div id="case-ii-unscale-a-model-with-an-interaction-of-scaled-covariates" class="section level3">
+<h3>Case II: Unscale a Model with an Interaction of Scaled Covariates</h3>
+<div id="the-math-1" class="section level4">
+<h4>The Math</h4>
+<p>Again, let’s start by writing out the unscaled model and work our way through to
+get the relationship between the model coefficients of the unscaled and scaled
+covariates.</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y &amp;= \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2\\
+  &amp;= \beta_0&#39; +
+  \beta_1&#39; \frac{X_1 - \mu_1}{\sigma_1} +
+  \beta_2&#39; \frac{X_2 - \mu_1}{\sigma_2} +
+  \beta_3&#39; \left(\frac{X_1 - \mu_1}{\sigma_1}\right) \left(\frac{X_2 - \mu_2}{\sigma_2}\right) \\
+  &amp;= \beta_0&#39; +
+  \beta_1&#39; \frac{X_1 - \mu_1}{\sigma_1} +
+  \beta_2&#39; \frac{X_2 - \mu_2}{\sigma_2} +
+  \beta_3&#39; \frac{X_1 X_2 - X_1 \mu_2 - X_2 \mu_1 +
+  \mu_1 \mu_2}{\sigma_1 \sigma_2} \\
+  &amp;= \underbrace{\beta_0&#39; -
+  \beta_1&#39; \frac{\mu_1}{\sigma_1} -
+  \beta_2&#39; \frac{\mu_2}{\sigma_2} +
+  \beta_3&#39; \frac{\mu_1 \mu_2}{\sigma_1 \sigma_2}}_{\beta_0} +
+  \beta_1&#39; \frac{X_1}{\sigma_1} +
+  \beta_2&#39; \frac{X_2}{\sigma_2} +
+  \beta_3&#39; \frac{X_1 X_2 - X_1 \mu_2 - X_2 \mu_1}{\sigma_1 \sigma_2} \\
+  &amp;= \beta_0 +
+  \beta_1&#39; \frac{X_1}{\sigma_1} -
+  \beta_3&#39; \frac{X_1 \mu_2}{\sigma_1 \sigma_2} +
+  \beta_2&#39; \frac{X_2}{\sigma_2} -
+  \beta_3&#39; \frac{X_2 \mu_1}{\sigma_1 \sigma_2} +
+  \beta_3&#39; \frac{X_1 X_2}{\sigma_1 \sigma_2} \\
+  &amp;= \beta_0 +
+  \underbrace{
+    \left(\frac{\beta_1&#39;}{\sigma_1} - \frac{\beta_3&#39; \mu_2}{\sigma_1 \sigma_2}\right)
+  }_{\beta_1} X_1 +
+  \underbrace{
+    \left(\frac{\beta_2&#39;}{\sigma_2} - \frac{\beta_3&#39; \mu_1}{\sigma_1 \sigma_2}\right)
+  }_{\beta_2} X_2 +
+  \underbrace{\frac{\beta_3&#39;}{\sigma_1 \sigma_2}}_{\beta_3} X_1 X_2\\
+\end{aligned}
+\]</span></p>
+<p>Hence, we can rewrite the model coefficients as follows:</p>
+<p><span class="math display">\[
+\beta_0 = \beta_0&#39;
+  - \beta_1&#39;\frac{\mu_1}{\sigma_1}
+  - \beta_2&#39;\frac{\mu_2}{\sigma_2}
+  + \beta_3&#39;\frac{\mu_1 \mu_2}{\sigma_1 \sigma_2}
+\qquad \beta_1 = \frac{\beta_1&#39;}{\sigma_1} - \frac{\beta_3&#39; \mu_2}{\sigma_1 \sigma_2}
+\qquad \beta_2 = \frac{\beta_2&#39;}{\sigma_2} - \frac{\beta_3&#39; \mu_1}{\sigma_1 \sigma_2}
+\qquad \beta_3 = \frac{\beta_3&#39;}{\sigma_1 \sigma_2}
+\]</span></p>
+</div>
+<div id="example-1" class="section level4">
+<h4>Example</h4>
+<p>Let’s proof that this actually works using some simulated data.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># Simulate some data with an interaction</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>n &lt;-<span class="st"> </span><span class="fl">1e5</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a>x1 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> <span class="dv">5</span>, <span class="dt">sd =</span> <span class="dv">2</span>)</span>
+<span id="cb27-4"><a href="#cb27-4"></a>x2 &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> <span class="dv">-2</span>, <span class="dt">sd =</span> <span class="fl">0.2</span>)</span>
+<span id="cb27-5"><a href="#cb27-5"></a>e &lt;-<span class="st"> </span><span class="kw">rnorm</span>(n, <span class="dt">mean =</span> <span class="dv">0</span>, <span class="dt">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb27-6"><a href="#cb27-6"></a>y &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="dv">2</span> <span class="op">*</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span><span class="dv">3</span> <span class="op">*</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span><span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>x1 <span class="op">*</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>e</span>
+<span id="cb27-7"><a href="#cb27-7"></a>dat &lt;-<span class="st"> </span><span class="kw">data.frame</span>(y, x1, x2)</span>
+<span id="cb27-8"><a href="#cb27-8"></a></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="co"># Run a model without scaling and extract the model coefficients</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a>mod1 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>x1 <span class="op">+</span><span class="st"> </span>x2 <span class="op">+</span><span class="st"> </span>x1<span class="op">:</span>x2, <span class="dt">data =</span> dat)</span>
+<span id="cb27-11"><a href="#cb27-11"></a>coefs1 &lt;-<span class="st"> </span><span class="kw">coef</span>(mod1)</span>
+<span id="cb27-12"><a href="#cb27-12"></a></span>
+<span id="cb27-13"><a href="#cb27-13"></a><span class="co"># Run a model with scaling and extract the model coefficients</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a>mod2 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span><span class="kw">scale</span>(x1) <span class="op">+</span><span class="st"> </span><span class="kw">scale</span>(x2) <span class="op">+</span><span class="st"> </span><span class="kw">scale</span>(x1)<span class="op">:</span><span class="kw">scale</span>(x2), <span class="dt">data =</span> dat)</span>
+<span id="cb27-15"><a href="#cb27-15"></a>coefs2 &lt;-<span class="st"> </span><span class="kw">coef</span>(mod2)</span>
+<span id="cb27-16"><a href="#cb27-16"></a></span>
+<span id="cb27-17"><a href="#cb27-17"></a><span class="co"># Try to backtransform the coefficients from the scaled model</span></span>
+<span id="cb27-18"><a href="#cb27-18"></a><span class="co"># Intercept</span></span>
+<span id="cb27-19"><a href="#cb27-19"></a>coefs1[<span class="dv">1</span>]</span></code></pre></div>
+<pre><code>## (Intercept) 
+##     0.97524</code></pre>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>coefs2[<span class="dv">1</span>] <span class="op">-</span><span class="st"> </span>coefs2[<span class="dv">2</span>] <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x1) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x1) <span class="op">-</span><span class="st"> </span>coefs2[<span class="dv">3</span>] <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x2) <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x2) <span class="op">+</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a><span class="st">  </span>coefs2[<span class="dv">4</span>] <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x1) <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x2) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(x1) <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(x2))</span></code></pre></div>
+<pre><code>## (Intercept) 
+##     0.97524</code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a><span class="co"># Coefficient for x1</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>coefs1[<span class="dv">2</span>]</span></code></pre></div>
+<pre><code>##       x1 
+## 2.003916</code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>coefs2[<span class="dv">2</span>] <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x1) <span class="op">-</span><span class="st"> </span>coefs2[<span class="dv">4</span>] <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x2) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(x1) <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(x2))</span></code></pre></div>
+<pre><code>## scale(x1) 
+##  2.003916</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a><span class="co"># Coefficient for x2</span></span>
+<span id="cb35-2"><a href="#cb35-2"></a>coefs1[<span class="dv">3</span>]</span></code></pre></div>
+<pre><code>##       x2 
+## 2.976788</code></pre>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1"></a>coefs2[<span class="dv">3</span>] <span class="op">/</span><span class="st"> </span><span class="kw">sd</span>(x2) <span class="op">-</span><span class="st"> </span>coefs2[<span class="dv">4</span>] <span class="op">*</span><span class="st"> </span><span class="kw">mean</span>(x1) <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(x1) <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(x2))</span></code></pre></div>
+<pre><code>## scale(x2) 
+##  2.976788</code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1"></a><span class="co"># Coefficient for x1:x2</span></span>
+<span id="cb39-2"><a href="#cb39-2"></a>coefs1[<span class="dv">4</span>]</span></code></pre></div>
+<pre><code>##     x1:x2 
+## 0.5035732</code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1"></a>coefs2[<span class="dv">4</span>] <span class="op">/</span><span class="st"> </span>(<span class="kw">sd</span>(x1) <span class="op">*</span><span class="st"> </span><span class="kw">sd</span>(x2))</span></code></pre></div>
+<pre><code>## scale(x1):scale(x2) 
+##           0.5035732</code></pre>
+<p>Great! It looks like our mathematics worked out and we are indeed able to
+“backtransform” our model relatively easily. I hope that with this blog post
+I could clarify the reasons behind scaling and how it actually works in detail.
+If you’re interested, you can find some additional material and reading below.</p>
+</div>
+</div>
+</div>
+<div id="further-reading" class="section level1">
+<h1>Further Reading</h1>
+<ul>
+<li>The why and when of scaling/standardizing I:
+(<a href="https://www.goldsteinepi.com/blog/thewhyandwhenofcenteringcontinuouspredictorsinregressionmodeling/index.html" class="uri">https://www.goldsteinepi.com/blog/thewhyandwhenofcenteringcontinuouspredictorsinregressionmodeling/index.html</a>)</li>
+<li>The why and when of scaling/standardizing II:
+(<a href="https://stats.stackexchange.com/questions/29781/when-conducting-multiple-regression-when-should-you-center-your-predictor-varia" class="uri">https://stats.stackexchange.com/questions/29781/when-conducting-multiple-regression-when-should-you-center-your-predictor-varia</a>)</li>
+<li>The why and when of scaling/standardizing III:
+(<a href="https://stats.stackexchange.com/questions/19216/variables-are-often-adjusted-e-g-standardised-before-making-a-model-when-is" class="uri">https://stats.stackexchange.com/questions/19216/variables-are-often-adjusted-e-g-standardised-before-making-a-model-when-is</a>)</li>
+<li>How to unscale your model coefficients
+(<a href="https://stackoverflow.com/questions/24268031/unscale-and-uncenter-glmer-parameters?rq=1" class="uri">https://stackoverflow.com/questions/24268031/unscale-and-uncenter-glmer-parameters?rq=1</a>)</li>
+<li>Negative values when scaling?
+(<a href="https://www.researchgate.net/post/How_to_compute_interaction_term_between_continuous_variables_with_negative_values" class="uri">https://www.researchgate.net/post/How_to_compute_interaction_term_between_continuous_variables_with_negative_values</a>)</li>
+<li>How to interpret interactions of scaled covariates
+(<a href="https://www3.nd.edu/~rwilliam/stats2/l55.pdf" class="uri">https://www3.nd.edu/~rwilliam/stats2/l55.pdf</a>)</li>
+<li>Improve the Interpretability of Regression Coefficients
+(<a href="https://besjournals.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.2041-210X.2010.00012.x" class="uri">https://besjournals.onlinelibrary.wiley.com/doi/pdfdirect/10.1111/j.2041-210X.2010.00012.x</a>)</li>
+</ul>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session Information</h1>
+<pre><code>## R version 3.6.3 (2020-02-29)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Linux Mint 19.3
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
+## LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
+## 
+## locale:
+##  [1] LC_CTYPE=de_CH.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_CH.UTF-8        LC_COLLATE=de_CH.UTF-8    
+##  [5] LC_MONETARY=de_CH.UTF-8    LC_MESSAGES=de_CH.UTF-8   
+##  [7] LC_PAPER=de_CH.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_CH.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## loaded via a namespace (and not attached):
+##  [1] compiler_3.6.3    magrittr_2.0.1    bookdown_0.21     tools_3.6.3      
+##  [5] htmltools_0.5.1.1 yaml_2.2.1        stringi_1.5.3     rmarkdown_2.7    
+##  [9] highr_0.8         blogdown_1.3      knitr_1.32        stringr_1.4.0    
+## [13] digest_0.6.27     xfun_0.22         rlang_0.4.10      evaluate_0.14</code></pre>
+</div>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2021-06-27-sensitivity/" data-toggle="tooltip" data-placement="top" title="Quick Sensitivity Analyses in R">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:daviddenishofmann@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    <li>
+                        <a href="https://twitter.com/daviddhofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/DavidDHofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; David D. Hofmann 2021
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-200759743-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>

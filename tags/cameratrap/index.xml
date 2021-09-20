@@ -13,7 +13,7 @@
       <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
       
       <guid>https://daviddhofmann.github.io/post/2021-04-15-megadetector/</guid>
-      <description>In this blog-post, I&amp;rsquo;m going to illustrate how you can use Microsoft&amp;rsquo;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals.</description>
+      <description>Camera trap studies usually deal with thousands of camera trap images that have to be organized and sorted. In this blog-post, I&amp;rsquo;m going to illustrate how you can use Microsoft&amp;rsquo;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals.</description>
     </item>
     
   </channel>

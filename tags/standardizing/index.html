@@ -15,9 +15,9 @@
     
 
     
-    <meta name="title" content="sensitivity" />
-    <meta property="og:title" content="sensitivity" />
-    <meta property="twitter:title" content="sensitivity" />
+    <meta name="title" content="standardizing" />
+    <meta property="og:title" content="standardizing" />
+    <meta property="twitter:title" content="standardizing" />
     
 
     
@@ -34,9 +34,9 @@
     <meta name="keyword"  content="David Hofmann, Blog, PhD Student, Ecology, University of Zurich, R, Movement Ecology, Botany">
     <link rel="shortcut icon" href="/img/favicon.ico">
 
-    <title>sensitivity-David D. Hofmann | UZH</title>
+    <title>standardizing-David D. Hofmann | UZH</title>
 
-    <link rel="canonical" href="/tags/sensitivity/">
+    <link rel="canonical" href="/tags/standardizing/">
 
     <link rel="stylesheet" href="/css/iDisqus.min.css"/>
 	
@@ -173,19 +173,19 @@
             
 
 <div class="post-preview">
-    <a href="https://daviddhofmann.github.io/post/2021-06-27-sensitivity/">
+    <a href="https://daviddhofmann.github.io/post/2021-09-19-scaling/">
         <h2 class="post-title">
-            Quick Sensitivity Analyses in R
+            Some Insights on Scaling/Standardizing
         </h2>
 	
         <div class="post-content-preview">
 	
-            Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Doing this in R can be incredibly frustrating, especially when a large number of parameters are involved. Here, I will show you a relatively painless and simple workflow that will enable you to complete such analysis with clean and short code using tibbles from the tidyverse.
+            When we fit a statistical model, we usually scale our covariates to a mean of zero and standard deviation of one. But how does this actually influence the model and how does scaling change the way in which we need to interpret resulting model coefficients? Moreover, can we backtransform model coefficients from the scaled into the unscaled world? In this blog post, we&rsquo;ll take a detailed look at scaling and examine why we scale, how to scale, and how to backtransform a model containing scaled covariates.
        
         </div>
     </a>
     <p class="post-meta">
-    Posted by David D. Hofmann Sunday, June 27, 2021
+    Posted by David D. Hofmann Sunday, September 19, 2021
     
     
     </p>
