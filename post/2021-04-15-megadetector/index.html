@@ -396,15 +396,20 @@ environments, simply call:</p>
 <p>To be able to run the <em>MegaDetector</em>, we’ll need to install tensorflow version
 1.13.1. This is a rather old version and also the reason why we had to opt for
 python version 3.6. To install the specific version of tensorflow, first make
-sure that you are working in the <em>cameratrapping</em> environment, then use <em>conda</em>
+sure that you are working in the <em>cameratrapping</em> environment, then use <em>pip</em>
 to install tensorflow version 1.13.1:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Install tensorflow (if you want to use a gpu, use &quot;tensorflow-gpu=1.13.1&quot;)</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">conda</span> install tensorflow=1.13.1</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Install tensorflow</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">pip</span> install tensorflow==1.13.1</span></code></pre></div>
+<p>In case your computer has a dedicated gpu, you may also run the megadetector on
+the gpu. In this case, you would need to install tensorflow slightly
+differently:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Install tensorflow-gpu (using conda instead of pip)</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="ex">conda</span> install -c anaconda tensorflow-gpu=1.13.1</span></code></pre></div>
 <p>Besides tensorflow, we also need to install several other python packages.
 However, here the exact versions do not really matter and we can thus install
 all of them as follows:</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1"></a><span class="co"># Install other dependencies</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="ex">pip</span> install pillow humanfriendly matplotlib tqdm jsonpickle statistics requests</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Install other dependencies</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="ex">pip</span> install pillow humanfriendly matplotlib tqdm jsonpickle statistics requests</span></code></pre></div>
 </div>
 <div id="downloading-additional-files-from-github" class="section level2">
 <h2>Downloading Additional Files from Github</h2>
@@ -416,19 +421,19 @@ download the required files using git (see Option 1). Oterhwise, just download
 them manually (see Option 2).</p>
 <div id="option-1-using-git" class="section level3">
 <h3>Option 1: Using Git</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># Change directory (cd) into the &quot;CameraTrapping&quot; folder. The exact path will be</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co"># different for you!</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="bu">cd</span> /home/david/Schreibtisch/CameraTrapping</span>
-<span id="cb8-4"><a href="#cb8-4"></a></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co"># Download required files and folders from GitHub</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">git</span> clone https://github.com/Microsoft/cameratraps</span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="fu">git</span> clone https://github.com/Microsoft/ai4eutils</span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="fu">wget</span> https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector.py</span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="fu">wget</span> https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector_batch.py</span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="fu">wget</span> https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb</span>
-<span id="cb8-11"><a href="#cb8-11"></a></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co"># OPTIONAL: Download example images</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="fu">git</span> clone https://github.com/DavidDHofmann/sample_images</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Change directory (cd) into the &quot;CameraTrapping&quot; folder. The exact path will be</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># different for you!</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="bu">cd</span> /home/david/Schreibtisch/CameraTrapping</span>
+<span id="cb9-4"><a href="#cb9-4"></a></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co"># Download required files and folders from GitHub</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="fu">git</span> clone https://github.com/Microsoft/cameratraps</span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="fu">git</span> clone https://github.com/Microsoft/ai4eutils</span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="fu">wget</span> https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector.py</span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="fu">wget</span> https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector_batch.py</span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="fu">wget</span> https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb</span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co"># OPTIONAL: Download example images</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="fu">git</span> clone https://github.com/DavidDHofmann/sample_images</span></code></pre></div>
 </div>
 <div id="option-2-manual-download" class="section level3">
 <h3>Option 2: Manual Download</h3>
@@ -451,8 +456,8 @@ names are similar to those highlighted in blue.</p>
 “cameratraps” can be found by python. To ensure this, we can run the commands
 below. Note that you will need to execute this code everytime you start a new
 session in the respective environemnt.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Make folders available to python</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="bu">export</span> <span class="va">PYTHONPATH=</span><span class="st">&quot;</span><span class="va">$PYTHONPATH</span><span class="st">:</span><span class="va">$PWD</span><span class="st">/ai4eutils:</span><span class="va">$PWD</span><span class="st">/cameratraps&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Make folders available to python</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="bu">export</span> <span class="va">PYTHONPATH=</span><span class="st">&quot;</span><span class="va">$PYTHONPATH</span><span class="st">:</span><span class="va">$PWD</span><span class="st">/ai4eutils:</span><span class="va">$PWD</span><span class="st">/cameratraps&quot;</span></span></code></pre></div>
 </div>
 <div id="a-brief-overview-of-the-downloaded-files" class="section level2">
 <h2>A Brief Overview of the Downloaded Files</h2>
@@ -526,11 +531,11 @@ an entire directory, meaning that it will go through each image in the provided
 directory. Let’s first take a look at the anatomy of the commands that we’ll be
 using. The commands to invoke the python script are the following (you’ll need
 to fill in <em>filename</em> and <em>directoryname</em> by yourself):</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># If you want to run the detection on a single image</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --input_file filename --output_dir directoryname</span>
-<span id="cb11-3"><a href="#cb11-3"></a></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="co"># If you want to run the detection on an entire directory</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --input_dir directoryname --output_dir directoryname</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># If you want to run the detection on a single image</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --input_file filename --output_dir directoryname</span>
+<span id="cb12-3"><a href="#cb12-3"></a></span>
+<span id="cb12-4"><a href="#cb12-4"></a><span class="co"># If you want to run the detection on an entire directory</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --input_dir directoryname --output_dir directoryname</span></code></pre></div>
 <p>Let me briefly explain what each element of these commands are doing:</p>
 <ul>
 <li><p><code>python run_tf_detector.py</code> tells our computer to run the run_tf_detector.py
@@ -547,21 +552,21 @@ newly created images should be stored</p></li>
 <p>Of course there are many other options that you may want to play with. However,
 this goes beyond the scope of this introduction. To get the full list of
 available options, simply type:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># Show available options</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="ex">python</span> run_tf_detector.py -h</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Show available options</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a><span class="ex">python</span> run_tf_detector.py -h</span></code></pre></div>
 <p>Anyways, let’s run the detector on some real images. In case you have downloaded
 my example images, the commands from above translate into:</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Run MegaDetector on a single image</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --image_file sample_images/L002_R01_20210314013742.JPG --output_dir sample_images/detections</span>
-<span id="cb13-3"><a href="#cb13-3"></a></span>
-<span id="cb13-4"><a href="#cb13-4"></a><span class="co"># Run MegaDetector on an entire directory</span></span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --image_dir sample_images --output_dir sample_images/detections</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Run MegaDetector on a single image</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --image_file sample_images/L002_R01_20210314013742.JPG --output_dir sample_images/detections</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a><span class="co"># Run MegaDetector on an entire directory</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="ex">python</span> run_tf_detector.py md_v4.1.0.pb --image_dir sample_images --output_dir sample_images/detections</span></code></pre></div>
 <p>If everything is setup correctly, the <em>MegaDetector</em> will get to work and run
 the detections for you. Once the algorithm terminates, you can go to the
 <em>sample_images/detections</em> folder where you should find the final images with
 bounding boxes around each detected animal/human/vehicle. The images should look
 something like shown in Figure 3b).</p>
-<div class="figure"><span id="fig:unnamed-chunk-14"></span>
+<div class="figure"><span id="fig:unnamed-chunk-15"></span>
 <img src="/img/gallery_megadetector/figure2.png" alt="a) Input image and b) output image produced by the run_tf_detector.py script." width="100%" />
 <p class="caption">
 Figure 2: a) Input image and b) output image produced by the run_tf_detector.py script.
@@ -579,8 +584,8 @@ allows us to import the file into R for further analysis. Again, let’s first
 look at the anatomy of the invoked command. To invoke the batch-detector script,
 we can use the following code (you’ll need to fill in <em>filename/directory</em> and
 <em>filename.json</em> by yourself):</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># To run the MegaDetector batch file</span></span>
-<span id="cb14-2"><a href="#cb14-2"></a><span class="ex">python</span> run_tf_detector_batch.py md_v4.1.0.pb --input_file filename/directory --output_file filename.json</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># To run the MegaDetector batch file</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="ex">python</span> run_tf_detector_batch.py md_v4.1.0.pb --input_file filename/directory --output_file filename.json</span></code></pre></div>
 <p>Again, we want to know what each piece of the code is doing.</p>
 <ul>
 <li><p><code>python run_tf_detector_batch.py</code> tells our computer to run the
@@ -593,8 +598,8 @@ directory for which we’d like to run the algorithm</p></li>
 the .json file shoud be stored</p></li>
 </ul>
 <p>Pretty simple ey? For our sample images, this code snippet translates into:</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1"></a><span class="co"># Run the MegaDetector and create a .json file</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a><span class="ex">python</span> run_tf_detector_batch.py md_v4.1.0.pb /home/david/Schreibtisch/CameraTrapping/sample_images /home/david/Schreibtisch/CameraTrapping/sample_images/detections/detections.json</span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Run the MegaDetector and create a .json file</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="ex">python</span> run_tf_detector_batch.py md_v4.1.0.pb /home/david/Schreibtisch/CameraTrapping/sample_images /home/david/Schreibtisch/CameraTrapping/sample_images/detections/detections.json</span></code></pre></div>
 <p>Again, the MegaDetector should get to work and start detecting animals.
 Depending on your computer and the number of images, this will take a while to
 complete, but luckily the MegaDetector gives you detailed information about its
@@ -609,21 +614,21 @@ try to go through the detections by hand. However, I strongly recommend to
 further process the file. Here, we will use R to import and clean the file and
 to visualize some of the detections. To load the file, we can use the
 <code>fromJSON()</code> function from the <code>rjson</code> package.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Load required packages</span></span>
-<span id="cb16-2"><a href="#cb16-2"></a><span class="kw">library</span>(rjson)      <span class="co"># To read a json file</span></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="kw">library</span>(tidyverse)  <span class="co"># For data wrangling</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="kw">library</span>(exifr)      <span class="co"># To read image meta-data</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="kw">library</span>(magick)     <span class="co"># To plot images</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="kw">library</span>(lubridate)  <span class="co"># To handle timestamps</span></span>
-<span id="cb16-7"><a href="#cb16-7"></a></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="co"># Set working directory (this will be different for you)</span></span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="kw">setwd</span>(<span class="st">&quot;/home/david/Schreibtisch/CameraTrapping/sample_images&quot;</span>)</span>
-<span id="cb16-10"><a href="#cb16-10"></a></span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="co"># Load json file produced by the MegaDetector</span></span>
-<span id="cb16-12"><a href="#cb16-12"></a>anot &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(<span class="dt">file =</span> <span class="st">&quot;detections/detections.json&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Load required packages</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="kw">library</span>(rjson)      <span class="co"># To read a json file</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="kw">library</span>(tidyverse)  <span class="co"># For data wrangling</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="kw">library</span>(exifr)      <span class="co"># To read image meta-data</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="kw">library</span>(magick)     <span class="co"># To plot images</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="kw">library</span>(lubridate)  <span class="co"># To handle timestamps</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="co"># Set working directory (this will be different for you)</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="kw">setwd</span>(<span class="st">&quot;/home/david/Schreibtisch/CameraTrapping/sample_images&quot;</span>)</span>
+<span id="cb17-10"><a href="#cb17-10"></a></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="co"># Load json file produced by the MegaDetector</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a>anot &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(<span class="dt">file =</span> <span class="st">&quot;detections/detections.json&quot;</span>)</span></code></pre></div>
 <p>Once the .json-file has been loaded, let’s take a look at its’ structure.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Look at the structure of the json file</span></span>
-<span id="cb17-2"><a href="#cb17-2"></a><span class="kw">str</span>(anot, <span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="co"># Look at the structure of the json file</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="kw">str</span>(anot, <span class="dv">2</span>)</span></code></pre></div>
 <pre><code>## List of 3
 ##  $ images              :List of 10
 ##   ..$ :List of 3
@@ -647,35 +652,35 @@ to visualize some of the detections. To load the file, we can use the
 original input images, detected categories, and on the algorithm itself. We can
 consolidate all of this information into a single tibble/dataframe that is
 easier to read:</p>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="co"># Extract detected categories and put them into a tibble/dataframe</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>cats              &lt;-<span class="st"> </span><span class="kw">enframe</span>(anot<span class="op">$</span>detection_categories)</span>
-<span id="cb19-3"><a href="#cb19-3"></a><span class="kw">names</span>(cats)       &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;CategoryID&quot;</span>, <span class="st">&quot;CategoryName&quot;</span>)</span>
-<span id="cb19-4"><a href="#cb19-4"></a>cats<span class="op">$</span>CategoryName &lt;-<span class="st"> </span><span class="kw">unlist</span>(cats<span class="op">$</span>CategoryName)</span>
-<span id="cb19-5"><a href="#cb19-5"></a></span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="co"># Get information into nice format</span></span>
-<span id="cb19-7"><a href="#cb19-7"></a>info &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
-<span id="cb19-8"><a href="#cb19-8"></a>      <span class="dt">images     =</span> <span class="kw">map_chr</span>(anot<span class="op">$</span>images, <span class="st">&quot;file&quot;</span>)</span>
-<span id="cb19-9"><a href="#cb19-9"></a>    , <span class="dt">detections =</span> <span class="kw">lapply</span>(anot<span class="op">$</span>images, <span class="cf">function</span>(x){</span>
-<span id="cb19-10"><a href="#cb19-10"></a>      <span class="kw">tibble</span>(</span>
-<span id="cb19-11"><a href="#cb19-11"></a>          <span class="dt">category   =</span> <span class="kw">map_chr</span>(x<span class="op">$</span>detections, <span class="st">&quot;category&quot;</span>)</span>
-<span id="cb19-12"><a href="#cb19-12"></a>        , <span class="dt">confidence =</span> <span class="kw">map_dbl</span>(x<span class="op">$</span>detections, <span class="st">&quot;conf&quot;</span>)</span>
-<span id="cb19-13"><a href="#cb19-13"></a>        , <span class="dt">bbox       =</span> <span class="kw">map</span>(x<span class="op">$</span>detections, <span class="st">&quot;bbox&quot;</span>)</span>
-<span id="cb19-14"><a href="#cb19-14"></a>      )</span>
-<span id="cb19-15"><a href="#cb19-15"></a>    })</span>
-<span id="cb19-16"><a href="#cb19-16"></a>  ) <span class="op">%&gt;%</span></span>
-<span id="cb19-17"><a href="#cb19-17"></a><span class="st">  </span><span class="kw">unnest</span>(detections) <span class="op">%&gt;%</span></span>
-<span id="cb19-18"><a href="#cb19-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">bbox =</span> <span class="kw">map</span>(bbox, <span class="cf">function</span>(x){<span class="kw">paste0</span>(x, <span class="dt">collapse =</span> <span class="st">&quot;, &quot;</span>)})) <span class="op">%&gt;%</span></span>
-<span id="cb19-19"><a href="#cb19-19"></a><span class="st">  </span><span class="kw">separate</span>(bbox</span>
-<span id="cb19-20"><a href="#cb19-20"></a>    , <span class="dt">sep     =</span> <span class="st">&quot;,&quot;</span></span>
-<span id="cb19-21"><a href="#cb19-21"></a>    , <span class="dt">into    =</span> <span class="kw">c</span>(<span class="st">&quot;x_left&quot;</span>, <span class="st">&quot;y_top&quot;</span>, <span class="st">&quot;x_width&quot;</span>, <span class="st">&quot;y_height&quot;</span>)</span>
-<span id="cb19-22"><a href="#cb19-22"></a>    , <span class="dt">convert =</span> T</span>
-<span id="cb19-23"><a href="#cb19-23"></a>  )</span>
-<span id="cb19-24"><a href="#cb19-24"></a></span>
-<span id="cb19-25"><a href="#cb19-25"></a><span class="co"># Join categories to the info table</span></span>
-<span id="cb19-26"><a href="#cb19-26"></a>info &lt;-<span class="st"> </span><span class="kw">left_join</span>(info, cats, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;category&quot;</span> =<span class="st"> &quot;CategoryID&quot;</span>))</span>
-<span id="cb19-27"><a href="#cb19-27"></a></span>
-<span id="cb19-28"><a href="#cb19-28"></a><span class="co"># Look at the generated dataframe</span></span>
-<span id="cb19-29"><a href="#cb19-29"></a><span class="kw">head</span>(info)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="co"># Extract detected categories and put them into a tibble/dataframe</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>cats              &lt;-<span class="st"> </span><span class="kw">enframe</span>(anot<span class="op">$</span>detection_categories)</span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="kw">names</span>(cats)       &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;CategoryID&quot;</span>, <span class="st">&quot;CategoryName&quot;</span>)</span>
+<span id="cb20-4"><a href="#cb20-4"></a>cats<span class="op">$</span>CategoryName &lt;-<span class="st"> </span><span class="kw">unlist</span>(cats<span class="op">$</span>CategoryName)</span>
+<span id="cb20-5"><a href="#cb20-5"></a></span>
+<span id="cb20-6"><a href="#cb20-6"></a><span class="co"># Get information into nice format</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a>info &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb20-8"><a href="#cb20-8"></a>      <span class="dt">images     =</span> <span class="kw">map_chr</span>(anot<span class="op">$</span>images, <span class="st">&quot;file&quot;</span>)</span>
+<span id="cb20-9"><a href="#cb20-9"></a>    , <span class="dt">detections =</span> <span class="kw">lapply</span>(anot<span class="op">$</span>images, <span class="cf">function</span>(x){</span>
+<span id="cb20-10"><a href="#cb20-10"></a>      <span class="kw">tibble</span>(</span>
+<span id="cb20-11"><a href="#cb20-11"></a>          <span class="dt">category   =</span> <span class="kw">map_chr</span>(x<span class="op">$</span>detections, <span class="st">&quot;category&quot;</span>)</span>
+<span id="cb20-12"><a href="#cb20-12"></a>        , <span class="dt">confidence =</span> <span class="kw">map_dbl</span>(x<span class="op">$</span>detections, <span class="st">&quot;conf&quot;</span>)</span>
+<span id="cb20-13"><a href="#cb20-13"></a>        , <span class="dt">bbox       =</span> <span class="kw">map</span>(x<span class="op">$</span>detections, <span class="st">&quot;bbox&quot;</span>)</span>
+<span id="cb20-14"><a href="#cb20-14"></a>      )</span>
+<span id="cb20-15"><a href="#cb20-15"></a>    })</span>
+<span id="cb20-16"><a href="#cb20-16"></a>  ) <span class="op">%&gt;%</span></span>
+<span id="cb20-17"><a href="#cb20-17"></a><span class="st">  </span><span class="kw">unnest</span>(detections) <span class="op">%&gt;%</span></span>
+<span id="cb20-18"><a href="#cb20-18"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">bbox =</span> <span class="kw">map</span>(bbox, <span class="cf">function</span>(x){<span class="kw">paste0</span>(x, <span class="dt">collapse =</span> <span class="st">&quot;, &quot;</span>)})) <span class="op">%&gt;%</span></span>
+<span id="cb20-19"><a href="#cb20-19"></a><span class="st">  </span><span class="kw">separate</span>(bbox</span>
+<span id="cb20-20"><a href="#cb20-20"></a>    , <span class="dt">sep     =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb20-21"><a href="#cb20-21"></a>    , <span class="dt">into    =</span> <span class="kw">c</span>(<span class="st">&quot;x_left&quot;</span>, <span class="st">&quot;y_top&quot;</span>, <span class="st">&quot;x_width&quot;</span>, <span class="st">&quot;y_height&quot;</span>)</span>
+<span id="cb20-22"><a href="#cb20-22"></a>    , <span class="dt">convert =</span> T</span>
+<span id="cb20-23"><a href="#cb20-23"></a>  )</span>
+<span id="cb20-24"><a href="#cb20-24"></a></span>
+<span id="cb20-25"><a href="#cb20-25"></a><span class="co"># Join categories to the info table</span></span>
+<span id="cb20-26"><a href="#cb20-26"></a>info &lt;-<span class="st"> </span><span class="kw">left_join</span>(info, cats, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;category&quot;</span> =<span class="st"> &quot;CategoryID&quot;</span>))</span>
+<span id="cb20-27"><a href="#cb20-27"></a></span>
+<span id="cb20-28"><a href="#cb20-28"></a><span class="co"># Look at the generated dataframe</span></span>
+<span id="cb20-29"><a href="#cb20-29"></a><span class="kw">head</span>(info)</span></code></pre></div>
 <pre><code>## # A tibble: 6 x 8
 ##   images          category confidence x_left y_top x_width y_height CategoryName
 ##   &lt;chr&gt;           &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       
@@ -703,9 +708,9 @@ desired threshold!</p>
 range of exploratory analyses. For instance, we may want to identify all images
 on which the detector identified an animal with a relatively high confidence. We
 can easily subset to those images as follows:</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a><span class="co"># Identify images that contain animals</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>info <span class="op">%&gt;%</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a><span class="st">  </span><span class="kw">subset</span>(CategoryName <span class="op">==</span><span class="st"> &quot;animal&quot;</span> <span class="op">&amp;</span><span class="st"> </span>confidence <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.9</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Identify images that contain animals</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>info <span class="op">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a><span class="st">  </span><span class="kw">subset</span>(CategoryName <span class="op">==</span><span class="st"> &quot;animal&quot;</span> <span class="op">&amp;</span><span class="st"> </span>confidence <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.9</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 8 x 8
 ##   images          category confidence x_left y_top x_width y_height CategoryName
 ##   &lt;chr&gt;           &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       
@@ -719,32 +724,32 @@ can easily subset to those images as follows:</p>
 ## 8 /home/david/Sc… 1             0.999  0.489 0.532  0.0701   0.122  animal</code></pre>
 <p>By default, the MegaDetector also returns detections for which he is very
 uncertain, which you can see by plotting a histogram of the “Confidence” values.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Histogram of MegaDetectors confidence</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="kw">hist</span>(info<span class="op">$</span>confidence</span>
-<span id="cb23-3"><a href="#cb23-3"></a>  , <span class="dt">breaks =</span> <span class="dv">10</span></span>
-<span id="cb23-4"><a href="#cb23-4"></a>  , <span class="dt">main   =</span> <span class="st">&quot;Histogram of Confidence&quot;</span></span>
-<span id="cb23-5"><a href="#cb23-5"></a>  , <span class="dt">xlab   =</span> <span class="st">&quot;Confidence&quot;</span></span>
-<span id="cb23-6"><a href="#cb23-6"></a>  , <span class="dt">ylab   =</span> <span class="st">&quot;Frequency&quot;</span></span>
-<span id="cb23-7"><a href="#cb23-7"></a>  , <span class="dt">col    =</span> <span class="st">&quot;cornflowerblue&quot;</span></span>
-<span id="cb23-8"><a href="#cb23-8"></a>  , <span class="dt">border =</span> <span class="ot">NA</span></span>
-<span id="cb23-9"><a href="#cb23-9"></a>)</span></code></pre></div>
-<p><img src="/post/2021-04-15-megadetector_files/figure-html/unnamed-chunk-21-1.png" width="50%" /></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Histogram of MegaDetectors confidence</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a><span class="kw">hist</span>(info<span class="op">$</span>confidence</span>
+<span id="cb24-3"><a href="#cb24-3"></a>  , <span class="dt">breaks =</span> <span class="dv">10</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>  , <span class="dt">main   =</span> <span class="st">&quot;Histogram of Confidence&quot;</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>  , <span class="dt">xlab   =</span> <span class="st">&quot;Confidence&quot;</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a>  , <span class="dt">ylab   =</span> <span class="st">&quot;Frequency&quot;</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a>  , <span class="dt">col    =</span> <span class="st">&quot;cornflowerblue&quot;</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a>  , <span class="dt">border =</span> <span class="ot">NA</span></span>
+<span id="cb24-9"><a href="#cb24-9"></a>)</span></code></pre></div>
+<p><img src="/post/2021-04-15-megadetector_files/figure-html/unnamed-chunk-22-1.png" width="50%" /></p>
 <p>For now, we only want to consider detections with relatively high confidence. So
 let’s subset the data accordingly.</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="co"># Subset to detections with high confidence</span></span>
-<span id="cb24-2"><a href="#cb24-2"></a>info &lt;-<span class="st"> </span>info <span class="op">%&gt;%</span></span>
-<span id="cb24-3"><a href="#cb24-3"></a><span class="st">  </span><span class="kw">subset</span>(confidence <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.9</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Subset to detections with high confidence</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>info &lt;-<span class="st"> </span>info <span class="op">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a><span class="st">  </span><span class="kw">subset</span>(confidence <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.9</span>)</span></code></pre></div>
 <p>You may also be interested during which time of the day you detected most
 animals. For this, we have to extract the timestamp of each cameratrap image. We
 can use the function <code>read_exif()</code> from the <code>exifr</code> package to extract such
 information from the image metadata. In fact, the function returns and entire
 dataframe of really useful information on each image that we may want to store
 for later.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a><span class="co"># Load image metadata</span></span>
-<span id="cb25-2"><a href="#cb25-2"></a>meta &lt;-<span class="st"> </span><span class="kw">read_exif</span>(info<span class="op">$</span>images)</span>
-<span id="cb25-3"><a href="#cb25-3"></a></span>
-<span id="cb25-4"><a href="#cb25-4"></a><span class="co"># This contains a ton of information!</span></span>
-<span id="cb25-5"><a href="#cb25-5"></a><span class="kw">names</span>(meta)</span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a><span class="co"># Load image metadata</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>meta &lt;-<span class="st"> </span><span class="kw">read_exif</span>(info<span class="op">$</span>images)</span>
+<span id="cb26-3"><a href="#cb26-3"></a></span>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="co"># This contains a ton of information!</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="kw">names</span>(meta)</span></code></pre></div>
 <pre><code>##  [1] &quot;SourceFile&quot;                 &quot;ExifToolVersion&quot;           
 ##  [3] &quot;FileName&quot;                   &quot;Directory&quot;                 
 ##  [5] &quot;FileSize&quot;                   &quot;FileModifyDate&quot;            
@@ -787,15 +792,15 @@ for later.</p>
 ## [79] &quot;ShutterSpeed&quot;               &quot;ThumbnailImage&quot;            
 ## [81] &quot;PreviewImage&quot;               &quot;FocalLength35efl&quot;          
 ## [83] &quot;LightValue&quot;</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="co"># Extract timestamp and add it to our &quot;info&quot; table</span></span>
-<span id="cb27-2"><a href="#cb27-2"></a>info<span class="op">$</span>Timestamp      &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(meta<span class="op">$</span>CreateDate, <span class="dt">format =</span> <span class="st">&quot;%Y:%m:%d %H:%M:%S&quot;</span>)</span>
-<span id="cb27-3"><a href="#cb27-3"></a>info<span class="op">$</span>TimestampRound &lt;-<span class="st"> </span><span class="kw">round</span>(info<span class="op">$</span>Timestamp, <span class="st">&quot;hour&quot;</span>)</span>
-<span id="cb27-4"><a href="#cb27-4"></a></span>
-<span id="cb27-5"><a href="#cb27-5"></a><span class="co"># Identify number of detections depending on the time of the day</span></span>
-<span id="cb27-6"><a href="#cb27-6"></a>info <span class="op">%&gt;%</span></span>
-<span id="cb27-7"><a href="#cb27-7"></a><span class="st">  </span><span class="kw">subset</span>(CategoryName <span class="op">==</span><span class="st"> &quot;animal&quot;</span>) <span class="op">%&gt;%</span></span>
-<span id="cb27-8"><a href="#cb27-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">TimeOfDay =</span> <span class="kw">ifelse</span>(<span class="kw">hour</span>(TimestampRound) <span class="op">%in%</span><span class="st"> </span><span class="dv">6</span><span class="op">:</span><span class="dv">22</span>, <span class="st">&quot;Day&quot;</span>, <span class="st">&quot;Night&quot;</span>)) <span class="op">%&gt;%</span></span>
-<span id="cb27-9"><a href="#cb27-9"></a><span class="st">  </span><span class="kw">count</span>(TimeOfDay)</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a><span class="co"># Extract timestamp and add it to our &quot;info&quot; table</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>info<span class="op">$</span>Timestamp      &lt;-<span class="st"> </span><span class="kw">as.POSIXct</span>(meta<span class="op">$</span>CreateDate, <span class="dt">format =</span> <span class="st">&quot;%Y:%m:%d %H:%M:%S&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3"></a>info<span class="op">$</span>TimestampRound &lt;-<span class="st"> </span><span class="kw">round</span>(info<span class="op">$</span>Timestamp, <span class="st">&quot;hour&quot;</span>)</span>
+<span id="cb28-4"><a href="#cb28-4"></a></span>
+<span id="cb28-5"><a href="#cb28-5"></a><span class="co"># Identify number of detections depending on the time of the day</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>info <span class="op">%&gt;%</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a><span class="st">  </span><span class="kw">subset</span>(CategoryName <span class="op">==</span><span class="st"> &quot;animal&quot;</span>) <span class="op">%&gt;%</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">TimeOfDay =</span> <span class="kw">ifelse</span>(<span class="kw">hour</span>(TimestampRound) <span class="op">%in%</span><span class="st"> </span><span class="dv">6</span><span class="op">:</span><span class="dv">22</span>, <span class="st">&quot;Day&quot;</span>, <span class="st">&quot;Night&quot;</span>)) <span class="op">%&gt;%</span></span>
+<span id="cb28-9"><a href="#cb28-9"></a><span class="st">  </span><span class="kw">count</span>(TimeOfDay)</span></code></pre></div>
 <pre><code>## # A tibble: 2 x 2
 ##   TimeOfDay     n
 ## * &lt;chr&gt;     &lt;int&gt;
@@ -808,56 +813,56 @@ day. Despite the useful information shown in the generated dataframe, you will
 often also want to visualize the detections. For this, we’ll need to load the
 respective image into R, draw a bounding box around the detected object and plot
 everything. We can write a function that allows us to automate these tasks:</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="co"># Function to plot the i-th image with bounding box around the detection</span></span>
-<span id="cb29-2"><a href="#cb29-2"></a>showDetection &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">i =</span> <span class="ot">NULL</span>){</span>
-<span id="cb29-3"><a href="#cb29-3"></a></span>
-<span id="cb29-4"><a href="#cb29-4"></a>  <span class="co"># Load ith image</span></span>
-<span id="cb29-5"><a href="#cb29-5"></a>  img  &lt;-<span class="st"> </span><span class="kw">image_read</span>(info<span class="op">$</span>images[i])</span>
-<span id="cb29-6"><a href="#cb29-6"></a>  dims &lt;-<span class="st"> </span><span class="kw">image_info</span>(img)</span>
-<span id="cb29-7"><a href="#cb29-7"></a></span>
-<span id="cb29-8"><a href="#cb29-8"></a>  <span class="co"># Plot</span></span>
-<span id="cb29-9"><a href="#cb29-9"></a>  img &lt;-<span class="st"> </span><span class="kw">image_draw</span>(img)</span>
-<span id="cb29-10"><a href="#cb29-10"></a></span>
-<span id="cb29-11"><a href="#cb29-11"></a>  <span class="co"># Add bounding box around the detection (color depending on detected category)</span></span>
-<span id="cb29-12"><a href="#cb29-12"></a>  <span class="kw">rect</span>(</span>
-<span id="cb29-13"><a href="#cb29-13"></a>      <span class="dt">xleft   =</span> info<span class="op">$</span>x_left[i] <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
-<span id="cb29-14"><a href="#cb29-14"></a>    , <span class="dt">xright  =</span> (info<span class="op">$</span>x_left[i] <span class="op">+</span><span class="st"> </span>info<span class="op">$</span>x_width[i]) <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
-<span id="cb29-15"><a href="#cb29-15"></a>    , <span class="dt">ytop    =</span> info<span class="op">$</span>y_top[i] <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
-<span id="cb29-16"><a href="#cb29-16"></a>    , <span class="dt">ybottom =</span> (info<span class="op">$</span>y_top[i] <span class="op">+</span><span class="st"> </span>info<span class="op">$</span>y_height[i]) <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
-<span id="cb29-17"><a href="#cb29-17"></a>    , <span class="dt">border  =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>)[<span class="kw">as.numeric</span>(info<span class="op">$</span>category[i])]</span>
-<span id="cb29-18"><a href="#cb29-18"></a>    , <span class="dt">lwd     =</span> <span class="dv">10</span></span>
-<span id="cb29-19"><a href="#cb29-19"></a>  )</span>
-<span id="cb29-20"><a href="#cb29-20"></a></span>
-<span id="cb29-21"><a href="#cb29-21"></a>  <span class="co"># Add a text label indicating the detected class (note that we ensure that the</span></span>
-<span id="cb29-22"><a href="#cb29-22"></a>  <span class="co"># label does not leave the image border on the y-axis).</span></span>
-<span id="cb29-23"><a href="#cb29-23"></a>  <span class="kw">text</span>(</span>
-<span id="cb29-24"><a href="#cb29-24"></a>      <span class="dt">x      =</span> info<span class="op">$</span>x_left[i] <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
-<span id="cb29-25"><a href="#cb29-25"></a>    , <span class="dt">y      =</span> <span class="kw">max</span>(info<span class="op">$</span>y_top[i], <span class="fl">0.05</span>) <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
-<span id="cb29-26"><a href="#cb29-26"></a>    , <span class="dt">labels =</span> <span class="kw">paste</span>(info<span class="op">$</span>CategoryName[i], info<span class="op">$</span>confidence[i])</span>
-<span id="cb29-27"><a href="#cb29-27"></a>    , <span class="dt">cex    =</span> <span class="dv">5</span></span>
-<span id="cb29-28"><a href="#cb29-28"></a>    , <span class="dt">col    =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>)[<span class="kw">as.numeric</span>(info<span class="op">$</span>category[i])]</span>
-<span id="cb29-29"><a href="#cb29-29"></a>    , <span class="dt">adj    =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span>
-<span id="cb29-30"><a href="#cb29-30"></a>  )</span>
-<span id="cb29-31"><a href="#cb29-31"></a></span>
-<span id="cb29-32"><a href="#cb29-32"></a>  <span class="co"># Add text indicating the image name</span></span>
-<span id="cb29-33"><a href="#cb29-33"></a>  <span class="kw">text</span>(</span>
-<span id="cb29-34"><a href="#cb29-34"></a>      <span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
-<span id="cb29-35"><a href="#cb29-35"></a>    , <span class="fl">0.95</span> <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
-<span id="cb29-36"><a href="#cb29-36"></a>    , <span class="kw">basename</span>(info<span class="op">$</span>images[i])</span>
-<span id="cb29-37"><a href="#cb29-37"></a>    , <span class="dt">cex =</span> <span class="dv">5</span></span>
-<span id="cb29-38"><a href="#cb29-38"></a>    , <span class="dt">col =</span> <span class="st">&quot;white&quot;</span></span>
-<span id="cb29-39"><a href="#cb29-39"></a>    , <span class="dt">pos =</span> <span class="dv">3</span></span>
-<span id="cb29-40"><a href="#cb29-40"></a>  )</span>
-<span id="cb29-41"><a href="#cb29-41"></a>  <span class="kw">dev.off</span>()</span>
-<span id="cb29-42"><a href="#cb29-42"></a>  <span class="kw">plot</span>(img)</span>
-<span id="cb29-43"><a href="#cb29-43"></a></span>
-<span id="cb29-44"><a href="#cb29-44"></a>}</span>
-<span id="cb29-45"><a href="#cb29-45"></a></span>
-<span id="cb29-46"><a href="#cb29-46"></a><span class="co"># Let&#39;s try it on some example images</span></span>
-<span id="cb29-47"><a href="#cb29-47"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
-<span id="cb29-48"><a href="#cb29-48"></a>plots &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(i){<span class="kw">showDetection</span>(i)})</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-24"></span>
-<img src="/post/2021-04-15-megadetector_files/figure-html/unnamed-chunk-24-1.png" alt="Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!" width="100%" />
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a><span class="co"># Function to plot the i-th image with bounding box around the detection</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>showDetection &lt;-<span class="st"> </span><span class="cf">function</span>(<span class="dt">i =</span> <span class="ot">NULL</span>){</span>
+<span id="cb30-3"><a href="#cb30-3"></a></span>
+<span id="cb30-4"><a href="#cb30-4"></a>  <span class="co"># Load ith image</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a>  img  &lt;-<span class="st"> </span><span class="kw">image_read</span>(info<span class="op">$</span>images[i])</span>
+<span id="cb30-6"><a href="#cb30-6"></a>  dims &lt;-<span class="st"> </span><span class="kw">image_info</span>(img)</span>
+<span id="cb30-7"><a href="#cb30-7"></a></span>
+<span id="cb30-8"><a href="#cb30-8"></a>  <span class="co"># Plot</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a>  img &lt;-<span class="st"> </span><span class="kw">image_draw</span>(img)</span>
+<span id="cb30-10"><a href="#cb30-10"></a></span>
+<span id="cb30-11"><a href="#cb30-11"></a>  <span class="co"># Add bounding box around the detection (color depending on detected category)</span></span>
+<span id="cb30-12"><a href="#cb30-12"></a>  <span class="kw">rect</span>(</span>
+<span id="cb30-13"><a href="#cb30-13"></a>      <span class="dt">xleft   =</span> info<span class="op">$</span>x_left[i] <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
+<span id="cb30-14"><a href="#cb30-14"></a>    , <span class="dt">xright  =</span> (info<span class="op">$</span>x_left[i] <span class="op">+</span><span class="st"> </span>info<span class="op">$</span>x_width[i]) <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
+<span id="cb30-15"><a href="#cb30-15"></a>    , <span class="dt">ytop    =</span> info<span class="op">$</span>y_top[i] <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
+<span id="cb30-16"><a href="#cb30-16"></a>    , <span class="dt">ybottom =</span> (info<span class="op">$</span>y_top[i] <span class="op">+</span><span class="st"> </span>info<span class="op">$</span>y_height[i]) <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
+<span id="cb30-17"><a href="#cb30-17"></a>    , <span class="dt">border  =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>)[<span class="kw">as.numeric</span>(info<span class="op">$</span>category[i])]</span>
+<span id="cb30-18"><a href="#cb30-18"></a>    , <span class="dt">lwd     =</span> <span class="dv">10</span></span>
+<span id="cb30-19"><a href="#cb30-19"></a>  )</span>
+<span id="cb30-20"><a href="#cb30-20"></a></span>
+<span id="cb30-21"><a href="#cb30-21"></a>  <span class="co"># Add a text label indicating the detected class (note that we ensure that the</span></span>
+<span id="cb30-22"><a href="#cb30-22"></a>  <span class="co"># label does not leave the image border on the y-axis).</span></span>
+<span id="cb30-23"><a href="#cb30-23"></a>  <span class="kw">text</span>(</span>
+<span id="cb30-24"><a href="#cb30-24"></a>      <span class="dt">x      =</span> info<span class="op">$</span>x_left[i] <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
+<span id="cb30-25"><a href="#cb30-25"></a>    , <span class="dt">y      =</span> <span class="kw">max</span>(info<span class="op">$</span>y_top[i], <span class="fl">0.05</span>) <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
+<span id="cb30-26"><a href="#cb30-26"></a>    , <span class="dt">labels =</span> <span class="kw">paste</span>(info<span class="op">$</span>CategoryName[i], info<span class="op">$</span>confidence[i])</span>
+<span id="cb30-27"><a href="#cb30-27"></a>    , <span class="dt">cex    =</span> <span class="dv">5</span></span>
+<span id="cb30-28"><a href="#cb30-28"></a>    , <span class="dt">col    =</span> <span class="kw">c</span>(<span class="st">&quot;red&quot;</span>, <span class="st">&quot;yellow&quot;</span>, <span class="st">&quot;green&quot;</span>)[<span class="kw">as.numeric</span>(info<span class="op">$</span>category[i])]</span>
+<span id="cb30-29"><a href="#cb30-29"></a>    , <span class="dt">adj    =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb30-30"><a href="#cb30-30"></a>  )</span>
+<span id="cb30-31"><a href="#cb30-31"></a></span>
+<span id="cb30-32"><a href="#cb30-32"></a>  <span class="co"># Add text indicating the image name</span></span>
+<span id="cb30-33"><a href="#cb30-33"></a>  <span class="kw">text</span>(</span>
+<span id="cb30-34"><a href="#cb30-34"></a>      <span class="fl">0.5</span> <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>width</span>
+<span id="cb30-35"><a href="#cb30-35"></a>    , <span class="fl">0.95</span> <span class="op">*</span><span class="st"> </span>dims<span class="op">$</span>height</span>
+<span id="cb30-36"><a href="#cb30-36"></a>    , <span class="kw">basename</span>(info<span class="op">$</span>images[i])</span>
+<span id="cb30-37"><a href="#cb30-37"></a>    , <span class="dt">cex =</span> <span class="dv">5</span></span>
+<span id="cb30-38"><a href="#cb30-38"></a>    , <span class="dt">col =</span> <span class="st">&quot;white&quot;</span></span>
+<span id="cb30-39"><a href="#cb30-39"></a>    , <span class="dt">pos =</span> <span class="dv">3</span></span>
+<span id="cb30-40"><a href="#cb30-40"></a>  )</span>
+<span id="cb30-41"><a href="#cb30-41"></a>  <span class="kw">dev.off</span>()</span>
+<span id="cb30-42"><a href="#cb30-42"></a>  <span class="kw">plot</span>(img)</span>
+<span id="cb30-43"><a href="#cb30-43"></a></span>
+<span id="cb30-44"><a href="#cb30-44"></a>}</span>
+<span id="cb30-45"><a href="#cb30-45"></a></span>
+<span id="cb30-46"><a href="#cb30-46"></a><span class="co"># Let&#39;s try it on some example images</span></span>
+<span id="cb30-47"><a href="#cb30-47"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
+<span id="cb30-48"><a href="#cb30-48"></a>plots &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(i){<span class="kw">showDetection</span>(i)})</span></code></pre></div>
+<div class="figure"><span id="fig:unnamed-chunk-25"></span>
+<img src="/post/2021-04-15-megadetector_files/figure-html/unnamed-chunk-25-1.png" alt="Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!" width="100%" />
 <p class="caption">
 Figure 3: Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!
 </p>

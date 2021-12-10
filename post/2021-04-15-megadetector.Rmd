@@ -127,12 +127,21 @@ conda env list
 To be able to run the *MegaDetector*, we'll need to install tensorflow version
 1.13.1. This is a rather old version and also the reason why we had to opt for
 python version 3.6. To install the specific version of tensorflow, first make
-sure that you are working in the *cameratrapping* environment, then use *conda*
+sure that you are working in the *cameratrapping* environment, then use *pip*
 to install tensorflow version 1.13.1:
 
 ```{bash, eval = FALSE}
-# Install tensorflow (if you want to use a gpu, use "tensorflow-gpu=1.13.1")
-conda install tensorflow=1.13.1
+# Install tensorflow
+pip install tensorflow==1.13.1
+```
+
+In case your computer has a dedicated gpu, you may also run the megadetector on
+the gpu. In this case, you would need to install tensorflow slightly
+differently:
+
+```{bash, eval = FALSE}
+# Install tensorflow-gpu (using conda instead of pip)
+conda install -c anaconda tensorflow-gpu=1.13.1
 ```
 
 Besides tensorflow, we also need to install several other python packages.
