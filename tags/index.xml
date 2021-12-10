@@ -115,5 +115,41 @@
       <description></description>
     </item>
     
+    <item>
+      <title>atom</title>
+      <link>https://daviddhofmann.github.io/tags/atom/</link>
+      <pubDate>Mon, 21 Dec 2020 11:13:14 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/atom/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>efficiency</title>
+      <link>https://daviddhofmann.github.io/tags/efficiency/</link>
+      <pubDate>Mon, 21 Dec 2020 11:13:14 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/efficiency/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>text editor</title>
+      <link>https://daviddhofmann.github.io/tags/text-editor/</link>
+      <pubDate>Mon, 21 Dec 2020 11:13:14 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/text-editor/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>vim</title>
+      <link>https://daviddhofmann.github.io/tags/vim/</link>
+      <pubDate>Mon, 21 Dec 2020 11:13:14 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/tags/vim/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>

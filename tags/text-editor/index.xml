@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>text editor on David D. Hofmann</title>
+    <link>https://daviddhofmann.github.io/tags/text-editor/</link>
+    <description>Recent content in text editor on David D. Hofmann</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 21 Dec 2020 11:13:14 -0500</lastBuildDate><atom:link href="https://daviddhofmann.github.io/tags/text-editor/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Why &amp; How to Use one of the best Text Editors (vim)</title>
+      <link>https://daviddhofmann.github.io/post/2020-12-21-vim/</link>
+      <pubDate>Mon, 21 Dec 2020 11:13:14 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2020-12-21-vim/</guid>
+      <description>In this post I&amp;rsquo;m hopefully going to convince you about the merits of using the vim text editor. Besides persuading you to use vim, I will try to give you a brief tutorial and equip you with all the basics as well as with some nifty tipps and tricks.</description>
+    </item>
+    
+  </channel>
+</rss>

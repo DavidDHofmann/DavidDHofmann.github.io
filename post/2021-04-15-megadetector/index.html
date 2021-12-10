@@ -396,10 +396,10 @@ environments, simply call:</p>
 <p>To be able to run the <em>MegaDetector</em>, we’ll need to install tensorflow version
 1.13.1. This is a rather old version and also the reason why we had to opt for
 python version 3.6. To install the specific version of tensorflow, first make
-sure that you are working in the <em>cameratrapping</em> environment, then use <em>pip</em> to
-install tensorflow version 1.13.1:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Install tensorflow</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">pip</span> install tensorflow==1.13.1</span></code></pre></div>
+sure that you are working in the <em>cameratrapping</em> environment, then use <em>conda</em>
+to install tensorflow version 1.13.1:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Install tensorflow (if you want to use a gpu, use &quot;tensorflow-gpu=1.13.1&quot;)</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="ex">conda</span> install tensorflow=1.13.1</span></code></pre></div>
 <p>Besides tensorflow, we also need to install several other python packages.
 However, here the exact versions do not really matter and we can thus install
 all of them as follows:</p>
@@ -424,7 +424,7 @@ them manually (see Option 2).</p>
 <span id="cb8-6"><a href="#cb8-6"></a><span class="fu">git</span> clone https://github.com/Microsoft/cameratraps</span>
 <span id="cb8-7"><a href="#cb8-7"></a><span class="fu">git</span> clone https://github.com/Microsoft/ai4eutils</span>
 <span id="cb8-8"><a href="#cb8-8"></a><span class="fu">wget</span> https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector.py</span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="fu">wget</span> https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/megadetector.md#2-run_tf_detector_batchpy.py</span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="fu">wget</span> https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector_batch.py</span>
 <span id="cb8-10"><a href="#cb8-10"></a><span class="fu">wget</span> https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb</span>
 <span id="cb8-11"><a href="#cb8-11"></a></span>
 <span id="cb8-12"><a href="#cb8-12"></a><span class="co"># OPTIONAL: Download example images</span></span>
@@ -439,7 +439,7 @@ names are similar to those highlighted in blue.</p>
 <li><p><a href="https://github.com/Microsoft/cameratraps">cameratraps</a> (Github Repository / Folder)</p></li>
 <li><p><a href="https://github.com/Microsoft/ai4eutils">ai4eutils</a> (Github Repository / Folder)</p></li>
 <li><p><a href="https://github.com/Microsoft/CameraTraps/blob/master/detection/run_tf_detector.py">run_tf_detector.py</a> (Python Script)</p></li>
-<li><p><a href="https://github.com/microsoft/CameraTraps/blob/master/megadetector.md#2-run_tf_detector_batchpy">run_tf_detector_batch.py</a> (Python Script)</p></li>
+<li><p><a href="https://github.com/microsoft/CameraTraps/blob/master/run_tf_detector_batch.py">run_tf_detector_batch.py</a> (Python Script)</p></li>
 <li><p><a href="https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb">md_v4.1.0.pb</a> (Model File)</p></li>
 <li><p><a href="https://github.com/DavidDHofmann/sample_images">sample_images</a> (Some sample camertrap images that I recorded in my garden)</p></li>
 </ul>

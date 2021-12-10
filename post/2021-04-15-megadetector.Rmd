@@ -127,12 +127,12 @@ conda env list
 To be able to run the *MegaDetector*, we'll need to install tensorflow version
 1.13.1. This is a rather old version and also the reason why we had to opt for
 python version 3.6. To install the specific version of tensorflow, first make
-sure that you are working in the *cameratrapping* environment, then use *pip* to
-install tensorflow version 1.13.1:
+sure that you are working in the *cameratrapping* environment, then use *conda*
+to install tensorflow version 1.13.1:
 
 ```{bash, eval = FALSE}
-# Install tensorflow
-pip install tensorflow==1.13.1
+# Install tensorflow (if you want to use a gpu, use "tensorflow-gpu=1.13.1")
+conda install tensorflow=1.13.1
 ```
 
 Besides tensorflow, we also need to install several other python packages.
@@ -162,7 +162,7 @@ cd /home/david/Schreibtisch/CameraTrapping
 git clone https://github.com/Microsoft/cameratraps
 git clone https://github.com/Microsoft/ai4eutils
 wget https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector.py
-wget https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/megadetector.md#2-run_tf_detector_batchpy.py
+wget https://raw.githubusercontent.com/microsoft/CameraTraps/master/detection/run_tf_detector_batch.py
 wget https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb
 
 # OPTIONAL: Download example images
@@ -181,7 +181,7 @@ names are similar to those highlighted in blue.
 
   - [run_tf_detector.py](https://github.com/Microsoft/CameraTraps/blob/master/detection/run_tf_detector.py) (Python Script)
 
-  - [run_tf_detector_batch.py](https://github.com/microsoft/CameraTraps/blob/master/megadetector.md#2-run_tf_detector_batchpy) (Python Script)
+  - [run_tf_detector_batch.py](https://github.com/microsoft/CameraTraps/blob/master/run_tf_detector_batch.py) (Python Script)
 
   - [md_v4.1.0.pb](https://lilablobssc.blob.core.windows.net/models/camera_traps/megadetector/md_v4.1.0/md_v4.1.0.pb) (Model File)
 
