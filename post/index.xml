@@ -43,14 +43,5 @@
       <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
     </item>
     
-    <item>
-      <title>Why &amp; How to Use one of the best Text Editors (vim)</title>
-      <link>https://daviddhofmann.github.io/post/2020-12-21-vim/</link>
-      <pubDate>Mon, 21 Dec 2020 11:13:14 -0500</pubDate>
-      
-      <guid>https://daviddhofmann.github.io/post/2020-12-21-vim/</guid>
-      <description>In this post I&amp;rsquo;m hopefully going to convince you about the merits of using the vim text editor. Besides persuading you to use vim, I will try to give you a brief tutorial and equip you with all the basics as well as with some nifty tipps and tricks.</description>
-    </item>
-    
   </channel>
 </rss>
