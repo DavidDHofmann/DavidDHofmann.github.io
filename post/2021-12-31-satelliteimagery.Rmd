@@ -2,11 +2,10 @@
 title: "Download and Visualize Satellite Images in R"
 summary: "When you visualize spatial data on a map, it is often useful to plot a satellite image in the background. Hence, I would like to show you can use R to access and download satellite imagery that is free of charge. Once downloaded, we will plot the imagery using either base plot, ggplot, or the magnificent tmap package."
 author: "David D. Hofmann"
-date: 2022-01-01T12:00:00-05:00
+date: 2021-12-31T12:00:00-05:00
 categories: ["R"]
 tags: ["R", "spatial", "satellite"]
 image: "img/post_satellite.jpg"
-# output: pdf_document
 output:
   blogdown::html_page:
     highlight: tango
