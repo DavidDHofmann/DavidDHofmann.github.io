@@ -2,7 +2,7 @@
 title: "A Simulation-Based Introduction to Hidden-Markov Movement Models"
 summary: "Hidden Markov Movement Models (HMMMs) are increasingly popular in movement ecology to learn more about unobserved behavioral modes from telemetry data. In this blog post, we will simulate telemetry data with known movement parameters and estimate the parameters and associated behavioral modes using the moveHMM package."
 author: "David D. Hofmann"
-date: 2022-06-30T18:00:00-05:00
+date: 2022-06-30T12:00:00-05:00
 categories: ["R"]
 tags: ["R", "movement", "simulation"]
 image: "img/post_hiddenmarkovmodel.jpg"
