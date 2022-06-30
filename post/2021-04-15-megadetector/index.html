@@ -211,7 +211,6 @@
                 
                 
                 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <script src="/rmarkdown-libs/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -279,6 +278,7 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 
 <div id="TOC">
 <ul>
+<li><a href="#update-2022">Update 2022</a></li>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#installation">Installation</a>
 <ul>
@@ -299,21 +299,30 @@ code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warni
 </ul>
 </div>
 
+<div id="update-2022" class="section level1">
+<h1>Update 2022</h1>
+<p>The original Blog post explains the installation of the Megadetector using model
+version 4. However, Microsoft has recently released model version 5 and provides
+an <a href="https://github.com/microsoft/CameraTraps/blob/main/megadetector.md">excellent setup
+guide</a> for
+it. You might still find this blog post useful to learn how you can use the
+MegaDetector’s output for your analyses!</p>
+</div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Wildlife cameras (Figure 1) have become an increasingly popular tool to monitor
 and study animal populations. One of the main reason why cameras have become so
 omnipresent in ecology is because they are non-invasive and, once set up, can be
 left in the field for months with only little maintenance. This allows for a
-laregly automated collection of images that grant exciting insights into
+largely automated collection of images that grant exciting insights into
 wildlife. On the downside, wildlife cameras often produce thousands of images
 that all need to be screened by trained biologists to identify the animals on
-each image. This can be very time-consuiming and cumbersome, particularly if
+each image. This can be very time-consuming and cumbersome, particularly if
 many of the images are empty and do not contain any animals (so called false
 positives). Consequently, there has been growing interests towards automating
 these tedious processes with the aid of computers.</p>
-<div class="figure"><span id="fig:unnamed-chunk-1"></span>
-<img src="/img/gallery_megadetector/figure1.jpg" alt="A Brownings wildlife camera that I've set up in my garden to learn about our nocturnal visitors from the nearby forest." width="50%" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<img src="../../../../../../img/gallery_megadetector/figure1.jpg" alt="A Brownings wildlife camera that I've set up in my garden to learn about our nocturnal visitors from the nearby forest." width="50%" />
 <p class="caption">
 Figure 1: A Brownings wildlife camera that I’ve set up in my garden to learn about our nocturnal visitors from the nearby forest.
 </p>
@@ -454,8 +463,8 @@ names are similar to those highlighted in blue.</p>
 <h2>Making the Downloaded Files Available to Python</h2>
 <p>Finally, we need to make sure that the downloaded folders “ai4eutils” and
 “cameratraps” can be found by python. To ensure this, we can run the commands
-below. Note that you will need to execute this code everytime you start a new
-session in the respective environemnt.</p>
+below. Note that you will need to execute this code every time you start a new
+session in the respective environment.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1"></a><span class="co"># Make folders available to python</span></span>
 <span id="cb10-2"><a href="#cb10-2"></a><span class="bu">export</span> <span class="va">PYTHONPATH=</span><span class="st">&quot;</span><span class="va">$PYTHONPATH</span><span class="st">:</span><span class="va">$PWD</span><span class="st">/ai4eutils:</span><span class="va">$PWD</span><span class="st">/cameratraps&quot;</span></span></code></pre></div>
 </div>
@@ -514,7 +523,7 @@ Conveniently, each detection has an associated uncertainty, showing us how
 “confident” the detector is for that specific detection. While this approach
 does not directly produce images with neat bounding boxes, it is much more
 useful for scientific purposes, as we can easily use the returned file for
-further analysis and subsetting of the different images. In addition, this
+further analysis and sub-setting of the different images. In addition, this
 script periodically saves the MegaDetector’s so that not all is lost in case
 your computer crashes when running the detection on a large set of images.</p></li>
 </ul>
@@ -566,8 +575,8 @@ the detections for you. Once the algorithm terminates, you can go to the
 <em>sample_images/detections</em> folder where you should find the final images with
 bounding boxes around each detected animal/human/vehicle. The images should look
 something like shown in Figure 3b).</p>
-<div class="figure"><span id="fig:unnamed-chunk-15"></span>
-<img src="/img/gallery_megadetector/figure2.png" alt="a) Input image and b) output image produced by the run_tf_detector.py script." width="100%" />
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-15"></span>
+<img src="../../../../../../img/gallery_megadetector/figure2.png" alt="a) Input image and b) output image produced by the run_tf_detector.py script." width="100%" />
 <p class="caption">
 Figure 2: a) Input image and b) output image produced by the run_tf_detector.py script.
 </p>
@@ -681,7 +690,7 @@ easier to read:</p>
 <span id="cb20-27"><a href="#cb20-27"></a></span>
 <span id="cb20-28"><a href="#cb20-28"></a><span class="co"># Look at the generated dataframe</span></span>
 <span id="cb20-29"><a href="#cb20-29"></a><span class="kw">head</span>(info)</span></code></pre></div>
-<pre><code>## # A tibble: 6 x 8
+<pre><code>## # A tibble: 6 × 8
 ##   images          category confidence x_left y_top x_width y_height CategoryName
 ##   &lt;chr&gt;           &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       
 ## 1 /home/david/Sc… 1             0.999  0.353 0.327   0.269    0.290 animal      
@@ -711,7 +720,7 @@ can easily subset to those images as follows:</p>
 <div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a><span class="co"># Identify images that contain animals</span></span>
 <span id="cb22-2"><a href="#cb22-2"></a>info <span class="op">%&gt;%</span></span>
 <span id="cb22-3"><a href="#cb22-3"></a><span class="st">  </span><span class="kw">subset</span>(CategoryName <span class="op">==</span><span class="st"> &quot;animal&quot;</span> <span class="op">&amp;</span><span class="st"> </span>confidence <span class="op">&gt;</span><span class="st"> </span><span class="fl">0.9</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 8 x 8
+<pre><code>## # A tibble: 8 × 8
 ##   images          category confidence x_left y_top x_width y_height CategoryName
 ##   &lt;chr&gt;           &lt;chr&gt;         &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt;       
 ## 1 /home/david/Sc… 1             0.999  0.353 0.327  0.269    0.290  animal      
@@ -801,9 +810,9 @@ for later.</p>
 <span id="cb28-7"><a href="#cb28-7"></a><span class="st">  </span><span class="kw">subset</span>(CategoryName <span class="op">==</span><span class="st"> &quot;animal&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb28-8"><a href="#cb28-8"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">TimeOfDay =</span> <span class="kw">ifelse</span>(<span class="kw">hour</span>(TimestampRound) <span class="op">%in%</span><span class="st"> </span><span class="dv">6</span><span class="op">:</span><span class="dv">22</span>, <span class="st">&quot;Day&quot;</span>, <span class="st">&quot;Night&quot;</span>)) <span class="op">%&gt;%</span></span>
 <span id="cb28-9"><a href="#cb28-9"></a><span class="st">  </span><span class="kw">count</span>(TimeOfDay)</span></code></pre></div>
-<pre><code>## # A tibble: 2 x 2
+<pre><code>## # A tibble: 2 × 2
 ##   TimeOfDay     n
-## * &lt;chr&gt;     &lt;int&gt;
+##   &lt;chr&gt;     &lt;int&gt;
 ## 1 Day           1
 ## 2 Night         7</code></pre>
 <p>But back to the question of when we detected most animals. Here, it seems that
@@ -861,7 +870,7 @@ everything. We can write a function that allows us to automate these tasks:</p>
 <span id="cb30-46"><a href="#cb30-46"></a><span class="co"># Let&#39;s try it on some example images</span></span>
 <span id="cb30-47"><a href="#cb30-47"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
 <span id="cb30-48"><a href="#cb30-48"></a>plots &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(i){<span class="kw">showDetection</span>(i)})</span></code></pre></div>
-<div class="figure"><span id="fig:unnamed-chunk-25"></span>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-25"></span>
 <img src="/post/2021-04-15-megadetector_files/figure-html/unnamed-chunk-25-1.png" alt="Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!" width="100%" />
 <p class="caption">
 Figure 3: Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!
@@ -888,7 +897,7 @@ automatically detect animals on cameratrap images.</p>
 </div>
 <div id="session-information" class="section level1">
 <h1>Session Information</h1>
-<pre><code>## R version 3.6.3 (2020-02-29)
+<pre><code>## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Linux Mint 19.3
 ## 
@@ -908,26 +917,27 @@ automatically detect animals on cameratrap images.</p>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-##  [1] lubridate_1.7.9.2 magick_2.4.0      exifr_0.3.2       forcats_0.5.1    
-##  [5] stringr_1.4.0     dplyr_1.0.3       purrr_0.3.4       readr_1.4.0      
-##  [9] tidyr_1.1.2       tibble_3.1.0      ggplot2_3.3.3     tidyverse_1.3.0  
-## [13] rjson_0.2.20     
+##  [1] lubridate_1.8.0 magick_2.7.3    exifr_0.3.2     forcats_0.5.1  
+##  [5] stringr_1.4.0   dplyr_1.0.9     purrr_0.3.4     readr_2.1.2    
+##  [9] tidyr_1.2.0     tibble_3.1.7    ggplot2_3.3.6   tidyverse_1.3.1
+## [13] rjson_0.2.21   
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.1.0  xfun_0.22         haven_2.3.1       colorspace_2.0-0 
-##  [5] vctrs_0.3.7       generics_0.1.0    htmltools_0.5.1.1 yaml_2.2.1       
-##  [9] utf8_1.2.1        rlang_0.4.10      pillar_1.5.1      withr_2.4.2      
-## [13] glue_1.4.2        DBI_1.1.1         rappdirs_0.3.3    dbplyr_2.0.0     
-## [17] modelr_0.1.8      readxl_1.3.1      plyr_1.8.6        lifecycle_1.0.0  
-## [21] munsell_0.5.0     blogdown_1.3      gtable_0.3.0      cellranger_1.1.0 
-## [25] rvest_1.0.0       evaluate_0.14     knitr_1.32        ps_1.5.0         
-## [29] fansi_0.4.2       highr_0.8         broom_0.7.3       Rcpp_1.0.7       
-## [33] scales_1.1.1      backports_1.2.1   jsonlite_1.7.2    fs_1.5.0         
-## [37] hms_1.0.0         digest_0.6.27     stringi_1.5.3     bookdown_0.21    
-## [41] grid_3.6.3        cli_2.4.0         tools_3.6.3       magrittr_2.0.1   
-## [45] crayon_1.4.1      pkgconfig_2.0.3   ellipsis_0.3.1    xml2_1.3.2       
-## [49] reprex_1.0.0      assertthat_0.2.1  rmarkdown_2.7     httr_1.4.2       
-## [53] rstudioapi_0.13   R6_2.5.0          compiler_3.6.3</code></pre>
+##  [1] Rcpp_1.0.8.3     assertthat_0.2.1 digest_0.6.29    utf8_1.2.2      
+##  [5] plyr_1.8.7       R6_2.5.1         cellranger_1.1.0 backports_1.4.1 
+##  [9] reprex_2.0.1     evaluate_0.15    httr_1.4.3       highr_0.9       
+## [13] blogdown_1.10    pillar_1.7.0     rlang_1.0.2      readxl_1.4.0    
+## [17] rstudioapi_0.13  jquerylib_0.1.4  rmarkdown_2.14   munsell_0.5.0   
+## [21] broom_0.8.0      compiler_4.2.0   modelr_0.1.8     xfun_0.31       
+## [25] pkgconfig_2.0.3  htmltools_0.5.2  tidyselect_1.1.2 bookdown_0.27   
+## [29] fansi_1.0.3      crayon_1.5.1     tzdb_0.3.0       dbplyr_2.2.0    
+## [33] withr_2.5.0      rappdirs_0.3.3   grid_4.2.0       jsonlite_1.8.0  
+## [37] gtable_0.3.0     lifecycle_1.0.1  DBI_1.1.2        magrittr_2.0.3  
+## [41] scales_1.2.0     cli_3.3.0        stringi_1.7.6    fs_1.5.2        
+## [45] xml2_1.3.3       bslib_0.3.1      ellipsis_0.3.2   generics_0.1.2  
+## [49] vctrs_0.4.1      tools_4.2.0      glue_1.6.2       hms_1.1.1       
+## [53] fastmap_1.1.0    yaml_2.3.5       colorspace_2.0-3 rvest_1.0.2     
+## [57] knitr_1.39       haven_2.5.0      sass_0.4.1</code></pre>
 </div>
 
 

@@ -15,15 +15,23 @@ editor_options:
   chunk_output_type: console
 ---
 
+# Update 2022
+The original Blog post explains the installation of the Megadetector using model
+version 4. However, Microsoft has recently released model version 5 and provides
+an [excellent setup
+guide](https://github.com/microsoft/CameraTraps/blob/main/megadetector.md) for
+it. You might still find this blog post useful to learn how you can use the
+MegaDetector's output for your analyses!
+
 # Introduction
 Wildlife cameras (Figure 1) have become an increasingly popular tool to monitor
 and study animal populations. One of the main reason why cameras have become so
 omnipresent in ecology is because they are non-invasive and, once set up, can be
 left in the field for months with only little maintenance. This allows for a
-laregly automated collection of images that grant exciting insights into
+largely automated collection of images that grant exciting insights into
 wildlife. On the downside, wildlife cameras often produce thousands of images
 that all need to be screened by trained biologists to identify the animals on
-each image. This can be very time-consuiming and cumbersome, particularly if
+each image. This can be very time-consuming and cumbersome, particularly if
 many of the images are empty and do not contain any animals (so called false
 positives). Consequently, there has been growing interests towards automating
 these tedious processes with the aid of computers.
@@ -199,8 +207,8 @@ names are similar to those highlighted in blue.
 ## Making the Downloaded Files Available to Python
 Finally, we need to make sure that the downloaded folders "ai4eutils" and
 "cameratraps" can be found by python. To ensure this, we can run the commands
-below. Note that you will need to execute this code everytime you start a new
-session in the respective environemnt.
+below. Note that you will need to execute this code every time you start a new
+session in the respective environment.
 
 ```{bash, eval = FALSE}
 # Make folders available to python
@@ -264,7 +272,7 @@ Conveniently, each detection has an associated uncertainty, showing us how
 "confident" the detector is for that specific detection. While this approach
 does not directly produce images with neat bounding boxes, it is much more
 useful for scientific purposes, as we can easily use the returned file for
-further analysis and subsetting of the different images. In addition, this
+further analysis and sub-setting of the different images. In addition, this
 script periodically saves the MegaDetector's so that not all is lost in case
 your computer crashes when running the detection on a large set of images.
 
