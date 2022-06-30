@@ -6,7 +6,16 @@
     <description>Recent content in R on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 31 Dec 2021 12:00:00 -0500</lastBuildDate><atom:link href="https://daviddhofmann.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 30 Jun 2022 12:00:00 -0500</lastBuildDate><atom:link href="https://daviddhofmann.github.io/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>A Simulation-Based Introduction to Hidden-Markov Movement Models</title>
+      <link>https://daviddhofmann.github.io/post/2022-06-30-hiddenmarkovmodel/</link>
+      <pubDate>Thu, 30 Jun 2022 12:00:00 -0500</pubDate>
+      
+      <guid>https://daviddhofmann.github.io/post/2022-06-30-hiddenmarkovmodel/</guid>
+      <description>Hidden Markov Movement Models (HMMMs) are increasingly popular in movement ecology to learn more about unobserved behavioral modes from telemetry data. In this blog post, we will simulate telemetry data with known movement parameters and estimate the parameters and associated behavioral modes using the moveHMM package.</description>
+    </item>
+    
     <item>
       <title>Download and Visualize Satellite Images in R</title>
       <link>https://daviddhofmann.github.io/post/2021-12-31-satelliteimagery/</link>
