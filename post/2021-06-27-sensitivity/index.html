@@ -209,7 +209,6 @@
                 
                 
                 
-<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 <script src="/rmarkdown-libs/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
@@ -537,8 +536,8 @@ these values.</p>
 <span id="cb9-10"><a href="#cb9-10"></a>  , <span class="dt">popsize_beta_2 =</span> <span class="dv">0</span></span>
 <span id="cb9-11"><a href="#cb9-11"></a>)</span></code></pre></div>
 <pre><code>##      [,1]      [,2]      [,3]      [,4]     [,5]
-## [1,]   10  7.310586  9.598709  9.544162 10.10092
-## [2,]   10 13.383782 15.240858 18.011171 20.53605</code></pre>
+## [1,]   10  7.310586  8.580451  9.279644  9.74280
+## [2,]   10 11.338011 13.470597 15.555469 17.91707</code></pre>
 <p>Great! This works as expected. The function returns a matrix where each column
 shows the number of juveniles and adults at a given point in time. Since we
 provided a temperature vector of length five, the number of simulated iterations
@@ -550,14 +549,14 @@ is also equal to five.</p>
 population into the future using different parameters. This is where the power
 of tibbles comes into play. For this, we first span a grid that contains all
 combinations of parameters that we want to test for. This can easily be done
-using the <code>grid_expand()</code> function. Moreover, we can use the function to specify
+using the <code>expand_grid()</code> function. Moreover, we can use the function to specify
 how many replicates of each combination we wish to run (this will allow us to
 come up with bootstrap confidence intervals). Although we could now vary all six
 parameters describing the functional forms of <span class="math inline">\(S_j\)</span> and <span class="math inline">\(F_a\)</span>, (i.e.
 <span class="math inline">\(\alpha_{temp}, \beta_{1, temp}, \beta_{2, temp}, \alpha_{popsize}, \beta_{1, popsize}, \beta_{2, popsize}\)</span>), this will result in too many different outputs.
 Hence, we are only going to vary <span class="math inline">\(\beta_{1, temp}\)</span> and <span class="math inline">\(\beta_{1, popsize}\)</span>
 and we will repeat each simulation 100 times (i.e. 100 replicates). Note that
-the <code>grid_expand()</code> automatically produces all unique combinations of parameters
+the <code>expand_grid()</code> automatically produces all unique combinations of parameters
 and replicates.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># Specify the different treatment combinations, as well as the number of</span></span>
 <span id="cb11-2"><a href="#cb11-2"></a><span class="co"># replicates. The function will then automatically generate all unique</span></span>
@@ -646,10 +645,10 @@ stored dataframes).</p>
 ##  4         0.2           -0.1         1 Adults        2 10.4 
 ##  5         0.2           -0.1         1 Juveniles     3  8.03
 ##  6         0.2           -0.1         1 Adults        3 10.1 
-##  7         0.2           -0.1         1 Juveniles     4  7.75
-##  8         0.2           -0.1         1 Adults        4  9.20
-##  9         0.2           -0.1         1 Juveniles     5  7.24
-## 10         0.2           -0.1         1 Adults        5  9.27
+##  7         0.2           -0.1         1 Juveniles     4  7.72
+##  8         0.2           -0.1         1 Adults        4 10.2 
+##  9         0.2           -0.1         1 Juveniles     5  7.88
+## 10         0.2           -0.1         1 Adults        5 10.2 
 ## # … with 59,990 more rows</code></pre>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Take a subset and unnest</span></span>
 <span id="cb17-2"><a href="#cb17-2"></a>design <span class="op">%&gt;%</span></span>
@@ -661,13 +660,13 @@ stored dataframes).</p>
 ##  1         0.2           -0.5         1 Juveniles     1 10      
 ##  2         0.2           -0.5         1 Adults        1 10      
 ##  3         0.2           -0.5         1 Juveniles     2  0.00911
-##  4         0.2           -0.5         1 Adults        2  9.88   
-##  5         0.2           -0.5         1 Juveniles     3  1.24   
-##  6         0.2           -0.5         1 Adults        3  8.89   
-##  7         0.2           -0.5         1 Juveniles     4  1.00   
-##  8         0.2           -0.5         1 Adults        4  8.15   
-##  9         0.2           -0.5         1 Juveniles     5  1.40   
-## 10         0.2           -0.5         1 Adults        5  7.44   
+##  4         0.2           -0.5         1 Adults        2  9.43   
+##  5         0.2           -0.5         1 Juveniles     3  1.43   
+##  6         0.2           -0.5         1 Adults        3  8.49   
+##  7         0.2           -0.5         1 Juveniles     4  1.05   
+##  8         0.2           -0.5         1 Adults        4  7.77   
+##  9         0.2           -0.5         1 Juveniles     5  1.53   
+## 10         0.2           -0.5         1 Adults        5  7.12   
 ## # … with 19,990 more rows</code></pre>
 </div>
 <div id="visualization" class="section level1">
@@ -710,11 +709,11 @@ specific parameter combination. Here, we calculate the mean and the 2.5% and
 ##   temp_beta_1 popsize_beta_1 Stage   Year Lower Upper Count
 ##         &lt;dbl&gt;          &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
 ## 1         0.2           -0.5 Adults     1 10    10    10   
-## 2         0.2           -0.5 Adults     2  9.22 10.5   9.93
-## 3         0.2           -0.5 Adults     3  8.30  9.43  8.94
-## 4         0.2           -0.5 Adults     4  7.58  8.59  8.16
-## 5         0.2           -0.5 Adults     5  6.92  7.85  7.44
-## 6         0.2           -0.5 Adults     6  6.37  7.21  6.83</code></pre>
+## 2         0.2           -0.5 Adults     2  9.16 10.5   9.96
+## 3         0.2           -0.5 Adults     3  8.25  9.42  8.97
+## 4         0.2           -0.5 Adults     4  7.54  8.60  8.18
+## 5         0.2           -0.5 Adults     5  6.88  7.84  7.46
+## 6         0.2           -0.5 Adults     6  6.34  7.18  6.85</code></pre>
 <p>Finally, we can plot the population dynamics for each of the parameter
 combinations and add the confidence bands previously calculated.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a><span class="co"># Plot</span></span>
@@ -743,7 +742,7 @@ using ggplot.</p>
 </div>
 <div id="session-information" class="section level1">
 <h1>Session Information</h1>
-<pre><code>## R version 4.1.3 (2022-03-10)
+<pre><code>## R version 4.2.0 (2022-04-22)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Linux Mint 19.3
 ## 
@@ -763,26 +762,26 @@ using ggplot.</p>
 ## [1] stats     graphics  grDevices utils     datasets  methods   base     
 ## 
 ## other attached packages:
-## [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.8     purrr_0.3.4    
-## [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.6    ggplot2_3.3.5  
+## [1] forcats_0.5.1   stringr_1.4.0   dplyr_1.0.9     purrr_0.3.4    
+## [5] readr_2.1.2     tidyr_1.2.0     tibble_3.1.7    ggplot2_3.3.6  
 ## [9] tidyverse_1.3.1
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] tidyselect_1.1.2 xfun_0.30        bslib_0.3.1      haven_2.4.3     
-##  [5] colorspace_2.0-3 vctrs_0.3.8      generics_0.1.2   htmltools_0.5.2 
-##  [9] yaml_2.3.5       utf8_1.2.2       rlang_1.0.2      jquerylib_0.1.4 
-## [13] pillar_1.7.0     withr_2.5.0      glue_1.6.2       DBI_1.1.2       
-## [17] dbplyr_2.1.1     modelr_0.1.8     readxl_1.3.1     lifecycle_1.0.1 
-## [21] cellranger_1.1.0 munsell_0.5.0    blogdown_1.7     gtable_0.3.0    
-## [25] rvest_1.0.2      evaluate_0.15    labeling_0.4.2   knitr_1.37      
-## [29] tzdb_0.2.0       fastmap_1.1.0    fansi_1.0.2      highr_0.9       
-## [33] Rcpp_1.0.8.3     broom_0.7.12     backports_1.4.1  scales_1.1.1    
-## [37] jsonlite_1.8.0   farver_2.1.0     fs_1.5.2         hms_1.1.1       
-## [41] digest_0.6.29    stringi_1.7.6    bookdown_0.24    grid_4.1.3      
-## [45] cli_3.2.0        tools_4.1.3      magrittr_2.0.2   sass_0.4.0      
-## [49] crayon_1.5.0     pkgconfig_2.0.3  ellipsis_0.3.2   xml2_1.3.3      
-## [53] reprex_2.0.1     lubridate_1.8.0  rstudioapi_0.13  assertthat_0.2.1
-## [57] rmarkdown_2.13   httr_1.4.2       R6_2.5.1         compiler_4.1.3</code></pre>
+##  [1] tidyselect_1.1.2 xfun_0.31        bslib_0.3.1      haven_2.5.0     
+##  [5] colorspace_2.0-3 vctrs_0.4.1      generics_0.1.3   htmltools_0.5.2 
+##  [9] yaml_2.3.5       utf8_1.2.2       rlang_1.0.4      jquerylib_0.1.4 
+## [13] pillar_1.7.0     withr_2.5.0      glue_1.6.2       DBI_1.1.3       
+## [17] dbplyr_2.2.1     modelr_0.1.8     readxl_1.4.0     lifecycle_1.0.1 
+## [21] cellranger_1.1.0 munsell_0.5.0    blogdown_1.10    gtable_0.3.0    
+## [25] rvest_1.0.2      evaluate_0.15    labeling_0.4.2   knitr_1.39      
+## [29] tzdb_0.3.0       fastmap_1.1.0    fansi_1.0.3      highr_0.9       
+## [33] broom_1.0.0      backports_1.4.1  scales_1.2.0     jsonlite_1.8.0  
+## [37] farver_2.1.1     fs_1.5.2         hms_1.1.1        digest_0.6.29   
+## [41] stringi_1.7.8    bookdown_0.27    grid_4.2.0       cli_3.3.0       
+## [45] tools_4.2.0      magrittr_2.0.3   sass_0.4.1       crayon_1.5.1    
+## [49] pkgconfig_2.0.3  ellipsis_0.3.2   xml2_1.3.3       reprex_2.0.1    
+## [53] lubridate_1.8.0  rstudioapi_0.13  assertthat_0.2.1 rmarkdown_2.14  
+## [57] httr_1.4.3       R6_2.5.1         compiler_4.2.0</code></pre>
 </div>
 
 

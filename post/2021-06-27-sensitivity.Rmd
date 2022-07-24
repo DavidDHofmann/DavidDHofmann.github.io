@@ -287,7 +287,7 @@ Now we are all settled for our sensitivity analysis and we can project our
 population into the future using different parameters. This is where the power
 of tibbles comes into play. For this, we first span a grid that contains all
 combinations of parameters that we want to test for. This can easily be done
-using the `grid_expand()` function. Moreover, we can use the function to specify
+using the `expand_grid()` function. Moreover, we can use the function to specify
 how many replicates of each combination we wish to run (this will allow us to
 come up with bootstrap confidence intervals). Although we could now vary all six
 parameters describing the functional forms of \(S_j\) and \(F_a\), (i.e.
@@ -295,7 +295,7 @@ parameters describing the functional forms of \(S_j\) and \(F_a\), (i.e.
 popsize}, \beta_{2, popsize}\)), this will result in too many different outputs.
 Hence, we are only going to vary \(\beta_{1, temp}\) and \(\beta_{1, popsize}\)
 and we will repeat each simulation 100 times (i.e. 100 replicates). Note that
-the `grid_expand()` automatically produces all unique combinations of parameters
+the `expand_grid()` automatically produces all unique combinations of parameters
 and replicates.
 
 ```{r}
