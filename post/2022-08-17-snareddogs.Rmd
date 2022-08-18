@@ -92,7 +92,7 @@ recovered from the anesthesia, the pack started to move and slowly ventured off
 into the sunset, followed by a convoy of safari vehicles. Mission accomplished;
 it was the perfect time to celebrate with a cold beer.
 
-```{r, echo=F, messages=F, out.width="100%", fig.cap="Right after we removed the last snare, the dogs started to move and prepared for a hunt. The front dog is the dominant male, who now carries a GPS satellite collar that allows us to monitor the pack’s movements remotely."}
+```{r, echo=F, messages=F, out.width="50%", fig.cap="Right after we removed the last snare, the dogs started to move and prepared for a hunt. The front dog is the dominant male, who now carries a GPS satellite collar that allows us to monitor the pack’s movements remotely."}
 knitr::include_graphics("/img/gallery_snareddogs/Dijo.jpg", error = F)
 ```
 
@@ -107,7 +107,7 @@ Most likely the snares were set with the purpose of obtaining bush meat from
 antelopes and other game, but sadly they are so unspecific that often non-target
 species become victims too.
 
-```{r, echo=F, messages=F, out.width="100%", fig.cap="Figure 5: Movement route of the pack two weeks prior to the snare removal. As you can see from their trajectory, the dogs passed by the village of Mababe, a village known for its illegal trapping and hunting activities."}
+```{r, echo=F, messages=F, out.width="100%", fig.cap="Movement route of the pack two weeks prior to the snare removal. As you can see from their trajectory, the dogs passed by the village of Mababe, a village known for its illegal trapping and hunting activities."}
 knitr::include_graphics("/img/gallery_snareddogs/SnaredDogsRoute.png", error = F)
 ```
 
