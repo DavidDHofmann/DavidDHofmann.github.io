@@ -1,0 +1,131 @@
+---
+title: "A Fair Share to De-Snare"
+summary: "During my last season of field work in Botswana, we encountered a pack of wild dogs where some individuals carried a wire snare around their neck. Luckily, with the aid of a wildlife veterinarian, we were able to remove the snares."
+author: "David D. Hofmann"
+date: 2022-08-18T12:00:00-05:00
+categories: ["Botswana"]
+tags: ["Botswana", "Africa", "field work"]
+image: "img/post_snareddogs.jpg"
+output:
+  blogdown::html_page:
+    highlight: tango
+    toc: false
+editor_options:
+  chunk_output_type: console
+---
+
+A few weeks ago, the management from Mogotlo Lodge informed us that they
+encountered a pack of wild dogs and that one of the dogs had a wire-snare around
+its neck. Although we immediately headed out trying to locate the pack, we
+couldn’t find the dogs. African wild dogs roam massive home ranges of several
+hundred km2 and finding them without radio collars requires quite a lot of
+perseverance, kilometers driven, spoor tracking skills, and a great deal of
+luck. Luckily, a few weeks we finally found them and with the help of a
+veterinarian, we were able to remove the snare and treat the dog. Since the
+snare had already been on the dog for a long time, it had cut deeply into its
+neck and caused a severe infection, which required some serious cleaning and the
+use of antibiotics. A story with a happy ending, as the dog fully recovered from
+this unlucky incident. To be able to monitor the treated dog and keep a close
+eye to the pack, we decided to take the opportunity of the presence of the vet
+and deployed a GPS/Satellite collar on the pack’s dominant male.
+
+```{r, echo=F, messages=F, out.width="50%", fig.cap="Snare removal on the wild dog that was reported by the guides at the Mogotlo lodge."}
+knitr::include_graphics("/img/gallery_snareddogs/SnaredDog1.jpg", error = F)
+```
+
+A few weeks later, Alex and I headed out again to check on the dogs. This time
+finding them was an easy task, thanks to the precise GPS location that the
+collar had just sent via Iridium Satellite system to our server. As we arrived
+on site, the dogs were resting right next to the main Khwai-to-Mababe road, in
+the shade of a couple of Mopane trees. We immediately started taking
+identification pictures (left sides, right sides and hinds) of each individual.
+In a pack 17 dogs, getting all the necessary ID pictures can be chaotic and
+requires quite some time. At some point, Alex flipped through the photos on his
+camera and startled, as yet another dog had a wire-snare around its neck.
+Slightly confused about our finding we evaluated our options. We concluded it
+would be best to confer with “dog camp” (so we familiarly call our research camp
+station) and ask for advice. Unfortunately, we were too far from dog camp and
+out of radio comms. Luckily, a short climb on top of the car was all that was
+needed to get enough phone reception for a broken yet clear enough call. “For
+f..ks sake… not again”, was the worried response of our camp manager Peter.
+Pressed for time, as the morning was slowly turning into afternoon and the drive
+from Maun to our location would have taken several hours, Peter was left with no
+other options than to fly Rob Jackson, the vet, from Maun to where we were by
+Helicopter.
+
+```{r, echo=F, messages=F, out.width="50%", fig.cap="One of the three snared wild dogs that we recently discovered. The wire snare is barely visible as it is tightly strapped around the dog's neck."}
+knitr::include_graphics("/img/gallery_snareddogs/SnaredDog2.jpg", error = F)
+```
+
+Relieved that we would get help from the vet, Alex and I continued taking ID
+pictures of the dogs. While driving from one huddle of dogs to another, we
+always tried to keep an eye on the snared dog, just to be sure we could easily
+point it out once Rob arrived. This is easier said than done, as the dogs
+constantly moved from one shady spot to another. Oddly enough, we felt that the
+snared dog disappeared on our right but reappeared on our left. Eventually, we
+got so confused that we flipped through our images again. Oh my! It turned out
+that not one, but three dogs had been snared.
+
+Fortunately, we soon heard the faint humming of an approaching helicopter. Rob
+was on his way! I still struggle to understand how, but Dan, the pilot from
+Helicopter Horizon, managed to land his machine safely in the dense Mopane
+forest, a couple hundred meters away from the dogs. Only a few minutes later,
+Rob and Dan popped out of the bush and climbed onto our car. Because the dogs
+had moved again, it took us a while to pin down the first snared individual.
+Once we found it, Rob immediately took a shot with the dart gun. Bullseye! The
+dart hit perfectly and around ten minutes later the dog was deep asleep. We
+approached the sleeping dog and Rob removed the wire snare. It hadn’t been on
+the dog for long, so luckily it hadn’t caused too much damage. As soon as the
+snare was removed and the wound cleaned, we went for the next dog.
+
+```{r, echo=F, messages=F, out.width="50%", fig.cap="All three snares that we removed that day. They had not been on the dogs for very long and still look clean."}
+knitr::include_graphics("/img/gallery_snareddogs/DogSnares.jpg", error = F)
+```
+
+Because the dogs rested so close to the road, the operation attracted several
+tourists that were on their way into Moremi or Chobe. Before we realized, a
+crowd monitoring our every movement had gathered. Undistracted by our observers,
+we continued our work and successfully removed all three snares within less than
+two hours. None of the dogs was seriously injured, so we immediately injected
+them with the reversal solution to neutralize the anesthetic. As the last dog
+recovered from the anesthesia, the pack started to move and slowly ventured off
+into the sunset, followed by a convoy of safari vehicles. Mission accomplished;
+it was the perfect time to celebrate with a cold beer.
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap="Right after we removed the last snare, the dogs started to move and prepared for a hunt. The front dog is the dominant male, who now carries a GPS satellite collar that allows us to monitor the pack’s movements remotely."}
+knitr::include_graphics("/img/gallery_snareddogs/Dijo.jpg", error = F)
+```
+
+Judging by the wounds, we suspected that the snares hadn’t been on the dogs for
+longer than two weeks. Back in camp, we thus investigated the pack’s GPS data
+during the previous two weeks and traced their route to get a feeling of where
+the snares may have been. This was clearly not an isolated case and the
+possibility that something similar would happen again in the future was more
+than real. We speculated that the dogs may had picked up the snares somewhere in
+the proximity of Mababe village, where the dogs had roamed for a couple days.
+Most likely the snares were set with the purpose of obtaining bush meat from
+antelopes and other game, but sadly they are so unspecific that often non-target
+species become victims too.
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap="Figure 5: Movement route of the pack two weeks prior to the snare removal. As you can see from their trajectory, the dogs passed by the village of Mababe, a village known for its illegal trapping and hunting activities."}
+knitr::include_graphics("/img/gallery_snareddogs/SnaredDogsRoute.png", error = F)
+```
+
+In response to these and other snaring activities in the region, Botswana
+Predator Conservation together with the Department of Wildlife and National
+Parks (DWNP), DWNP Anti-Poaching Unit (APU), DWNP Investigations, Botswana
+Police Service, DWNP K9 Unit, and the Botswana Defence Force (BDF), as well as
+private entities including Great Plains Foundation (GPF) and CONNECT engaged in
+a joint operation to locate and remove as many snares as possible. Over the
+course of five days, four de-snaring teams discovered and removed a total of 108
+snares, of which 52 lied within the Khwai Concession (NG19) and 56 within the
+Mababe Concession (NG41). The teams also disclosed a hidden stash of elephant
+tusks which was handed over to the relevant authorities, as well as several bird
+traps setup near lodges.
+
+The story goes to show that snaring remains a major threat to wildlife,
+especially in the vicinity of villages. The operation was successful, and it
+also serves to illustrate that joining forces of various governmental and
+non-governmental organizations is critical to combat the consequences of illegal
+hunting endeavors.
+
