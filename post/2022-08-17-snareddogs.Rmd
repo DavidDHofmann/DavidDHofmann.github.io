@@ -2,7 +2,7 @@
 title: "A Fair Share to De-Snare"
 summary: "During my last season of field work in Botswana, we encountered a pack of wild dogs where some individuals carried a wire snare around their neck. Luckily, with the aid of a wildlife veterinarian, we were able to remove the snares."
 author: "David D. Hofmann"
-date: 2022-08-18T12:00:00-05:00
+date: 2022-08-17T12:00:00-05:00
 categories: ["Botswana"]
 tags: ["Botswana", "Africa", "field work"]
 image: "img/post_snareddogs.jpg"
@@ -128,4 +128,3 @@ especially in the vicinity of villages. The operation was successful, and it
 also serves to illustrate that joining forces of various governmental and
 non-governmental organizations is critical to combat the consequences of illegal
 hunting endeavors.
-
