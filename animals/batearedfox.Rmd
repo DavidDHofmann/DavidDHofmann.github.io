@@ -1,7 +1,7 @@
 ---
 title: "Bat-Eared Fox (Otocyon megalotis)"
 author: "David D. Hofmann"
-date: 2023-09-10T09:00:00-05:00
+date: 2023-09-09T09:00:00-05:00
 categories: ["animals"]
 tags: ["animals"]
 image: "/animals/batearedfox_background.jpeg"
