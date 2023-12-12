@@ -46,7 +46,7 @@ also overlaps with that of other myrmecophagus species, such as the aardvark
 (*Orycteropus afer*), aardwolf (*Proteles cristatus*), and Temminck's pangoling
 (*Smutsia temminckii*) [@Pietersen.2023].
 
-```{r, echo=F, messages=F, out.width="100%", fig.cap="Distribution of the bat-eared fox across sub-Saharan Africa. The species occupies two distinct ranges, on in North-Eastern Africa, another one in South-Western Africa (resulting in the two subspecies *megalotis* and *virgatus*). Notably, these ranges coincide with the spatial distribution of harvester termites (hodotermitidae), which constitute the bat-eared foxes primariy source of food."}
+```{r, echo=F, messages=F, out.width="100%", fig.cap="Distribution of the bat-eared fox across sub-Saharan Africa. The species occupies two distinct ranges, on in North-Eastern Africa, another one in South-Western Africa (resulting in the two subspecies *megalotis* and *virgatus*). Notably, these ranges coincide with the spatial distribution of harvester termites (hodotermitidae), which constitute the bat-eared foxes' primary source of food."}
 knitr::include_graphics("/animals/batearedfox_distribution.png", error = F)
 ```
 
