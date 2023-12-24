@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="David D. Hofmann">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="https://daviddhofmann.github.io//img/campanula.JPG">
+    <meta property="twitter:image" content="https://daviddhofmann.github.io//img/campanula.JPG" />
+    
+
+    
+    <meta name="title" content="Mapping the Flood Extent of the Okavango Delta in R" />
+    <meta property="og:title" content="Mapping the Flood Extent of the Okavango Delta in R" />
+    <meta property="twitter:title" content="Mapping the Flood Extent of the Okavango Delta in R" />
+    
+
+    
+    <meta name="description" content="David D. Hofmann&#39;s Personal Website">
+    <meta property="og:description" content="David D. Hofmann&#39;s Personal Website" />
+    <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
+    
+
+    
+    <meta property="twitter:card" content="The Okavango Delta is one of the world&#39;s most pristine ecosystems, hosting a large diversity of animal and plant species. It represents the planet&#39;s largest inland delta and is characterized by significant seasonal fluctuations of its flood extent. In this blog post, I will introduce you to a simple, yet effective approach to remote sense the Delta&#39;s flood extent using MODIS satellite imagery and the `floodmapr` R-package." />
+    
+    
+
+    <meta name="keyword"  content="David Hofmann, Blog, PhD Student, Ecology, University of Zurich, R, Movement Ecology, Botany">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>Mapping the Flood Extent of the Okavango Delta in R-David D. Hofmann | UZH</title>
+
+    <link rel="canonical" href="/post/2023-12-17_floodmapping/">
+
+    <link rel="stylesheet" href="/css/iDisqus.min.css"/>
+	
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hux-blog.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+    
+    
+    <link href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    
+    
+
+    
+    
+    <script src="/js/jquery.min.js"></script>
+    
+    
+    <script src="/js/bootstrap.min.js"></script>
+    
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">David D. Hofmann</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">Home</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/top/about/">ABOUT</a></li>
+                    
+                        <li><a href="/">BLOG</a></li>
+                    
+                        <li><a href="/top/publications">PUBLICATIONS</a></li>
+                    
+                        <li><a href="/top/gallery/">GALLERY</a></li>
+                    
+                        <li><a href="/animals/">ANIMALS</a></li>
+                    
+
+                    
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/post_okavangodelta.jpg')
+    }
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/r" title="R">
+                            R
+                        </a>
+                        
+                        <a class="tag" href="/tags/okavango-delta" title="Okavango Delta">
+                            Okavango Delta
+                        </a>
+                        
+                        <a class="tag" href="/tags/floodmapping" title="floodmapping">
+                            floodmapping
+                        </a>
+                        
+                    </div>
+                    <h1>Mapping the Flood Extent of the Okavango Delta in R</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        Posted by 
+                        
+                            David D. Hofmann
+                         
+                        on 
+                        Monday, December 18, 2023
+                        
+                        
+                        
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                <header>
+                    <h2>TOC</h2>
+                </header>
+                
+                
+                
+<script src="/rmarkdown-libs/accessible-code-block/empty-anchor.js"></script>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#mapping-the-flood">Mapping the Flood</a>
+<ul>
+<li><a href="#downloading-a-satellite-image">Downloading a Satellite Image</a></li>
+<li><a href="#loading-the-data-into-r">Loading the Data into R</a></li>
+<li><a href="#check-for-bimodality">Check for Bimodality</a></li>
+<li><a href="#classifying-an-image">Classifying an Image</a></li>
+</ul></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#session-information">Session Information</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The Okavango Delta is a flood-pulse driven mosaic of patchy woodlands,
+permanent swamps, and seasonally flooded grasslands that lie within the
+otherwise dry and sandy Kalahari Basin. It is the world’s largest inland delta,
+with a catchment area that can easily be seen from space (Figure 1). The
+delta’s floodwaters are originating from the Angolan highlands, where water is
+channeled through the Cuito and Cubango rivers into the Okavango river. The
+Okavango river eventually splits into many different channels that inundate a
+massive alluvial fan, covering an area between 5’000 and 15’000 km^2. Because
+of the shallow gradient of the delta (1/5600 at the upper floodplains and
+1/3400 at the lower floodplains) water only slowly descends from the catchment
+areas in Angola into the Okavango Delta. As a result, the flood reaches its
+prime extent during the peak dry season (in July or August), when local rains
+have long ceased. The massive inflow of fresh-water during this otherwise dry
+period allows many species to survive in this arid ecosystem and attracts
+massive herds of elephants and antelopes, turning the Delta into a thriving
+hotspot of biodiversity.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-1"></span>
+<img src="../../../../../../img/gallery_floodmapping/DeltaFromSpace.png" alt="Satellite image of Southern Africa. The Okavango Delta is clearly visible due to its dark green hue. The delta is fed by water that is collected in catchment areas in the Angolan highlands and only slowly descends thorugh the Delta's tributaries. In fact, the flood takes so long to arrive that it reaches the distal ends of the delta during the peak dry season." width="100%" />
+<p class="caption">
+Figure 1: Satellite image of Southern Africa. The Okavango Delta is clearly visible due to its dark green hue. The delta is fed by water that is collected in catchment areas in the Angolan highlands and only slowly descends thorugh the Delta’s tributaries. In fact, the flood takes so long to arrive that it reaches the distal ends of the delta during the peak dry season.
+</p>
+</div>
+<p>The Okavango Delta’s flood extent is highly dynamic and drastically changes
+across and within years (Figure 2). Being able to depict flood extents during
+different points in time is therefore vital to better understand species
+behavior and movement patterns. Thanks to data from numerous freely accessible
+satellites, remote sensing opens up new avenues for rendering flood patterns of
+the Okavango Delta at unprecedented spatio-temporal scales. Historically,
+spatial ecologists have utilized <a href="https://www.indexdatabase.de/">normalized differences
+indices</a> (NDs) to remote sense various
+properties of a landscape from satellite imagery. With respect to remote
+sensing surface water, the normalized difference in water index (NDWI) has
+proven particularly useful. However, the Okavango Delta is a more tricky case,
+as areas inundated by water are often not recognizable as such. The main reason
+for this is that the delta’s floodwaters are incredibly shallow, such that
+water is often obstructed by vegetation (e.g., tall grass). In this situation,
+the NDWI tends to underestimate the true extent of the delta’s flood.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-2"></span>
+<img src="../../../../../../img/gallery_floodmapping/DeltaTwoSeasons.png" alt="Satellite images of the Okavango Delta during the dry season (but peak flood) versus its extent during the wet season (but low flood)." width="100%" />
+<p class="caption">
+Figure 2: Satellite images of the Okavango Delta during the dry season (but peak flood) versus its extent during the wet season (but low flood).
+</p>
+</div>
+<p>To address this shortcoming, the <a href="https://www.ori.ub.bw/services/environmental-monitoring-unit">Okavango Delta Research
+Institute</a> has
+developed a <a href="https://www.sciencedirect.com/science/article/pii/S0303243417300053?casa_token=2HoV8n0eFAsAAAAA:VLTUyhbvafjkMVNB38OjqAyagOG2WrYphQWCW5K4IseiEhU_sVx8ms3A3Mq_8uzsFBYTZ5R5sNo">remote sensing
+algorithm</a>
+that is specifically tailored towards detecting flooded areas across the
+Okavango Delta. The algorithm utilizes <a href="https://lpdaac.usgs.gov/products/mcd43a4v061/">MODIS
+MCD43A4</a> satellite data, which
+provides updated composite imagery on an 8 daily basis. Thanks to MODIS’ high
+revisitation rate, these 8 daily composites are almost guaranteed to be
+cloud-free, thus providing a near-continuous monitoring of the Delta. This
+comes at the cost of a relatively coarse spatial resolution of 500 m.
+Nevertheless, 500 m will suffice for most ecological applications.</p>
+<p>I have repeatedly applied the algorithm developed by ORI to obtain flood maps
+my own analyses of African wild dog (<em>Lycaon pictus</em>) movements across the
+Delta. I therefore invested a substantial amount of time into developing an
+automated workflow to generate flood maps for a desired date. The result of
+these efforts is the <code>floodmapr</code> R-package, which is essentially a collection
+of all necessary functions to download and process MODIS satellite data to
+generate a flood map. You can access and install the package via
+<a href="https://github.com/DavidDHofmann/floodmapr/tree/master">Github</a>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;DavidDHofmann/floodmapr&quot;</span>)</span></code></pre></div>
+<p>In this blog post, I’d like to show you how to use the package and highlight
+how you can easily create a flood map for the Okavango Delta for your desired
+dates. While the general workflow is rather simple, I’d like to equip you with
+a bit of background so you better understand what’s happening “beneath the
+hood”.</p>
+</div>
+<div id="mapping-the-flood" class="section level1">
+<h1>Mapping the Flood</h1>
+<p>The general flood mapping workflow is fairly simple:
+- Download a MODIS satellite image for the desired date (<code>modis_download()</code>)
+- Load the data into R (<code>modis_load()</code>)
+- Ensure that we have bimodality in the reflectance properties of water vs. dryland (<code>modis_bimodal()</code>)
+- Use thresholding to classify a flood map (<code>modis_classify()</code>)</p>
+<p>Let’s see how this works.</p>
+<div id="downloading-a-satellite-image" class="section level2">
+<h2>Downloading a Satellite Image</h2>
+<p>As mentioned before, the flood mapping algorithm uses MODIS MCD43A4 data.
+Consequently, we first need to download a satellite image for the date for
+which we’d like to prepare a flood map. The <code>floodmapr</code> package provides the
+<code>modis_download()</code> function for this purpose, which will automatically query
+and download the necessary data. You cannot pick a specific area, as the entire
+Delta will be mapped. Note that you’ll need to setup a free create account with
+<a href="https://www.earthdata.nasa.gov/">EarthData</a> to download data.</p>
+<p>Ok, so let’s assume we want to create flood maps for the dates shown in Figures
+2a and 2b. We can download satellite maps for the two dates as follows:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># Load the floodmapr package</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">library</span>(floodmapr)</span></code></pre></div>
+<pre><code>## Lade nötiges Paket: raster</code></pre>
+<pre><code>## Lade nötiges Paket: sp</code></pre>
+<pre><code>## The legacy packages maptools, rgdal, and rgeos, underpinning this package
+## will retire shortly. Please refer to R-spatial evolution reports on
+## https://r-spatial.org/r/2023/05/15/evolution4.html for details.
+## This package is now running under evolution status 0</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># Download MODIS data for the two desired dates</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>downloaded &lt;-<span class="st"> </span><span class="kw">modis_download</span>(</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="dt">dates     =</span> <span class="kw">c</span>(<span class="st">&quot;2022-09-16&quot;</span>, <span class="st">&quot;2023-03-10&quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  , <span class="dt">outdir    =</span> <span class="kw">tempdir</span>()</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  , <span class="dt">tmpdir    =</span> <span class="kw">tempdir</span>()</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>  , <span class="dt">username  =</span> username</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>  , <span class="dt">password  =</span> password</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>  , <span class="dt">overwrite =</span> F</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>  , <span class="dt">messages  =</span> F</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>)</span></code></pre></div>
+<p>The function will automatically download and preprocess the required MCD43A4
+images and store them on your hard-drive. Even though only band 7 will be
+needed, the function downloads all MODIS bands for completeness.</p>
+</div>
+<div id="loading-the-data-into-r" class="section level2">
+<h2>Loading the Data into R</h2>
+<p>Once the download is finished, the function returns the paths to the downloaded
+files. We’ll pass the filepaths into the <code>modis_load()</code> (which is a wrapper for
+the <code>terra::rast()</code> function) function to load the generated rasters into our
+R-session.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># Load the two downloaded maps into the current R-session</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>flood_dry &lt;-<span class="st"> </span><span class="kw">modis_load</span>(downloaded[<span class="dv">1</span>])</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>flood_wet &lt;-<span class="st"> </span><span class="kw">modis_load</span>(downloaded[<span class="dv">2</span>])</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="kw">show</span>(flood_dry)</span></code></pre></div>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 542, 554, 1  (nrow, ncol, nlyr)
+## resolution  : 0.004614838, 0.004614838  (x, y)
+## extent      : 21.74781, 24.30444, -20.65124, -18.15  (xmin, xmax, ymin, ymax)
+## coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+## source      : 2022-09-16.tif 
+## name        : Band_7 
+## min value   : 0.0393 
+## max value   : 0.5270</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">show</span>(flood_wet)</span></code></pre></div>
+<pre><code>## class       : SpatRaster 
+## dimensions  : 542, 554, 1  (nrow, ncol, nlyr)
+## resolution  : 0.004614838, 0.004614838  (x, y)
+## extent      : 21.74781, 24.30444, -20.65124, -18.15  (xmin, xmax, ymin, ymax)
+## coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+## source      : 2023-03-10.tif 
+## name        : Band_7 
+## min value   : 0.0257 
+## max value   : 0.4533</code></pre>
+</div>
+<div id="check-for-bimodality" class="section level2">
+<h2>Check for Bimodality</h2>
+<p>In order to run a classification (dry vs. water), the flood mapping algorithm
+makes use of a set of dryland and water polygons. These are assumed to always
+be in dryland or in water, respectively, and serve to “calibrate” the flood
+mapping algorithm. They basically allow informing the algorithm about the
+reflectance properties of dryland versus water for the given point in time (as
+these may change with the seasons). However, a reliable calibration is only
+possible if the two categories exhibit sufficiently distinct reflectances. To
+check this, we can run a bimodality check with the <code>modis_bimodal()</code> function,
+which extracts reflectance properties beneath the two categories (dryland and
+water) and generates a density plot of the band 7 reflectance values. If there
+are two very distinct peaks (one for dryland, one for water), we can go ahead
+and safely generate a flood map. If bimodality is not given, we can still
+create a flood map, yet should be more careful when using it for analyses.</p>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-7"></span>
+<img src="../../../../../../img/gallery_floodmapping/FloodmappingPolygons.png" alt=" a) Calibration polygons that are used to inform the algorithm about the reflecance properties of dryland vs. water. b) Shows a classified flood map." width="100%" />
+<p class="caption">
+Figure 3:  a) Calibration polygons that are used to inform the algorithm about the reflecance properties of dryland vs. water. b) Shows a classified flood map.
+</p>
+</div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="co"># Check for bimodality</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a><span class="kw">modis_bimodal</span>(flood_dry)</span></code></pre></div>
+<pre><code>## [1] TRUE</code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">modis_bimodal</span>(flood_wet)</span></code></pre></div>
+<pre><code>## [1] FALSE</code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co"># Visualize the reflectance properties</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">modis_specs</span>(flood_dry)</span></code></pre></div>
+<p><img src="/post/2023-12-17_floodmapping_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">modis_specs</span>(flood_wet)</span></code></pre></div>
+<p><img src="/post/2023-12-17_floodmapping_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p>In our case, it appears that only the first map is bimodal, whereas the second
+is not. This can quite clearly be seen from the spectral reflectance images
+that show a substantial overlap in the second case. For the sake of this
+tutorial, we’ll ignore the bimodality issue.</p>
+</div>
+<div id="classifying-an-image" class="section level2">
+<h2>Classifying an Image</h2>
+<p>We can now go ahead and run a classification to create a proper flood map. For
+this, we use the <code>modis_classify()</code> function, which will automatically
+determine a threshold to split the map into dryland and water. If the map fails
+the bimodality check, we can still enforce a classification using the option
+<code>ignore.bimodality = T</code>. However, this is not advised and may result in
+unreliable flood maps.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="co"># Classify floodmaps, for now ignoring bimodality</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>flood_dry_class &lt;-<span class="st"> </span><span class="kw">modis_classify</span>(flood_dry, <span class="dt">ignore.bimodality =</span> T)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>flood_wet_class &lt;-<span class="st"> </span><span class="kw">modis_classify</span>(flood_wet, <span class="dt">ignore.bimodality =</span> T)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a><span class="co"># Visualize the classified maps</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a><span class="kw">plot</span>(flood_dry_class, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>), <span class="dt">main =</span> <span class="st">&quot;Flood 2022-09-16&quot;</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a><span class="kw">plot</span>(flood_wet_class, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>), <span class="dt">main =</span> <span class="st">&quot;Flood 2023-03-10&quot;</span>)</span></code></pre></div>
+<div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
+<img src="/post/2023-12-17_floodmapping_files/figure-html/unnamed-chunk-9-1.png" alt="Classified flood maps." width="100%" />
+<p class="caption">
+Figure 4: Classified flood maps.
+</p>
+</div>
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>With the <code>floodmapr</code> package were able to generate flood maps for a couple of
+dates with only few lines of code.</p>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session Information</h1>
+<pre><code>## R version 4.1.2 (2021-11-01)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Linux Mint 21.2
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+## 
+## locale:
+##  [1] LC_CTYPE=de_CH.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_CH.UTF-8        LC_COLLATE=de_CH.UTF-8    
+##  [5] LC_MONETARY=de_CH.UTF-8    LC_MESSAGES=de_CH.UTF-8   
+##  [7] LC_PAPER=de_CH.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_CH.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+## [1] floodmapr_0.0.0.9000 raster_3.6-20        sp_1.6-1            
+## 
+## loaded via a namespace (and not attached):
+##  [1] Rcpp_1.0.11      bslib_0.5.0      compiler_4.1.2   pillar_1.9.0    
+##  [5] jquerylib_0.1.4  highr_0.10       tools_4.1.2      digest_0.6.31   
+##  [9] timechange_0.2.0 lubridate_1.9.3  jsonlite_1.8.5   evaluate_0.21   
+## [13] lifecycle_1.0.4  tibble_3.2.1     gtable_0.3.3     lattice_0.20-45 
+## [17] pkgconfig_2.0.3  rlang_1.1.2      cli_3.6.1        rgdal_1.6-6     
+## [21] curl_5.0.1       yaml_2.3.7       blogdown_1.17    xfun_0.39       
+## [25] fastmap_1.1.1    terra_1.7-59     withr_2.5.2      httr_1.4.6      
+## [29] dplyr_1.1.3      knitr_1.43       generics_0.1.3   sass_0.4.6      
+## [33] vctrs_0.6.4      tidyselect_1.2.0 grid_4.1.2       glue_1.6.2      
+## [37] R6_2.5.1         fansi_1.0.5      rmarkdown_2.22   bookdown_0.34   
+## [41] farver_2.1.1     purrr_1.0.2      tidyr_1.3.0      ggplot2_3.4.4   
+## [45] magrittr_2.0.3   scales_1.2.1     codetools_0.2-18 htmltools_0.5.5 
+## [49] colorspace_2.1-0 labeling_0.4.2   utf8_1.2.4       munsell_0.5.0   
+## [53] cachem_1.0.8</code></pre>
+</div>
+
+
+                
+
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/2022-08-17-snareddogs/" data-toggle="tooltip" data-placement="top" title="A Fair Share to De-Snare">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                </ul>
+
+                
+<div id="disqus-comment"></div>
+
+
+
+            </div>
+            
+            <div class="
+                col-lg-11 col-lg-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                   
+                    
+                    <li>
+                        <a href="mailto:daviddenishofmann@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    <li>
+                        <a href="https://twitter.com/daviddhofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+
+                    
+
+		    
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/DavidDHofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fa fa-circle fa-stack-2x"></i>
+                                <i class="fa fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+                </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; David D. Hofmann 2023
+                    <br>
+                    <a href="https://themes.gohugo.io/hugo-theme-cleanwhite">CleanWhite Hugo Theme</a> by <a href="https://zhaohuabing.com">Huabing</a> |
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="100px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=zhaohuabing&repo=hugo-theme-cleanwhite&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        async("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    async("https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'UA-200759743-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+
+
+</body>
+</html>
