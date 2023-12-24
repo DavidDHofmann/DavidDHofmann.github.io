@@ -365,11 +365,13 @@ hood”.</p>
 </div>
 <div id="mapping-the-flood" class="section level1">
 <h1>Mapping the Flood</h1>
-<p>The general flood mapping workflow is fairly simple:
-- Download a MODIS satellite image for the desired date (<code>modis_download()</code>)
-- Load the data into R (<code>modis_load()</code>)
-- Ensure that we have bimodality in the reflectance properties of water vs. dryland (<code>modis_bimodal()</code>)
-- Use thresholding to classify a flood map (<code>modis_classify()</code>)</p>
+<p>The general flood mapping workflow is fairly simple:</p>
+<ul>
+<li>Download a MODIS satellite image for the desired date (<code>modis_download()</code>)</li>
+<li>Load the data into R (<code>modis_load()</code>)</li>
+<li>Ensure that we have bimodality in the reflectance properties of water vs. dryland (<code>modis_bimodal()</code>)</li>
+<li>Use thresholding to classify a flood map (<code>modis_classify()</code>)</li>
+</ul>
 <p>Let’s see how this works.</p>
 <div id="downloading-a-satellite-image" class="section level2">
 <h2>Downloading a Satellite Image</h2>
@@ -407,9 +409,9 @@ needed, the function downloads all MODIS bands for completeness.</p>
 <div id="loading-the-data-into-r" class="section level2">
 <h2>Loading the Data into R</h2>
 <p>Once the download is finished, the function returns the paths to the downloaded
-files. We’ll pass the filepaths into the <code>modis_load()</code> (which is a wrapper for
-the <code>terra::rast()</code> function) function to load the generated rasters into our
-R-session.</p>
+files. We’ll pass the filepaths into the <code>modis_load()</code> function (which is a
+wrapper for the <code>terra::rast()</code> function) to load the generated rasters into
+our R-session.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># Load the two downloaded maps into the current R-session</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>flood_dry &lt;-<span class="st"> </span><span class="kw">modis_load</span>(downloaded[<span class="dv">1</span>])</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>flood_wet &lt;-<span class="st"> </span><span class="kw">modis_load</span>(downloaded[<span class="dv">2</span>])</span>

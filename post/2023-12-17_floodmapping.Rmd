@@ -93,6 +93,7 @@ hood".
 
 # Mapping the Flood
 The general flood mapping workflow is fairly simple:
+
 - Download a MODIS satellite image for the desired date (`modis_download()`)
 - Load the data into R (`modis_load()`)
 - Ensure that we have bimodality in the reflectance properties of water vs. dryland (`modis_bimodal()`)
@@ -139,9 +140,9 @@ needed, the function downloads all MODIS bands for completeness.
 
 ## Loading the Data into R
 Once the download is finished, the function returns the paths to the downloaded
-files. We'll pass the filepaths into the `modis_load()` (which is a wrapper for
-the `terra::rast()` function) function to load the generated rasters into our
-R-session.
+files. We'll pass the filepaths into the `modis_load()` function (which is a
+wrapper for the `terra::rast()` function) to load the generated rasters into
+our R-session.
 
 ```{r}
 # Load the two downloaded maps into the current R-session
