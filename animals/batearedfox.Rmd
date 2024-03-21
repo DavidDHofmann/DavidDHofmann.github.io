@@ -4,7 +4,7 @@ author: "David D. Hofmann"
 date: 2023-09-09T09:00:00-05:00
 categories: ["animals"]
 tags: ["animals"]
-image: "/animals/batearedfox_background.jpeg"
+image: "/animals/batearedfox_background.jpg"
 output:
   blogdown::html_page
 bibliography: [Literature.bib]
@@ -33,7 +33,7 @@ scientific experiments have uncovered an impressive capacity for
 problem-solving and innovation in this species [@Petelle.2023].
 
 ```{r, echo=F, messages=F, out.width="100%", fig.cap="A pair of bat-eared foxes photographed on Chief's Island in Botswana."}
-knitr::include_graphics("/animals/batearedfox.jpeg", error = F)
+knitr::include_graphics("/animals/batearedfox.jpg", error = F)
 ```
 
 Bat-eared foxes inhabit two distinct regions within the sub-Saharan landscape:
@@ -80,7 +80,7 @@ or hyenas to protect their burrows, they often retract at the last moment,
 avoiding actual combat [@Emmet.2018].
 
 ```{r, echo=F, messages=F, out.width="100%", fig.cap="A family of bat-eared foxes rallying and playing."}
-knitr::include_graphics("/animals/batearedfox_toying.jpeg", error = F)
+knitr::include_graphics("/animals/batearedfox_toying.jpg", error = F)
 ```
 
 Interestingly, there's a documented instance from Hwange National Park in
