@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Okavango Delta on David D. Hofmann</title>
-    <link>http://localhost:4321/tags/okavango-delta/</link>
+    <link>https://davidhofmann.github.io/tags/okavango-delta/</link>
     <description>Recent content in Okavango Delta on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 18 Dec 2023 18:00:00 -0500</lastBuildDate>
-    <atom:link href="http://localhost:4321/tags/okavango-delta/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://davidhofmann.github.io/tags/okavango-delta/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mapping the Flood Extent of the Okavango Delta in R</title>
-      <link>http://localhost:4321/post/floodmapping/</link>
+      <link>https://davidhofmann.github.io/post/floodmapping/</link>
       <pubDate>Mon, 18 Dec 2023 18:00:00 -0500</pubDate>
-      <guid>http://localhost:4321/post/floodmapping/</guid>
+      <guid>https://davidhofmann.github.io/post/floodmapping/</guid>
       <description>The Okavango Delta is one of the world&amp;rsquo;s most pristine ecosystems, hosting a large diversity of animal and plant species. It represents the planet&amp;rsquo;s largest inland delta and is characterized by significant seasonal fluctuations of its flood extent. In this blog post, I will introduce you to a simple, yet effective approach to remote sense the Delta&amp;rsquo;s flood extent using MODIS satellite imagery and the &lt;code&gt;floodmapr&lt;/code&gt; R-package.</description>
     </item>
   </channel>

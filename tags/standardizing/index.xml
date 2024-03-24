@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Standardizing on David D. Hofmann</title>
-    <link>http://localhost:4321/tags/standardizing/</link>
+    <link>https://davidhofmann.github.io/tags/standardizing/</link>
     <description>Recent content in Standardizing on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sun, 19 Sep 2021 20:00:05 -0500</lastBuildDate>
-    <atom:link href="http://localhost:4321/tags/standardizing/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://davidhofmann.github.io/tags/standardizing/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Some Insights on Scaling/Standardizing</title>
-      <link>http://localhost:4321/post/scaling/</link>
+      <link>https://davidhofmann.github.io/post/scaling/</link>
       <pubDate>Sun, 19 Sep 2021 20:00:05 -0500</pubDate>
-      <guid>http://localhost:4321/post/scaling/</guid>
+      <guid>https://davidhofmann.github.io/post/scaling/</guid>
       <description>When we fit a statistical model, we usually scale our covariates to a mean of zero and standard deviation of one. But how does this actually influence the model and how does scaling change the way in which we need to interpret resulting model coefficients? Moreover, can we backtransform model coefficients from the scaled into the unscaled world? In this blog post, we&amp;rsquo;ll take a detailed look at scaling and examine why we scale, how to scale, and how to backtransform a model containing scaled covariates.</description>
     </item>
   </channel>
