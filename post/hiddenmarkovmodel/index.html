@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <meta property="og:site_name" content="David D. Hofmann">
+    <meta property="og:type" content="article">
+
+    
+    <meta property="og:image" content="img/backgrounds/HiddenMarkovModels.jpg">
+    <meta property="twitter:image" content="img/backgrounds/HiddenMarkovModels.jpg" />
+    
+
+    
+    <meta name="title" content="A Simulation-Based Introduction to Hidden-Markov Movement Models" />
+    <meta property="og:title" content="A Simulation-Based Introduction to Hidden-Markov Movement Models" />
+    <meta property="twitter:title" content="A Simulation-Based Introduction to Hidden-Markov Movement Models" />
+    
+
+    
+    <meta name="description" content="David D. Hofmann&#39;s Personal Website">
+    <meta property="og:description" content="David D. Hofmann&#39;s Personal Website" />
+    <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
+    
+
+    
+    <meta property="twitter:card" content="Hidden Markov Movement Models (HMMMs) are increasingly popular in movement ecology to learn more about unobserved behavioral modes from telemetry data. In this blog post, we will simulate telemetry data with known movement parameters and estimate the parameters and associated behavioral modes using the moveHMM package." />
+    
+    
+
+    <meta name="keyword"  content="David Hofmann, Blog, PhD Student, Ecology, University of Zurich, R, Movement Ecology, Botany">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+
+    <title>A Simulation-Based Introduction to Hidden-Markov Movement Models | David D. Hofmann | UZH</title>
+
+    <link rel="canonical" href="/post/hiddenmarkovmodel/">
+
+    
+    
+    
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+    
+    <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
+
+    
+    <link rel="stylesheet" href="/css/zanshang.css">
+
+    
+    <link rel="stylesheet" href="/css/font-awesome.all.min.css">
+
+    
+    
+
+    
+    <script src="/js/jquery.min.js"></script>
+
+    
+    <script src="/js/bootstrap.min.js"></script>
+
+    
+    <script src="/js/hux-blog.min.js"></script>
+
+    
+    <script src="/js/lazysizes.min.js"></script>
+
+    
+    
+
+</head>
+
+
+
+
+
+
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+
+    <div class="container-fluid">
+        
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">David D. Hofmann</a>
+        </div>
+
+        
+        
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="/">All Posts</a>
+                    </li>
+                    
+                    
+		    
+                        <li><a href="/about//">ABOUT</a></li>
+                    
+                        <li><a href="/publications/">PUBLICATIONS</a></li>
+                    
+                        <li><a href="/gallery//">GALLERY</a></li>
+                    
+                        <li><a href="/animals//">ANIMALS</a></li>
+                    
+		            <li>
+                        <a href="/search"><i class="fa fa-search"></i></a>
+		           </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    
+</nav>
+<script>
+    
+    
+    
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        
+            $navbar.className = " ";
+            
+            setTimeout(function(){
+                
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+
+
+<style type="text/css">
+    header.intro-header {
+        background-image: url('/img/backgrounds/HiddenMarkovModels.jpg')
+    }
+</style>
+
+<header class="intro-header" >
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                        <a class="tag" href="/tags/r" title="R">
+                            R
+                        </a>
+                        
+                        <a class="tag" href="/tags/movement" title="movement">
+                            movement
+                        </a>
+                        
+                        <a class="tag" href="/tags/simulation" title="simulation">
+                            simulation
+                        </a>
+                        
+                    </div>
+                    <h1>A Simulation-Based Introduction to Hidden-Markov Movement Models</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        
+                            Posted by 
+                            
+                                David D. Hofmann
+                             
+                            on 
+                            Thursday, June 30, 2022
+                            
+                            
+                            
+                            
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+
+
+
+<article>
+    <div class="container">
+        <div class="row">
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                
+                
+<script src="http://localhost:1313/post/hiddenmarkovmodel/index_files/accessible-code-block/empty-anchor.js"></script>
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#simulation-prerequisites">Simulation Prerequisites</a>
+<ul>
+<li><a href="#function-to-sample-step-lengths">Function to Sample Step Lengths</a></li>
+<li><a href="#function-to-sample-turning-angles">Function to Sample Turning Angles</a></li>
+<li><a href="#function-to-determine-transition-probabilities">Function to Determine Transition-Probabilities</a></li>
+<li><a href="#simulation-parameters">Simulation Parameters</a></li>
+</ul></li>
+<li><a href="#fitting-the-model">Fitting the Model</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#further-reading">Further Reading</a>
+<ul>
+<li><a href="#vignettes">Vignettes</a></li>
+<li><a href="#papers">Papers</a></li>
+</ul></li>
+<li><a href="#session-information">Session Information</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>Every observed movement trajectory can be viewed as a sequence of step-lengths
+and turning angles. The basic idea of Hidden Markov Movement Models (HMMMs) is
+to decompose this sequence into distinct behavioral modes by parametrizing
+step-length and turning-angle distributions that depend on the animal’s
+unobserved behavioral state. Stated differently, the idea is to find step-length
+and turning-angle distributions for a given number of states such that the
+likelihood of observing the collected data is maximized. Once the maximum
+likelihood estimates have been found, the “Viterbi-Algorithm” can be applied to
+retrieve the animal’s inferred movement state at every point in time. In
+movement ecology, HMMMs are very popular because they allow to connect observed
+movements to an unobserved underlying behavioral state.</p>
+<p>In this blog post, we will simulate some movement data with known parameters and
+then fit an HMMM to see whether we can actually retrieve the correct simulation
+parameters using the <code>moveHMM</code> package.</p>
+</div>
+<div id="simulation-prerequisites" class="section level1">
+<h1>Simulation Prerequisites</h1>
+<p>Let’s get started and set up our R-Session. First, we’ll load all packages that
+we need for this little project. To simulate a virtual landscape, we will use
+the brilliant <code>NLMR</code> package, which unfortunately is not available from CRAN.
+However, you can install it from github using:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co"># Install required r-packages</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;cran/RandomFields&quot;</span>) <span class="co"># Dependency of NLMR, but not on CRAN</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;ropensci/NLMR&quot;</span>)     <span class="co"># Not on CRAN</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co"># Load required packages</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="kw">library</span>(tidyverse)   <span class="co"># For easier data handling</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="kw">library</span>(NLMR)        <span class="co"># To simulate landscapes</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="kw">library</span>(raster)      <span class="co"># To handle spatial data</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="kw">library</span>(moveHMM)     <span class="co"># To analyse the simulated data</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">library</span>(ggpubr)      <span class="co"># To arrange multiple ggplot objects</span></span></code></pre></div>
+<p>Let’s generate a virtual landscape across which we can simulate some movement.
+Here, we’ll use a simple gaussian-field to represent a food-resource. It will
+determine the state-switching probabilities of our simulated animals, That is,
+depending on food-availability, our animals will be more or less likely to
+switch from one state to another (hence to change their movement mode).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># Simulate a resource (determines the likelihood of switching states)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>food   &lt;-<span class="st"> </span><span class="kw">raster</span>(<span class="dt">ncol =</span> <span class="dv">500</span>, <span class="dt">nrow =</span> <span class="dv">500</span>, <span class="dt">xmn =</span> <span class="dv">0</span>, <span class="dt">xmx =</span> <span class="dv">1000</span>, <span class="dt">ymn =</span> <span class="dv">0</span>, <span class="dt">ymx =</span> <span class="dv">1000</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>food[] &lt;-<span class="st"> </span><span class="kw">values</span>(<span class="kw">nlm_gaussianfield</span>(<span class="dt">ncol =</span> <span class="dv">500</span>, <span class="dt">nrow =</span> <span class="dv">500</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>food   &lt;-<span class="st"> </span><span class="kw">scale</span>(food)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="co"># Visualize it</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="kw">ggplot</span>(<span class="kw">as.data.frame</span>(food, <span class="dt">xy =</span> T), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">fill =</span> layer)) <span class="op">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_raster</span>() <span class="op">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_fill_viridis_c</span>(<span class="dt">name =</span> <span class="st">&quot;Food Availability&quot;</span>) <span class="op">+</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">coord_equal</span>() <span class="op">+</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) <span class="op">+</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_colourbar</span>(<span class="dt">title.position=</span><span class="st">&quot;top&quot;</span>, <span class="dt">title.hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>To now simulate movement across this landscape, we need three ingredients. (1) A
+function to sample step lengths, (2) a function to sample turning angles, and
+(3) a function to determine transition probabilities</p>
+<div id="function-to-sample-step-lengths" class="section level2">
+<h2>Function to Sample Step Lengths</h2>
+<p>To sample step lengths we will simply use the gamma distribution. The gamma
+distribution has two parameters (<em>shape</em> and <em>scale</em>) and is often used in
+movement ecology because it matches observed movement patterns quite well. It’s
+mean and standard deviation are given by
+<span class="math display">\[mean = shape * scale\]</span>
+<span class="math display">\[sd = shape^{0.5} * scale\]</span></p>
+<p>Let’s take a look at some step lengths drawn from a gamma distribution for two
+hypothetical states (e.g. resting vs. moving).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># Simulate step lengths for two hypothetical states</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>states &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    <span class="dt">State =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;State 1&quot;</span>, <span class="st">&quot;State 2&quot;</span>), <span class="dt">each =</span> <span class="dv">500</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>  , <span class="dt">Shape =</span> <span class="kw">ifelse</span> (State <span class="op">==</span><span class="st"> &quot;State 1&quot;</span>, <span class="fl">2.5</span>, <span class="fl">3.0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>  , <span class="dt">Scale =</span> <span class="kw">ifelse</span> (State <span class="op">==</span><span class="st"> &quot;State 1&quot;</span>, <span class="fl">0.5</span>, <span class="fl">1.5</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>  , <span class="dt">StepLength =</span> <span class="ot">NA</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(states)) {</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>  states<span class="op">$</span>StepLength[i] &lt;-<span class="st"> </span><span class="kw">rgamma</span>(<span class="dv">1</span>, <span class="dt">shape =</span> states<span class="op">$</span>Shape[i], <span class="dt">scale =</span> states<span class="op">$</span>Scale[i])</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a><span class="co"># Visualize</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a><span class="kw">ggplot</span>(states, <span class="kw">aes</span>(<span class="dt">x =</span> StepLength)) <span class="op">+</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">col =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">bins =</span> <span class="dv">20</span>, <span class="dt">fill =</span> <span class="st">&quot;cornflowerblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Step Length&quot;</span>) <span class="op">+</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>State)</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+</div>
+<div id="function-to-sample-turning-angles" class="section level2">
+<h2>Function to Sample Turning Angles</h2>
+<p>Aside from sampling step lengths, we also need to be able to sample turning
+angles. The von Mises distribution is perfectly suited for this, as it is bound
+between <span class="math inline">\(-\pi\)</span> and <span class="math inline">\(\pi\)</span> and allows to render a tendency to move directional. It
+has a concentration parameter <em>kappa</em> and a location parameter <em>mu</em>. Because R
+neither provides a density function nor a random number generator for the von
+Mises distribution, we have to write those ourselves.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co"># Function to determine the probability density of a von Mises distribution</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>dvonmises &lt;-<span class="st"> </span><span class="cf">function</span>(x, kappa, mu, <span class="dt">log =</span> F) {</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>  d &lt;-<span class="st"> </span><span class="kw">exp</span>(kappa <span class="op">*</span><span class="st"> </span><span class="kw">cos</span>(x <span class="op">-</span><span class="st"> </span>mu)) <span class="op">/</span><span class="st"> </span>(<span class="dv">2</span> <span class="op">*</span><span class="st"> </span>pi <span class="op">*</span><span class="st"> </span><span class="kw">besselI</span>(kappa, <span class="dt">nu =</span> <span class="dv">0</span>))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>  <span class="cf">if</span> (log <span class="op">==</span><span class="st"> </span>T) {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    d &lt;-<span class="st"> </span><span class="kw">log</span>(d)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>  }</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>  <span class="kw">return</span>(d)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>}</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="co"># Function to randomly sample values from a von Mises distribution</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>rvonmises &lt;-<span class="st"> </span><span class="cf">function</span>(n, kappa, mu, <span class="dt">by =</span> <span class="fl">0.01</span>) {</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>  x &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="op">-</span>pi, <span class="op">+</span>pi, <span class="dt">by =</span> by)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>  probs &lt;-<span class="st"> </span><span class="kw">dvonmises</span>(x, <span class="dt">kappa =</span> kappa, <span class="dt">mu =</span> mu)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>  random &lt;-<span class="st"> </span><span class="kw">sample</span>(x, <span class="dt">size =</span> n, <span class="dt">prob =</span> probs, <span class="dt">replace =</span> T)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>  <span class="kw">return</span>(random)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>}</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="co"># Simulate turning angles for two hypothetical states</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a>states &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>    <span class="dt">State =</span> <span class="kw">rep</span>(<span class="kw">c</span>(<span class="st">&quot;State 1&quot;</span>, <span class="st">&quot;State 2&quot;</span>), <span class="dt">each =</span> <span class="dv">500</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a>  , <span class="dt">Kappa =</span> <span class="kw">ifelse</span> (State <span class="op">==</span><span class="st"> &quot;State 1&quot;</span>, <span class="fl">0.2</span>, <span class="fl">0.5</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>  , <span class="dt">Mu    =</span> <span class="dv">0</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a>  , <span class="dt">TurningAngle =</span> <span class="ot">NA</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>)</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(states)) {</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a>  states<span class="op">$</span>TurningAngle[i] &lt;-<span class="st"> </span><span class="kw">rvonmises</span>(<span class="dv">1</span>, <span class="dt">kappa =</span> states<span class="op">$</span>Kappa[i], <span class="dt">mu =</span> states<span class="op">$</span>Mu[i])</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a>}</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a><span class="co"># Visualize</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a><span class="kw">ggplot</span>(states, <span class="kw">aes</span>(<span class="dt">x =</span> TurningAngle)) <span class="op">+</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">col =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">bins =</span> <span class="dv">20</span>, <span class="dt">fill =</span> <span class="st">&quot;cornflowerblue&quot;</span>) <span class="op">+</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Turning Angle&quot;</span>) <span class="op">+</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>State)</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+</div>
+<div id="function-to-determine-transition-probabilities" class="section level2">
+<h2>Function to Determine Transition-Probabilities</h2>
+<p>Finally, we need a function that governs the transition probabilities to switch
+from one state to another given a certain amount of food-availability. What we
+want is a function that takes a linear predictor and spits out a probability. A
+useful formula to turn a linear predictor (i.e. <span class="math inline">\(a + b * x\)</span>) into a probability
+is the inverse of the logit. Hence, let’s write it down.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># Function to compute the transition probability, depending on food-availability</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co"># and parameters a and b</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>transition &lt;-<span class="st"> </span><span class="cf">function</span>(food, a, b) {</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>  linear_predictor &lt;-<span class="st"> </span>a <span class="op">+</span><span class="st"> </span>b <span class="op">*</span><span class="st"> </span>food</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>  <span class="dv">1</span> <span class="op">/</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span><span class="kw">exp</span>(<span class="op">-</span>linear_predictor)) <span class="co"># Inverse logit</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="co"># Generate transition probability for different food-availability</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>tr &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>    <span class="dt">Food =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="dv">4</span>, <span class="dt">by =</span> <span class="fl">0.01</span>)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>  , <span class="dt">TransitionProbability =</span> <span class="kw">transition</span>(Food, <span class="dt">a =</span> <span class="dv">1</span>, <span class="dt">b =</span> <span class="dv">2</span>)</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>)</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="co"># Function to sample a state</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>sample_state &lt;-<span class="st"> </span><span class="cf">function</span>(state, food) {</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>  p &lt;-<span class="st"> </span><span class="kw">transition</span>(food, params<span class="op">$</span>T_a[state], params<span class="op">$</span>T_b[state])</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>  change &lt;-<span class="st"> </span><span class="kw">rbinom</span>(<span class="dt">n =</span> <span class="dv">1</span>, <span class="dt">size =</span> <span class="dv">1</span>, <span class="dt">prob =</span> p)</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>  <span class="cf">if</span> (state <span class="op">==</span><span class="st"> </span><span class="dv">1</span> <span class="op">&amp;</span><span class="st"> </span>change <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>    state &lt;-<span class="st"> </span><span class="dv">2</span></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>  } <span class="cf">else</span> <span class="cf">if</span> (state <span class="op">==</span><span class="st"> </span><span class="dv">2</span> <span class="op">&amp;</span><span class="st"> </span>change <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) {</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>    state &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>  }</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>  <span class="kw">return</span>(state)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>}</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a><span class="co"># Visualize</span></span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a><span class="kw">ggplot</span>(tr, <span class="kw">aes</span>(<span class="dt">x =</span> Food, <span class="dt">y =</span> TransitionProbability)) <span class="op">+</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd =</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Transition Probability&quot;</span>) <span class="op">+</span></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+</div>
+<div id="simulation-parameters" class="section level2">
+<h2>Simulation Parameters</h2>
+<p>We are now ready to put the different building blocks together and start our
+movement simulation. First, we define the different movement parameters that
+will be used in the simulation.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co"># Number of steps to simulate</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>n_steps &lt;-<span class="st"> </span><span class="dv">100</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="co"># Number of individuals to simulate</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>n_indivs &lt;-<span class="st"> </span><span class="dv">100</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="co"># Create tibble (a fancy dataframe) into which we will store the results</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>sims &lt;-<span class="st"> </span><span class="kw">tibble</span>(<span class="dt">ID =</span> <span class="dv">1</span><span class="op">:</span>n_indivs)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="co"># Movement parameters</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>params &lt;-<span class="st"> </span><span class="kw">tibble</span>(</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>    <span class="dt">State     =</span> <span class="kw">c</span>(<span class="st">&quot;Resting&quot;</span>, <span class="st">&quot;Moving&quot;</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>  , <span class="dt">GammaMean =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">15</span>)   <span class="co"># Mean of the gamma distribution</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>  , <span class="dt">GammaSD   =</span> <span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>)   <span class="co"># Standard deviation of the gamma distribution</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>  , <span class="dt">MisesMean =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)    <span class="co"># Mean (location) of the von Mises distribution</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>  , <span class="dt">MisesCon  =</span> <span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>)  <span class="co"># Concentration parameter of the von Mises distribution</span></span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>  , <span class="dt">T_a       =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>)    <span class="co"># Intercept of the linear predictor for transition probs.</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>  , <span class="dt">T_b       =</span> <span class="kw">c</span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>)   <span class="co"># Slope of the linear predictor for transition probs.</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>)</span></code></pre></div>
+<p>Given this set of parameters, we can visualize the step lengths, turning angles
+and transition probabilities that we will expect. This is simply to ensure that
+everything works fine and that we’re not generating unreasonable data.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co"># Compute probability density functions for step lengths, turning angles, and</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="co"># transition probabilities for the given simulation parameters</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>example &lt;-<span class="st"> </span>params <span class="op">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">StepLengths =</span> <span class="kw">map2</span>(GammaMean, GammaSD, <span class="cf">function</span>(x, y) {</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    <span class="kw">tibble</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>        <span class="dt">StepLength =</span> <span class="kw">seq</span>(<span class="dv">0</span>, <span class="dv">60</span>, <span class="dt">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>      , <span class="dt">Density    =</span>  <span class="kw">dgamma</span>(StepLength, <span class="dt">shape =</span> (x <span class="op">/</span><span class="st"> </span>y) <span class="op">**</span><span class="st"> </span><span class="dv">2</span>, <span class="dt">scale =</span> y <span class="op">**</span><span class="st"> </span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span>x)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>    )</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">TurningAngles =</span> <span class="kw">map2</span>(MisesCon, MisesMean, <span class="cf">function</span>(x, y) {</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>    <span class="kw">tibble</span>(</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>        <span class="dt">TurningAngle =</span> <span class="kw">seq</span>(<span class="op">-</span>pi, <span class="op">+</span>pi, <span class="dt">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>      , <span class="dt">Density      =</span> <span class="kw">dvonmises</span>(TurningAngle, <span class="dt">kappa =</span> x, <span class="dt">mu =</span> y)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>    )</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>  })) <span class="op">%&gt;%</span></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">Transitions =</span> <span class="kw">map2</span>(T_a, T_b, <span class="cf">function</span>(x, y) {</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>    <span class="kw">tibble</span>(</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>        <span class="dt">Food    =</span> <span class="kw">seq</span>(<span class="op">-</span><span class="dv">4</span>, <span class="op">+</span><span class="dv">4</span>, <span class="dt">length.out =</span> <span class="dv">1000</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>      , <span class="dt">Density =</span> <span class="kw">transition</span>(Food, x, y)</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a>    )</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>  }))</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a><span class="co"># Visualize</span></span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true"></a>p1 &lt;-<span class="st"> </span>example <span class="op">%&gt;%</span></span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(StepLengths) <span class="op">%&gt;%</span></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> StepLength, <span class="dt">y =</span> Density)) <span class="op">+</span></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd =</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true"></a><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>State) <span class="op">+</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true"></a><span class="st">    </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true"></a><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Step Length&quot;</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true"></a>p2 &lt;-<span class="st"> </span>example <span class="op">%&gt;%</span></span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(TurningAngles) <span class="op">%&gt;%</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> TurningAngle, <span class="dt">y =</span> Density)) <span class="op">+</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd =</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true"></a><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>State) <span class="op">+</span></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true"></a><span class="st">    </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true"></a><span class="st">    </span><span class="kw">xlab</span>(<span class="st">&quot;Turning Angle&quot;</span>)</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true"></a>p3 &lt;-<span class="st"> </span>example <span class="op">%&gt;%</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true"></a><span class="st">  </span><span class="kw">unnest</span>(Transitions) <span class="op">%&gt;%</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true"></a><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> Food, <span class="dt">y =</span> Density)) <span class="op">+</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true"></a><span class="st">    </span><span class="kw">geom_line</span>(<span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd =</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true"></a><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>State) <span class="op">+</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true"></a><span class="st">    </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true"></a><span class="st">    </span><span class="kw">ylab</span>(<span class="st">&quot;Transition Probability&quot;</span>)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true"></a></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true"></a><span class="co"># Put the plots together</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true"></a><span class="kw">ggarrange</span>(p1, p2, p3, <span class="dt">nrow =</span> <span class="dv">3</span>)</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p>This looks good! When the animal is in the “Moving” state, the step lengths tend
+to be larger, turning angles tend to be narrower (closer to 0) and the
+transition probability reacts quite strongly to changes in food-availability. In
+contrast, when the animal is resting, step lengths tend to be short, turning
+angles less concentrated around 0 (still with a tendency to move forward though)
+and the transition probability reacts less strongly to changes in the
+food-availability.</p>
+<p>With this we can finally run our movement simulation. The simulation works
+as follows:</p>
+<ol style="list-style-type: decimal">
+<li><p>An animal is released at the center of the map at <span class="math inline">\((x, y) = (500, 500)\)</span>
+and is assumed to be oriented towards north</p></li>
+<li><p>Food-availability at the animal’s current location is extracted and a new
+state is determined. The animal can either switch state or remain in the
+current state. Transition probabilities depend on the food availability.</p></li>
+<li><p>A random step length and random turning angle are sampled from the
+distributions of the respective state.</p></li>
+<li><p>The new position of the animal is calculated Steps 2 to 4 are then repeated
+until a total of 100 steps are simulated.</p></li>
+</ol>
+<p>To run the simulation for all 100 individuals, we use the <code>lapply()</code> function,
+which is basically a “for-loop” that returns a list. For easier “bookkeeping” of
+the list, we can make use of tibbles. Tibbles are incredibly powerful versions
+of dataframes and make it fairly easy to keep track of our simulation outputs.
+They allow us to store the simulated data of different individuals into a single
+column titled “Simulations”. The rest of the code should be self-explanatory.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co"># Run simulations</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>sims<span class="op">$</span>Simulations &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="kw">nrow</span>(sims), <span class="cf">function</span>(x) {</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>  <span class="co"># Generate dataframe to keep track of coordinates and other data</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>  df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>      <span class="dt">x     =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_steps) <span class="co"># x-coordinate</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    , <span class="dt">y     =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_steps) <span class="co"># y-coordinate</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    , <span class="dt">stepl =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_steps) <span class="co"># Step length</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>    , <span class="dt">relta =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_steps) <span class="co"># Relative turning angle (heading / orientation)</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>    , <span class="dt">absta =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_steps) <span class="co"># Absolute turning angle</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>    , <span class="dt">state =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_steps) <span class="co"># Current state</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>    , <span class="dt">food  =</span> <span class="kw">rep</span>(<span class="ot">NA</span>, n_steps) <span class="co"># Food-availability</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>  )</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>  <span class="co"># Specify an initial orientation and state</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>  absta_init &lt;-<span class="st"> </span><span class="dv">0</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>  state_init &lt;-<span class="st"> </span><span class="dv">1</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a>  <span class="co"># Initiate first rows of the dataframe (animal is released at the center)</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a>  df<span class="op">$</span>x[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a>  df<span class="op">$</span>y[<span class="dv">1</span>] &lt;-<span class="st"> </span><span class="dv">500</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true"></a>  <span class="co"># Generate the movement trajectory based on random step lengths and turning</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true"></a>  <span class="co"># angles</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(df) <span class="op">-</span><span class="st"> </span><span class="dv">1</span>)) {</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true"></a>    </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true"></a>    <span class="co"># Determine food availability</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true"></a>    f &lt;-<span class="st"> </span>raster<span class="op">::</span><span class="kw">extract</span>(food, <span class="kw">cbind</span>(df<span class="op">$</span>x[i], df<span class="op">$</span>y[i]))</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true"></a>    </span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true"></a>    <span class="co"># Determine the animal&#39;s new state</span></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true"></a>    s &lt;-<span class="st"> </span><span class="kw">sample_state</span>(state_init, f)</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true"></a>    </span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true"></a>    <span class="co"># Sample step lengths from the state-specific gamma distribution</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true"></a>    df<span class="op">$</span>stepl[i] &lt;-<span class="st"> </span><span class="kw">rgamma</span>(<span class="dv">1</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true"></a>      , <span class="dt">shape =</span> (params<span class="op">$</span>GammaMean[s] <span class="op">/</span><span class="st"> </span>params<span class="op">$</span>GammaSD[s]) <span class="op">**</span><span class="st"> </span><span class="dv">2</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true"></a>      , <span class="dt">scale =</span> params<span class="op">$</span>GammaSD[s] <span class="op">**</span><span class="st"> </span><span class="dv">2</span> <span class="op">/</span><span class="st"> </span>params<span class="op">$</span>GammaMean[s]</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true"></a>    )</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true"></a>    </span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true"></a>    <span class="co"># Sample (relative) turning angles from the state-specific von mises</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true"></a>    <span class="co"># distribution</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true"></a>    df<span class="op">$</span>relta[i] &lt;-<span class="st"> </span><span class="kw">rvonmises</span>(<span class="dv">1</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true"></a>      , <span class="dt">mu    =</span> params<span class="op">$</span>MisesMean[s]</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true"></a>      , <span class="dt">kappa =</span> params<span class="op">$</span>MisesCon[s]</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true"></a>    )</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true"></a>    </span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true"></a>    <span class="co"># Compute the absolute turning angle</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true"></a>    df<span class="op">$</span>absta[i] &lt;-<span class="st"> </span>absta_init <span class="op">+</span><span class="st"> </span>df<span class="op">$</span>relta[i]</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true"></a>    </span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true"></a>    <span class="co"># Compute the new location of the animal</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true"></a>    df<span class="op">$</span>x[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>df<span class="op">$</span>x[i] <span class="op">+</span><span class="st"> </span><span class="kw">sin</span>(df<span class="op">$</span>absta[i]) <span class="op">*</span><span class="st"> </span>df<span class="op">$</span>stepl[i]</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true"></a>    df<span class="op">$</span>y[i <span class="op">+</span><span class="st"> </span><span class="dv">1</span>] &lt;-<span class="st"> </span>df<span class="op">$</span>y[i] <span class="op">+</span><span class="st"> </span><span class="kw">cos</span>(df<span class="op">$</span>absta[i]) <span class="op">*</span><span class="st"> </span>df<span class="op">$</span>stepl[i]</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true"></a>    </span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true"></a>    <span class="co"># Store other relevant information</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true"></a>    df<span class="op">$</span>food[i]  &lt;-<span class="st"> </span>f</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true"></a>    df<span class="op">$</span>state[i] &lt;-<span class="st"> </span>s</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true"></a>    absta_init  &lt;-<span class="st"> </span>df<span class="op">$</span>absta[i]</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true"></a>    state_init  &lt;-<span class="st"> </span>df<span class="op">$</span>state[i]</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true"></a>  }</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true"></a></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true"></a>  <span class="co"># Return the simulation</span></span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true"></a>  <span class="kw">return</span>(df)</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true"></a>})</span></code></pre></div>
+<p>The simulation shouldn’t take longer than a couple of seconds. Note that the
+final tibble is nested, i.e. all simulated data of single individual is
+contained within that specific individual’s row. Hence, we want to unnest the
+tibble to get a regular dataframe.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="co"># Unnest the data</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>sims &lt;-<span class="st"> </span><span class="kw">unnest</span>(sims, Simulations)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a><span class="co"># Take a look at the unnested data</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a><span class="kw">head</span>(sims)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 8
+##      ID     x     y stepl  relta absta state   food
+##   &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1     1  500   500   2.60  0.828 0.828     1  1.18 
+## 2     1  502.  502. 19.6   0.148 0.977     2  0.739
+## 3     1  518.  513. 20.8  -0.422 0.555     1 -0.606
+## 4     1  529.  530. 28.9   2.80  3.35      2 -0.764
+## 5     1  523.  502.  4.15 -1.09  2.26      2 -1.27 
+## 6     1  526.  499. 12.8  -0.892 1.37      2 -2.12</code></pre>
+<p>You can see that unnesting preserves the simulation ID which is super-convenient
+because we can use it to distinguish different individuals. We can now visualize
+the simulated trajectories on a map. Remember that we released all individuals
+at the center, which is why it will by quite crowded there!</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co"># Visualize it</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a><span class="kw">ggplot</span>() <span class="op">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_raster</span>(<span class="dt">data =</span> <span class="kw">as.data.frame</span>(food, <span class="dt">xy =</span> T), <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">fill =</span> layer)) <span class="op">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">scale_fill_viridis_c</span>(<span class="dt">name =</span> <span class="st">&quot;Food Availability&quot;</span>) <span class="op">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_point</span>(<span class="dt">data =</span> sims, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">group =</span> <span class="kw">as.factor</span>(ID)), <span class="dt">size =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_path</span>(<span class="dt">data =</span> sims, <span class="kw">aes</span>(<span class="dt">x =</span> x, <span class="dt">y =</span> y, <span class="dt">group =</span> <span class="kw">as.factor</span>(ID)), <span class="dt">linewidth =</span> <span class="fl">0.5</span>) <span class="op">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">coord_equal</span>() <span class="op">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) <span class="op">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_colourbar</span>(<span class="dt">title.position=</span><span class="st">&quot;top&quot;</span>, <span class="dt">title.hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+</div>
+</div>
+<div id="fitting-the-model" class="section level1">
+<h1>Fitting the Model</h1>
+<p>With the simulated data we can finally go ahead and fit a hidden markov movement
+model. If everything works correctly, we should be able to obtain exactly the
+input parameters that we used to simulate movement. First, however, we need to
+make sure the data is in the correct format. We can do this using the
+<code>prepData()</code> function.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="co"># Prepare the data (ignore the warning)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>df_prep &lt;-<span class="st"> </span><span class="kw">prepData</span>(<span class="kw">as.data.frame</span>(sims[, <span class="kw">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>, <span class="st">&quot;food&quot;</span>)])</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>  , <span class="dt">type       =</span> <span class="st">&quot;UTM&quot;</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>  , <span class="dt">coordNames =</span> <span class="kw">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>)</span></code></pre></div>
+<p>For the optimizer to work, we will need to provide initial values. If you want
+to learn more about how to chose initial values, I would recommend you to read
+the following
+<a href="https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-starting-values.pdf">vignette</a>
+but the basic idea is to plot histograms of the observed values and then to set
+plausible initial values accordingly. Note that for the gamma distribution the
+package does not take the shape and scale parameters, but requires us to provide
+a mean and standard deviation instead (the formulas to compute mean and standard
+deviation from the shape and scale of a gamma distribution are given above).</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="co"># Histogram of step lengths and turning angles</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>p1 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df_prep, <span class="kw">aes</span>(<span class="dt">x =</span> step)) <span class="op">+</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">col =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">bins =</span> <span class="dv">20</span>) <span class="op">+</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Step Length&quot;</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>p2 &lt;-<span class="st"> </span><span class="kw">ggplot</span>(df_prep, <span class="kw">aes</span>(<span class="dt">x =</span> angle)) <span class="op">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_histogram</span>(<span class="dt">col =</span> <span class="st">&quot;white&quot;</span>, <span class="dt">fill =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">bins =</span> <span class="dv">20</span>) <span class="op">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Turning Angle&quot;</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a><span class="kw">ggarrange</span>(p1, p2, <span class="dt">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co"># Define initial values for step length distribution(s)</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>mu0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>)    <span class="co"># Resting (5) and moving (10) parameters</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>sd0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>)    <span class="co"># Resting (5) and moving (10) parameters</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>stepPar &lt;-<span class="st"> </span><span class="kw">c</span>(mu0, sd0)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="co"># Define intial values for turning angle distribution(s)</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>anglemean0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)  <span class="co"># Resting (0) and moving (0) parameters</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>anglecon0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">0.5</span>, <span class="dv">1</span>) <span class="co"># Resting (0) and moving (0) parameters</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a>anglePar &lt;-<span class="st"> </span><span class="kw">c</span>(anglemean0, anglecon0)</span></code></pre></div>
+<p>We can now go ahead and fit the model to estimate the parameters of interest.
+Note that we provide a model formula indicating that we believe that the
+transition probabilities depend on food-availability. We also need to tell the
+model for how many states it should try to assign. In most applications people
+use two states only (e.g. resting and moving).</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="co"># Fit the model</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>mod &lt;-<span class="st"> </span><span class="kw">fitHMM</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>    <span class="dt">data      =</span> df_prep</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>  , <span class="dt">nbStates  =</span> <span class="dv">2</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>  , <span class="dt">stepPar0  =</span> stepPar</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>  , <span class="dt">anglePar0 =</span> anglePar</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>  , <span class="dt">formula   =</span> <span class="op">~</span><span class="st"> </span>food</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>)</span></code></pre></div>
+<p>Let’s put the true parameters and the estimates from the model side by side so
+that we can better verify that the model has done a good job.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="co"># Compare step-length simulation parameters to estimates from moveHMM</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a><span class="kw">list</span>(mod<span class="op">$</span>mle<span class="op">$</span>stepPar, <span class="kw">t</span>(params[, <span class="kw">c</span>(<span class="st">&quot;State&quot;</span>, <span class="st">&quot;GammaMean&quot;</span>, <span class="st">&quot;GammaSD&quot;</span>)]))</span></code></pre></div>
+<pre><code>## [[1]]
+##       state 1   state 2
+## mean 5.080427 15.188335
+## sd   5.102551  9.992704
+## 
+## [[2]]
+##           [,1]      [,2]    
+## State     &quot;Resting&quot; &quot;Moving&quot;
+## GammaMean &quot; 5&quot;      &quot;15&quot;    
+## GammaSD   &quot; 5&quot;      &quot;10&quot;</code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="co"># Compare turning-angle simulation parameters to estimates from moveHMM</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="kw">list</span>(mod<span class="op">$</span>mle<span class="op">$</span>anglePar, <span class="kw">t</span>(params[, <span class="kw">c</span>(<span class="st">&quot;State&quot;</span>, <span class="st">&quot;MisesMean&quot;</span>, <span class="st">&quot;MisesCon&quot;</span>)]))</span></code></pre></div>
+<pre><code>## [[1]]
+##                   state 1     state 2
+## mean          0.003855044 0.001301972
+## concentration 0.490353060 1.015617926
+## 
+## [[2]]
+##           [,1]      [,2]    
+## State     &quot;Resting&quot; &quot;Moving&quot;
+## MisesMean &quot;0&quot;       &quot;0&quot;     
+## MisesCon  &quot;0.5&quot;     &quot;1.0&quot;</code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="co"># Compare transition-parameters to estimates from moveHMM</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a><span class="kw">list</span>(mod<span class="op">$</span>mle<span class="op">$</span>beta, <span class="kw">t</span>(params[, <span class="kw">c</span>(<span class="st">&quot;State&quot;</span>, <span class="st">&quot;T_a&quot;</span>, <span class="st">&quot;T_b&quot;</span>)]))</span></code></pre></div>
+<pre><code>## [[1]]
+##               1 -&gt; 2   2 -&gt; 1
+## intercept  0.9307734 2.033371
+## food      -0.9901982 4.096431
+## 
+## [[2]]
+##       [,1]      [,2]    
+## State &quot;Resting&quot; &quot;Moving&quot;
+## T_a   &quot;1&quot;       &quot;2&quot;     
+## T_b   &quot;-1&quot;      &quot; 4&quot;</code></pre>
+<p>Impressive! The model almost perfectly approximated all of the true parameters.
+We might, however, also be interested in the derived states. For this, we can
+apply the Viterbi algorithm. We then compare the derived states to the true
+states.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="co"># Compare states</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>states &lt;-<span class="st"> </span><span class="kw">viterbi</span>(mod)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a><span class="kw">cor</span>(sims<span class="op">$</span>state, states, <span class="dt">use =</span> <span class="st">&quot;pairwise.complete.obs&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] 0.7017736</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a><span class="co"># Confusion matrix</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a><span class="kw">table</span>(sims<span class="op">$</span>state, states)</span></code></pre></div>
+<pre><code>##    states
+##        1    2
+##   1 4036  826
+##   2  651 4387</code></pre>
+<p>We can even plot the transition probabilities and will find that the plot looks
+almost identical to the one we produced in the beginning.</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="co"># Plot transition probs</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a><span class="kw">plotStationary</span>(mod, <span class="dt">plotCI =</span> T)</span></code></pre></div>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+</div>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>In this blog post we simulated 100 individuals moving across a virtual
+landscape. The individuals exhibited two distinct behavioral modes that
+determined their movement behavior. Using HMMMs implemented in the <code>moveHMM</code>
+package we successfully recovered all simulation parameters and could determine
+the behavioral modes with high accuracy.</p>
+</div>
+<div id="further-reading" class="section level1">
+<h1>Further Reading</h1>
+<div id="vignettes" class="section level2">
+<h2>Vignettes</h2>
+<ul>
+<li>Basic introduction to the <code>moveHMM</code> package (<a href="https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-guide.pdf" class="uri">https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-guide.pdf</a>)</li>
+<li>How to find meaningful initial values (<a href="https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-starting-values.pdf" class="uri">https://cran.r-project.org/web/packages/moveHMM/vignettes/moveHMM-starting-values.pdf</a>)</li>
+</ul>
+</div>
+<div id="papers" class="section level2">
+<h2>Papers</h2>
+<ul>
+<li><a href="https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/03-0269?casa_token=KJgNxAlVtwkAAAAA:yyvOAcNqxnIvo0mdRTCP0yxnhQ2-PsHUA_QoJL-a0UPXN6WDmlIdu-3jx-0GdOekiGmCxfODf19m3K0">Morales et al. (2004)</a></li>
+<li><a href="https://esajournals.onlinelibrary.wiley.com/doi/pdfdirect/10.1890/04-1852?casa_token=lT7FFkpgYYgAAAAA:OChIyGnmnJDxyru__bee8XKWrdcgkqcWIZREeTp4I2fLb4zwDEt8UFuffCBlyjeyigPlCWyZYZdEd6c">Jonsen et al. (2005)</a></li>
+<li><a href="https://besjournals.onlinelibrary.wiley.com/doi/pdf/10.1111/j.1365-2656.2009.01583.x?casa_token=zw2Zccuk0-QAAAAA:_D8xj_sPxipPl7g5kaEZi6pg0QtjO2NPZBQcnw_zAQ59k2f1g1-5zxM7GJIzmwrFA4htUPqnaRVrntU">Patterson et al. (2009)</a></li>
+<li><a href="https://esajournals.onlinelibrary.wiley.com/doi/pdf/10.1890/11-2241.1?casa_token=IKbVrJUrXxEAAAAA:ms-x5JQXSOR-NZtX1o6LQhyeWzOyeCzLz5I7kxhHdgLUq15WQIhq4gYRZq-aBKD53N0Sjlv0YvTlVg0">Langrock et al. (2012)</a></li>
+<li><a href="https://onlinelibrary.wiley.com/doi/pdfdirect/10.1111/ele.13610">McClintock et al. (2020)</a></li>
+</ul>
+</div>
+</div>
+<div id="session-information" class="section level1">
+<h1>Session Information</h1>
+<pre><code>## R version 4.1.2 (2021-11-01)
+## Platform: x86_64-pc-linux-gnu (64-bit)
+## Running under: Linux Mint 21.3
+## 
+## Matrix products: default
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0
+## 
+## locale:
+##  [1] LC_CTYPE=de_CH.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=de_CH.UTF-8        LC_COLLATE=de_CH.UTF-8    
+##  [5] LC_MONETARY=de_CH.UTF-8    LC_MESSAGES=de_CH.UTF-8   
+##  [7] LC_PAPER=de_CH.UTF-8       LC_NAME=C                 
+##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+## [11] LC_MEASUREMENT=de_CH.UTF-8 LC_IDENTIFICATION=C       
+## 
+## attached base packages:
+## [1] stats     graphics  grDevices utils     datasets  methods   base     
+## 
+## other attached packages:
+##  [1] ggpubr_0.6.0    moveHMM_1.9     CircStats_0.2-6 boot_1.3-28    
+##  [5] MASS_7.3-55     raster_3.6-20   sp_1.6-1        NLMR_1.1.1     
+##  [9] lubridate_1.9.3 forcats_1.0.0   stringr_1.5.1   dplyr_1.1.3    
+## [13] purrr_1.0.2     readr_2.1.4     tidyr_1.3.0     tibble_3.2.1   
+## [17] ggplot2_3.4.4   tidyverse_2.0.0
+## 
+## loaded via a namespace (and not attached):
+##  [1] httr_1.4.6            sass_0.4.6            jsonlite_1.8.5       
+##  [4] viridisLite_0.4.2     carData_3.0-5         bslib_0.5.0          
+##  [7] highr_0.10            yaml_2.3.7            numDeriv_2016.8-1.1  
+## [10] pillar_1.9.0          backports_1.4.1       lattice_0.20-45      
+## [13] glue_1.6.2            digest_0.6.31         ggsignif_0.6.4       
+## [16] checkmate_2.2.0       colorspace_2.1-0      cowplot_1.1.1        
+## [19] htmltools_0.5.5       plyr_1.8.8            pkgconfig_2.0.3      
+## [22] broom_1.0.5           bookdown_0.34         scales_1.2.1         
+## [25] terra_1.7-74          jpeg_0.1-10           tzdb_0.4.0           
+## [28] timechange_0.2.0      ggmap_3.0.2           farver_2.1.1         
+## [31] generics_0.1.3        car_3.1-2             cachem_1.0.8         
+## [34] withr_2.5.2           cli_3.6.1             magrittr_2.0.3       
+## [37] evaluate_0.21         fansi_1.0.5           rstatix_0.7.2        
+## [40] RandomFieldsUtils_0.5 blogdown_1.17         tools_4.1.2          
+## [43] hms_1.1.3             geosphere_1.5-18      RgoogleMaps_1.4.5.3  
+## [46] lifecycle_1.0.4       munsell_0.5.0         compiler_4.1.2       
+## [49] jquerylib_0.1.4       rlang_1.1.2           grid_4.1.2           
+## [52] RandomFields_3.3.1    labeling_0.4.2        bitops_1.0-7         
+## [55] rmarkdown_2.22        gtable_0.3.3          codetools_0.2-18     
+## [58] abind_1.4-5           R6_2.5.1              knitr_1.43           
+## [61] fastmap_1.1.1         utf8_1.2.4            stringi_1.8.1        
+## [64] Rcpp_1.0.11           vctrs_0.6.4           png_0.1-8            
+## [67] tidyselect_1.2.0      xfun_0.39</code></pre>
+</div>
+
+
+                
+
+                
+                <hr>
+                <ul class="pager">
+                    
+                    <li class="previous">
+                        <a href="/post/satelliteimagery/" data-toggle="tooltip" data-placement="top" title="Download and Visualize Satellite Images in R">&larr;
+                            Previous Post</a>
+                    </li>
+                    
+                    
+                    <li class="next">
+                        <a href="/post/snareddogs/" data-toggle="tooltip" data-placement="top" title="A Fair Share to De-Snare">Next
+                            Post &rarr;</a>
+                    </li>
+                    
+                </ul>
+                
+
+                
+
+
+
+            </div>
+
+            
+            
+
+            
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                
+                
+
+                
+                
+            </div>
+        </div>
+    </div>
+</article>
+
+
+
+
+<script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">                  
+                    
+                    <li>
+                        <a href="mailto:daviddenishofmann@gmail.com">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fas fa-envelope fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		           
+                    
+                    <li>
+                        <a href="https://twitter.com/daviddhofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
+                    
+                    
+                    
+
+		            
+                    
+                    
+                    <li>
+                        <a target="_blank" href="https://github.com/DavidDHofmann">
+                            <span class="fa-stack fa-lg">
+                                <i class="fas fa-circle fa-stack-2x"></i>
+                                <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                            </span>
+                        </a>
+                    </li>
+		            
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+            
+            
+            
+           
+             </ul>
+		<p class="copyright text-muted">
+                    Copyright &copy; David D. Hofmann 2024
+                    
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+
+<script>
+    function loadAsync(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+
+
+
+
+
+<script>
+    
+    if($('#tag_cloud').length !== 0){
+        loadAsync("/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+
+<script>
+    loadAsync("https://cdn.jsdelivr.net/npm/fastclick@1.0.6/lib/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>

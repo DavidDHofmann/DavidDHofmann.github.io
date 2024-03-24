@@ -1,0 +1,100 @@
+---
+title: "Bat-Eared Fox (Otocyon megalotis)"
+author: "David D. Hofmann"
+date: 2023-09-09T09:00:00-05:00
+categories: ["animals"]
+tags: ["animals"]
+image: "/img/backgrounds/BatEaredFox.jpg"
+output:
+  blogdown::html_page
+bibliography: [Literature.bib]
+showtoc: false
+---
+The bat-eared fox (*Otocyon megalotis*) is a medium-sized canid that calls
+sub-Saharan Africa its home. Adult individuals typically weigh less than 6 kg
+and measure between 70 and 90 cm from nose to tail. Within the canid family,
+the bat-eared fox stands alone as the sole representative of the genus
+*Otocyon*. Its closest relatives include domestic dogs, wolves and foxes.
+Thanks to its eponymous and extraordinary set of ears, however, the bat-eared
+fox cannot be mistaken for any other species (Figure 1).
+
+Besides its distinctive appearance, the bat-eared fox stands out in the canid
+world due to its dietary preferences. As a myrmecophagus species, the bat-eared
+fox primarily subsides on ants and termites. Remarkably, approximately 90% of
+its diet consists of harvester termites (hodotermitidae). Equipped with
+radar-like ears, *Otocyon m.* possesses an exceptional sense of hearing,
+allowing it to efficiently locate insects both on the ground and beneath the
+soil, thus facilitating access to food. These remarkable ears serve not only as
+tools for securing sustenance but also as a means of thermoregulation. While
+its ears range among the largest relative to body size (only surpassed by the
+Fennec, *Vulpes zerda*), the bat-eared fox also has the dubious honor of
+exhibiting the smallest relative brain size among its kin. Nevertheless,
+scientific experiments have uncovered an impressive capacity for
+problem-solving and innovation in this species [@Petelle.2023].
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap="A pair of bat-eared foxes photographed on Chief's Island in Botswana."}
+knitr::include_graphics("img/BatEaredFox.jpg", error = F)
+```
+
+Bat-eared foxes inhabit two distinct regions within the sub-Saharan landscape:
+one in the North-East, encompassing Tanzania, Kenya, and Ethiopia, and the
+other in the South-West, mainly including Botswana, Namibia, and South Africa
+(as shown in Figure 2). Intriguingly, these ranges closely align with the
+distribution of harvester termites, underscoring the species' strong reliance
+on this food source [@Koop.1982; @Malcom.1986]. As a result, the species' range
+also overlaps with that of other myrmecophagus species, such as the aardvark
+(*Orycteropus afer*), aardwolf (*Proteles cristatus*), and Temminck's pangoling
+(*Smutsia temminckii*) [@Pietersen.2023].
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap="Distribution of the bat-eared fox across sub-Saharan Africa. The species occupies two distinct ranges, on in North-Eastern Africa, another one in South-Western Africa (resulting in the two subspecies *megalotis* and *virgatus*). Notably, these ranges coincide with the spatial distribution of harvester termites (hodotermitidae), which constitute the bat-eared foxes' primary source of food."}
+knitr::include_graphics("img/BatEaredFoxDistribution.png", error = F)
+```
+
+Within the two ranges, the bat-eared fox prefers short-grassed Savannah habitat
+and can often be found frisking around in front of their burrows at dawn and
+dusk [@Malcom.1986]. These creatures are active both day and night, their
+activity patterns dependent on insect availability. At Nxai Pan in Botswana,
+where insects are most abundant around noon, bat-eared foxes tend to be
+diurnal, while in most other regions, they are primarily nocturnal
+[@Koop.1982]. During periods of inactivity, they retreat to their burrows for
+rest.
+
+Bat-eared foxes live in monogamous bonds that last for a lifetime. Pairs with
+offspring are called families and may consist of up to 15 individuals, yet on
+average contain 3 to 4 individuals. Pups are born after a gestation period of
+60 to 70 days, the timing of which synchronizes with the season of peak insect
+abundance, thus ensuring a readily available food source for the newborns.
+Impressively, the species displays a high degree of tolerance towards other
+families, often allowing them to share feeding areas without territorial
+disputes [@Koop.1982; @Malcom.1986]. The size of a family's home-range varies
+greatly based on food availability, spanning from 0.3 to 3.5 km²
+[@Malcom.1986].
+
+Bat-eared foxes rarely survive past an age of 9 years, with their primary cause
+of mortality being predation by other carnivores. Natural predators include
+lions (*Panthera leo*), cheetahs (*Acinonyx jubatus*), leopards (*Panthera
+pardus*), spotted hyenas (*Crocuta crocuta*), African wild dogs (*Lycaon
+pictus*), and black-backed jackals (*Lupulella mesomelas*). Although bat-eared
+foxes may occasionally display acts of bravery, charging and lunging at jackals
+or hyenas to protect their burrows, they often retract at the last moment,
+avoiding actual combat [@Emmet.2018].
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap="A family of bat-eared foxes rallying and playing."}
+knitr::include_graphics("img/BatEaredFoxToying.jpg", error = F)
+```
+
+Interestingly, there's a documented instance from Hwange National Park in
+Zimbabwe where a pack of African wild dogs began specializing in hunting
+bat-eared foxes [@Rasmussen.1996]. This unexpected specialization occurred
+after the dominant female of the pack passed away, causing the pack to adapt to
+a different prey source. Intriguingly, this specialization reached a level
+where impalas, wild dog's primary source of prey in the area, no longer
+perceived them as a threat, knowing they were specialized on another species.
+
+The [International Union for Conservation of Nature
+(IUCN)](https://www.iucnredlist.org/species/15642/46123809) currently
+classifies the bat-eared fox as a species of "least concern", suggesting that,
+for the time being, these unique canids face no immediate threats to their
+survival.
+
+## References

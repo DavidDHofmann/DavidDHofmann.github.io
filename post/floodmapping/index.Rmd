@@ -1,0 +1,215 @@
+---
+title: "Mapping the Flood Extent of the Okavango Delta in R"
+summary: "The Okavango Delta is one of the world's most pristine ecosystems, hosting a large diversity of animal and plant species. It represents the planet's largest inland delta and is characterized by significant seasonal fluctuations of its flood extent. In this blog post, I will introduce you to a simple, yet effective approach to remote sense the Delta's flood extent using MODIS satellite imagery and the `floodmapr` R-package."
+author: "David D. Hofmann"
+date: 2023-12-18T18:00:00-05:00
+categories: ["R"]
+tags: ["R", "Okavango Delta", "floodmapping"]
+image: "/img/backgrounds/OkavangoDelta.jpg"
+output:
+  blogdown::html_page:
+    highlight: tango
+    toc: true
+    toc_depth: 2
+editor_options:
+  chunk_output_type: console
+---
+
+
+
+# Introduction
+The Okavango Delta is a flood-pulse driven mosaic of patchy woodlands,
+permanent swamps, and seasonally flooded grasslands that lie within the
+otherwise dry and sandy Kalahari Basin. It is the world's largest inland delta,
+with a catchment area that can easily be seen from space (Figure 1). The
+delta's floodwaters are originating from the Angolan highlands, where water is
+channeled through the Cuito and Cubango rivers into the Okavango river. The
+Okavango river eventually splits into many different channels that inundate a
+massive alluvial fan, covering an area between 5'000 and 15'000 km^2. Because
+of the shallow gradient of the delta (1/5600 at the upper floodplains and
+1/3400 at the lower floodplains) water only slowly descends from the catchment
+areas in Angola into the Okavango Delta. As a result, the flood reaches its
+prime extent during the peak dry season (in July or August), when local rains
+have long ceased. The massive inflow of fresh-water during this otherwise dry
+period allows many species to survive in this arid ecosystem and attracts
+massive herds of elephants and antelopes, turning the Delta into a thriving
+hotspot of biodiversity.
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap="Satellite image of Southern Africa. The Okavango Delta is clearly visible due to its dark green hue. The delta is fed by water that is collected in catchment areas in the Angolan highlands and only slowly descends thorugh the Delta's tributaries. In fact, the flood takes so long to arrive that it reaches the distal ends of the delta during the peak dry season."}
+knitr::include_graphics("img/DeltaFromSpace.png", error = F)
+```
+
+The Okavango Delta's flood extent is highly dynamic and drastically changes
+across and within years (Figure 2). Being able to depict flood extents during
+different points in time is therefore vital to better understand species
+behavior and movement patterns. Thanks to data from numerous freely accessible
+satellites, remote sensing opens up new avenues for rendering flood patterns of
+the Okavango Delta at unprecedented spatio-temporal scales. Historically,
+spatial ecologists have utilized [normalized differences
+indices](https://www.indexdatabase.de/) (NDs) to remote sense various
+properties of a landscape from satellite imagery. With respect to remote
+sensing surface water, the normalized difference in water index (NDWI) has
+proven particularly useful. However, the Okavango Delta is a more tricky case,
+as areas inundated by water are often not recognizable as such. The main reason
+for this is that the delta's floodwaters are incredibly shallow, such that
+water is often obstructed by vegetation (e.g., tall grass). In this situation,
+the NDWI tends to underestimate the true extent of the delta's flood.
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap="Satellite images of the Okavango Delta during the dry season (but peak flood) versus its extent during the wet season (but low flood)."}
+knitr::include_graphics("img/DeltaTwoSeasons.png", error = F)
+```
+
+To address this shortcoming, the [Okavango Delta Research
+Institute](https://www.ori.ub.bw/services/environmental-monitoring-unit) has
+developed a [remote sensing
+algorithm](https://www.sciencedirect.com/science/article/pii/S0303243417300053?casa_token=2HoV8n0eFAsAAAAA:VLTUyhbvafjkMVNB38OjqAyagOG2WrYphQWCW5K4IseiEhU_sVx8ms3A3Mq_8uzsFBYTZ5R5sNo)
+that is specifically tailored towards detecting flooded areas across the
+Okavango Delta. The algorithm utilizes [MODIS
+MCD43A4](https://lpdaac.usgs.gov/products/mcd43a4v061/) satellite data, which
+provides updated composite imagery on an 8 daily basis. Thanks to MODIS' high
+revisitation rate, these 8 daily composites are almost guaranteed to be
+cloud-free, thus providing a near-continuous monitoring of the Delta. This
+comes at the cost of a relatively coarse spatial resolution of 500 m.
+Nevertheless, 500 m will suffice for most ecological applications.
+
+I have repeatedly applied the algorithm developed by ORI to obtain flood maps
+my own analyses of African wild dog (*Lycaon pictus*) movements across the
+Delta. I therefore invested a substantial amount of time into developing an
+automated workflow to generate flood maps for a desired date. The result of
+these efforts is the `floodmapr` R-package, which is essentially a collection
+of all necessary functions to download and process MODIS satellite data to
+generate a flood map. You can access and install the package via
+[Github](https://github.com/DavidDHofmann/floodmapr/tree/master).
+
+```{r, eval=F}
+devtools::install_github("DavidDHofmann/floodmapr")
+```
+
+In this blog post, I'd like to show you how to use the package and highlight
+how you can easily create a flood map for the Okavango Delta for your desired
+dates. While the general workflow is rather simple, I'd like to equip you with
+a bit of background so you better understand what's happening "beneath the
+hood".
+
+# Mapping the Flood
+The general flood mapping workflow is fairly simple:
+
+- Download a MODIS satellite image for the desired date (`modis_download()`)
+- Load the data into R (`modis_load()`)
+- Ensure that we have bimodality in the reflectance properties of water vs. dryland (`modis_bimodal()`)
+- Use thresholding to classify a flood map (`modis_classify()`)
+
+Let's see how this works.
+
+## Downloading a Satellite Image
+As mentioned before, the flood mapping algorithm uses MODIS MCD43A4 data.
+Consequently, we first need to download a satellite image for the date for
+which we'd like to prepare a flood map. The `floodmapr` package provides the
+`modis_download()` function for this purpose, which will automatically query
+and download the necessary data. You cannot pick a specific area, as the entire
+Delta will be mapped. Note that you'll need to setup a free create account with
+[EarthData](https://www.earthdata.nasa.gov/) to download data.
+
+Ok, so let's assume we want to create flood maps for the dates shown in Figures
+2a and 2b. We can download satellite maps for the two dates as follows:
+
+```{r, echo = F}
+load("/home/david/ownCloud/Dokumente/Bibliothek/Wissen/R-Scripts/EarthDataLogin.rds")
+```
+
+```{r, messages = F, warnings = F}
+# Load the floodmapr package
+library(floodmapr)
+
+# Download MODIS data for the two desired dates
+downloaded <- modis_download(
+    dates     = c("2022-09-16", "2023-03-10")
+  , outdir    = tempdir()
+  , tmpdir    = tempdir()
+  , username  = username
+  , password  = password
+  , overwrite = F
+  , messages  = F
+)
+
+```
+
+The function will automatically download and preprocess the required MCD43A4
+images and store them on your hard-drive. Even though only band 7 will be
+needed, the function downloads all MODIS bands for completeness.
+
+## Loading the Data into R
+Once the download is finished, the function returns the paths to the downloaded
+files. We'll pass the filepaths into the `modis_load()` function (which is a
+wrapper for the `terra::rast()` function) to load the generated rasters into
+our R-session.
+
+```{r}
+# Load the two downloaded maps into the current R-session
+flood_dry <- modis_load(downloaded[1])
+flood_wet <- modis_load(downloaded[2])
+show(flood_dry)
+show(flood_wet)
+```
+
+## Check for Bimodality
+In order to run a classification (dry vs. water), the flood mapping algorithm
+makes use of a set of dryland and water polygons. These are assumed to always
+be in dryland or in water, respectively, and serve to "calibrate" the flood
+mapping algorithm. They basically allow informing the algorithm about the
+reflectance properties of dryland versus water for the given point in time (as
+these may change with the seasons). However, a reliable calibration is only
+possible if the two categories exhibit sufficiently distinct reflectances. To
+check this, we can run a bimodality check with the `modis_bimodal()` function,
+which extracts reflectance properties beneath the two categories (dryland and
+water) and generates a density plot of the band 7 reflectance values. If there
+are two very distinct peaks (one for dryland, one for water), we can go ahead
+and safely generate a flood map. If bimodality is not given, we can still
+create a flood map, yet should be more careful when using it for analyses.
+
+```{r, echo=F, messages=F, out.width="100%", fig.cap=" a) Calibration polygons that are used to inform the algorithm about the reflecance properties of dryland vs. water. b) Shows a classified flood map."}
+knitr::include_graphics("img/FloodmappingPolygons.png", error = F)
+```
+
+```{r}
+# Check for bimodality
+modis_bimodal(flood_dry)
+modis_bimodal(flood_wet)
+
+# Visualize the reflectance properties
+modis_specs(flood_dry)
+modis_specs(flood_wet)
+```
+
+In our case, it appears that only the first map is bimodal, whereas the second
+is not. This can quite clearly be seen from the spectral reflectance images
+that show a substantial overlap in the second case. For the sake of this
+tutorial, we'll ignore the bimodality issue.
+
+## Classifying an Image
+We can now go ahead and run a classification to create a proper flood map. For
+this, we use the `modis_classify()` function, which will automatically
+determine a threshold to split the map into dryland and water. If the map fails
+the bimodality check, we can still enforce a classification using the option
+`ignore.bimodality = T`. However, this is not advised and may result in
+unreliable flood maps.
+
+```{r, echo=T, messages=F, out.width="100%", fig.cap="Classified flood maps."}
+# Classify floodmaps, for now ignoring bimodality
+flood_dry_class <- modis_classify(flood_dry, ignore.bimodality = T)
+flood_wet_class <- modis_classify(flood_wet, ignore.bimodality = T)
+
+# Visualize the classified maps
+par(mfrow = c(1, 2))
+plot(flood_dry_class, col = c("white", "cornflowerblue"), main = "Flood 2022-09-16")
+plot(flood_wet_class, col = c("white", "cornflowerblue"), main = "Flood 2023-03-10")
+```
+
+# Conclusion
+With the `floodmapr` package were able to generate flood maps for a couple of
+dates with only few lines of code. 
+
+# Session Information
+```{r, warnings = F, messages = F, echo = F}
+sessionInfo()
+```

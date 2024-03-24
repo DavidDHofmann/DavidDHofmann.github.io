@@ -1,0 +1,271 @@
+---
+title: "Download and Visualize Satellite Images in R"
+summary: "When you visualize spatial data on a map, it is often useful to plot a satellite image in the background. Hence, I would like to show you can use R to access and download satellite imagery that is free of charge. Once downloaded, we will plot the imagery using either base plot, ggplot, or the magnificent tmap package."
+author: "David D. Hofmann"
+date: 2021-12-31T12:00:00-05:00
+categories: ["R"]
+tags: ["R", "spatial", "satellite"]
+image: "/img/backgrounds/Satellite.jpg"
+output:
+  blogdown::html_page:
+    highlight: tango
+    toc: true
+    toc_depth: 2
+editor_options:
+  chunk_output_type: console
+---
+
+# Introduction
+When you visualize spatial data on a map, it is often useful to plot a satellite
+image in the background. Unfortunately, satellite data is incredibly expensive
+to produce, and so not every provider of corresponding data is willing to
+provide free access to it. Google, for instance, pays a lot of money to get
+access to satellite data of third parties, which it can then display on [Google
+Maps](https://www.google.com/maps) or [Google
+Earth](https://www.google.com/intl/en/earth/). Consequently, you can only access
+its data using an API for which you potentially need to pay. Luckily, there are
+still other providers that grant access to satellite imagery for free. Hence, in
+today's blog post, I would like to show you can access and download satellite
+imagery that is free of charge within R. Once downloaded, we will also learn how
+to plot the downloaded imagery using either base plot, ggplot, or the
+magnificent tmap package.
+
+# Downloading Satellite Imagery
+Let's assume that we want to visualize the study area of a research project that
+is located in the Swiss Alps on a satellite map. The area is given by the
+following rectangle:
+
+```{r, message = F, warning = F}
+
+# Load required packages for this blog post
+library(raster)          # For handling spatial data
+library(tmaptools)       # To download satellite imagery
+library(GISTools)        # To add north arrow to a base plot
+library(ggplot2)         # To plot using the ggplot engine
+library(sf)              # To plot spatial objects with ggplot
+library(ggspatial)       # To add north arrow and scale bars to a ggplot
+library(tmap)            # To plot using tmap
+
+# Rectangular polygon that delineates our study area
+study_area <- as(extent(c(2762710, 2762905, 1184919, 1185332)), "SpatialPolygons")
+crs(study_area) <- CRS("+init=epsg:2056")
+
+```
+
+We could now download satellite data for this region. However, I usually prefer
+to download data on a slightly larger extent so that some of the surroundings of
+the study area can also be included in the plot. Hence, let's define an area of
+interest (aoi) for which we want to download satellite data.
+
+```{r, message = F, warning = F}
+
+# Define an area of interest (aoi)
+aoi <- as(extent(c(2762179, 2763727, 1184568, 1185640)), "SpatialPolygons")
+crs(aoi) <- CRS("+init=epsg:2056")
+
+# Let's plot the study area and the area of interest together
+plot(aoi, border = "blue", lty = 2)
+plot(study_area, add = T, lty = 2, border = "red", col = adjustcolor("red", alpha.f = 0.2))
+axis(1)
+axis(2)
+
+```
+
+Neat! Now it's time to download satellite data for the aoi. The package that
+we're going to use for this is called `tmaptools` (which in the background uses
+the package `OpenStreetMap`). Instead of relying on satellite data provided
+through Google, this package allows us to access satellite imagery from Bing
+using the function `read_osm()` (in fact, you could access data for many other
+providers too). The cool thing is that Bing enables us to download satellite
+imagery at really high resolution. In fact, we can control the resolution of the
+downloaded data by adjusting the `zoom` arguement. Let's give it a try and
+download some satellite data for our aoi.
+
+```{r, message = F, warning = F}
+
+# Download satellite data for the aoi (control resolution of the data using the
+# "zoom" argument. The higher the number, the better the resolution but the
+# longer the download will take)
+sat <- read_osm(aoi, type = "bing", zoom = 17)
+
+# Check what we downloaded
+class(sat)
+
+```
+
+The downloaded object is of the class "stars". I don't really like this format,
+so we'll convert it to a regular raster-stack from the `raster` package. We will
+also reproject the stack to the local [LV-95](https://epsg.io/2056) projection.
+
+
+```{r, message = F, warning = F}
+
+# Convert the downloaded satellite data to a rasterstack
+sat <- as(sat, "Raster")
+
+# Reproject the data to the correct CRS using the "nearest neighbor" (ngb)
+# method
+sat <- projectRaster(sat, crs = CRS("+init=epsg:2056"), method = "ngb")
+
+```
+
+The resulting raster-stack contains three raster layers, together forming an RGB
+image (band 1 = red, band 2 = green, band 3 = blue). Let's take a look at each
+of the bands and plot them.
+
+```{r, message = F, warning = F}
+
+# Visualize the three layers
+plot(sat, col = gray(0:100/100))
+
+```
+
+As you can see, the layers are not perfectly aligned horizontally. This is
+because we reprojected the data to the local LV-95 projection. To make sure
+everything is perfectly aligned, we can crop the bands to our aoi.
+
+```{r, message = F, warning = F}
+
+# Crop the layers to the aoi
+sat <- crop(sat, aoi)
+
+# Plot them again
+plot(sat, col = gray(0:100/100), nrow = 1)
+
+```
+
+# Plotting the Downloaded Imagery
+Obvously we don't want to plot the bands separately but want to combine them
+into a single RGB image. Here, I'll show you how to achieve this using three
+different plotting engines.
+
+## Using Base Plot
+With R's base plot we can plot RGB rasterlayers using the `plotRGB()` command.
+This function takes the rasterstack and combines the layers into a color-image.
+To make the plot look more professional and give some spatial reference, we can
+also add a north arrow and a scale bar to the final image.
+
+```{r, message = F, warning = F}
+
+# Visualize the satellite image using R's base plot
+plotRGB(sat, r = 1, g = 2, b = 3, axes = F)
+plot(study_area, add = T, lty = 2, border = "red", col = adjustcolor("red", alpha.f = 0.2))
+north.arrow(
+    xb     = xmin(sat) + 150
+  , yb     = ymin(sat) + 100
+  , len    = 25
+  , col    = "white"
+  , border = "white"
+  , tcol   = "white"
+)
+scalebar(
+    type  = "bar"
+  , xy    = c(xmax(sat) - 450 , ymin(sat) + 60)
+  , d     = 400
+  , divs  = 4
+  , below = "meters"
+  , col   = "white"
+)
+
+```
+
+## Using Ggplot
+We can also plot our satellite data using the `ggplot2` package. However,
+instead of plotting the raster-stack directly, we first need to convert the
+layers into a regular dataframe. This can easily be done using the
+`as.data.frame()` function. Note that we specify `xy = T` to ensure that the
+coordinates of each pixel in the rasters are retained.
+
+```{r, message = F, warning = F}
+
+# Convert the rasterstack to a regular dataframe
+df <- as.data.frame(sat, xy = T)
+head(df)
+
+```
+We can then map the rgb values of each coordinate in ggplot as follows:
+
+```{r, message = F, warning = F}
+
+# Visualize the satellite image using ggplot
+ggplot(df, aes(x = x, y = y, fill = rgb(red, green, blue, maxColorValue = 255))) +
+  geom_raster() +
+  scale_fill_identity() +
+  coord_sf() +
+  theme_minimal() +
+
+  # Study area
+  geom_sf(
+      data        = st_as_sf(study_area)
+    , inherit.aes = F
+    , col         = "red"
+    , fill        = "red"
+    , alpha       = 0.2
+  ) +
+
+  # North arrow
+  annotation_north_arrow(
+      location = "bl"
+    , pad_x    = unit(1, "cm")
+    , pad_y    = unit(1, "cm")
+    , style    = north_arrow_fancy_orienteering(
+          fill      = c("white", "white")
+        , line_col  = NA
+        , text_col  = "white"
+        , text_size = 12
+      )
+  ) +
+
+  # Scalebar
+  annotation_scale(
+      location = "br"
+    , pad_x    = unit(1, "cm")
+    , pad_y    = unit(1, "cm")
+    , text_col = "white"
+  )
+
+```
+
+## Using Tmap
+One of my favorite packages to create pretty maps is called `tmap`. The syntax
+of tmap is a bit unusual and takes some time to get used to but once learned,
+tmap is a really powerful mapping tool. If you are not familiar with the
+package, it is definitely worth checking out its
+[vignette](https://cran.r-project.org/web/packages/tmap/vignettes/tmap-getstarted.html).
+Anyways, let's plot our satellite imagery with tmap using the `tm_shape()` and
+`tm_rgb()` functions.
+
+```{r, message = F, warning = F}
+
+# Visualize the satellite image using tmap
+tm_shape(sat) +
+    tm_rgb() +
+
+  # Study area
+  tm_shape(study_area) +
+    tm_polygons(col = "red", alpha = 0.2, border.col = "red", border.alpha = 1) +
+
+  # North arrow
+  tm_compass(
+      position   = c("left", "bottom")
+    , text.color = "white"
+    , color.dark = "white"
+  ) +
+
+  # Scalebar
+  tm_scale_bar(
+      position   = c("right", "bottom")
+    , text.color = "white"
+  ) +
+  tm_graticules(lines = F)
+
+```
+
+# Summary
+In this blog post we learned a relatively simple approach to download and
+visualize free satellite imagery from Microsoft Bing using R.
+
+# Session Information
+```{r, warning = F, message = F, echo = F}
+sessionInfo()
+```
