@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on David D. Hofmann</title>
-    <link>https://davidhofmann.github.io/categories/</link>
+    <link>https://daviddhofmann.github.io/categories/</link>
     <description>Recent content in Categories on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 18 Dec 2023 18:00:00 -0500</lastBuildDate>
-    <atom:link href="https://davidhofmann.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://daviddhofmann.github.io/categories/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>R</title>
-      <link>https://davidhofmann.github.io/categories/r/</link>
+      <link>https://daviddhofmann.github.io/categories/r/</link>
       <pubDate>Mon, 18 Dec 2023 18:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/categories/r/</guid>
+      <guid>https://daviddhofmann.github.io/categories/r/</guid>
       <description></description>
     </item>
     <item>
       <title>Animals</title>
-      <link>https://davidhofmann.github.io/categories/animals/</link>
+      <link>https://daviddhofmann.github.io/categories/animals/</link>
       <pubDate>Sat, 09 Sep 2023 09:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/categories/animals/</guid>
+      <guid>https://daviddhofmann.github.io/categories/animals/</guid>
       <description></description>
     </item>
     <item>
       <title>Botswana</title>
-      <link>https://davidhofmann.github.io/categories/botswana/</link>
+      <link>https://daviddhofmann.github.io/categories/botswana/</link>
       <pubDate>Wed, 17 Aug 2022 12:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/categories/botswana/</guid>
+      <guid>https://daviddhofmann.github.io/categories/botswana/</guid>
       <description></description>
     </item>
   </channel>

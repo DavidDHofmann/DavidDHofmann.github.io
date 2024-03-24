@@ -2,59 +2,59 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>R on David D. Hofmann</title>
-    <link>https://davidhofmann.github.io/tags/r/</link>
+    <link>https://daviddhofmann.github.io/tags/r/</link>
     <description>Recent content in R on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 18 Dec 2023 18:00:00 -0500</lastBuildDate>
-    <atom:link href="https://davidhofmann.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://daviddhofmann.github.io/tags/r/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mapping the Flood Extent of the Okavango Delta in R</title>
-      <link>https://davidhofmann.github.io/post/floodmapping/</link>
+      <link>https://daviddhofmann.github.io/post/floodmapping/</link>
       <pubDate>Mon, 18 Dec 2023 18:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/post/floodmapping/</guid>
+      <guid>https://daviddhofmann.github.io/post/floodmapping/</guid>
       <description>The Okavango Delta is one of the world&amp;rsquo;s most pristine ecosystems, hosting a large diversity of animal and plant species. It represents the planet&amp;rsquo;s largest inland delta and is characterized by significant seasonal fluctuations of its flood extent. In this blog post, I will introduce you to a simple, yet effective approach to remote sense the Delta&amp;rsquo;s flood extent using MODIS satellite imagery and the &lt;code&gt;floodmapr&lt;/code&gt; R-package.</description>
     </item>
     <item>
       <title>A Simulation-Based Introduction to Hidden-Markov Movement Models</title>
-      <link>https://davidhofmann.github.io/post/hiddenmarkovmodel/</link>
+      <link>https://daviddhofmann.github.io/post/hiddenmarkovmodel/</link>
       <pubDate>Thu, 30 Jun 2022 12:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/post/hiddenmarkovmodel/</guid>
+      <guid>https://daviddhofmann.github.io/post/hiddenmarkovmodel/</guid>
       <description>Hidden Markov Movement Models (HMMMs) are increasingly popular in movement ecology to learn more about unobserved behavioral modes from telemetry data. In this blog post, we will simulate telemetry data with known movement parameters and estimate the parameters and associated behavioral modes using the moveHMM package.</description>
     </item>
     <item>
       <title>Download and Visualize Satellite Images in R</title>
-      <link>https://davidhofmann.github.io/post/satelliteimagery/</link>
+      <link>https://daviddhofmann.github.io/post/satelliteimagery/</link>
       <pubDate>Fri, 31 Dec 2021 12:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/post/satelliteimagery/</guid>
+      <guid>https://daviddhofmann.github.io/post/satelliteimagery/</guid>
       <description>When you visualize spatial data on a map, it is often useful to plot a satellite image in the background. Hence, I would like to show you can use R to access and download satellite imagery that is free of charge. Once downloaded, we will plot the imagery using either base plot, ggplot, or the magnificent tmap package.</description>
     </item>
     <item>
       <title>Some Insights on Scaling/Standardizing</title>
-      <link>https://davidhofmann.github.io/post/scaling/</link>
+      <link>https://daviddhofmann.github.io/post/scaling/</link>
       <pubDate>Sun, 19 Sep 2021 20:00:05 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/post/scaling/</guid>
+      <guid>https://daviddhofmann.github.io/post/scaling/</guid>
       <description>When we fit a statistical model, we usually scale our covariates to a mean of zero and standard deviation of one. But how does this actually influence the model and how does scaling change the way in which we need to interpret resulting model coefficients? Moreover, can we backtransform model coefficients from the scaled into the unscaled world? In this blog post, we&amp;rsquo;ll take a detailed look at scaling and examine why we scale, how to scale, and how to backtransform a model containing scaled covariates.</description>
     </item>
     <item>
       <title>Quick Sensitivity Analyses in R</title>
-      <link>https://davidhofmann.github.io/post/sensitivity/</link>
+      <link>https://daviddhofmann.github.io/post/sensitivity/</link>
       <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
-      <guid>https://davidhofmann.github.io/post/sensitivity/</guid>
+      <guid>https://daviddhofmann.github.io/post/sensitivity/</guid>
       <description>Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Doing this in R can be incredibly frustrating, especially when a large number of parameters are involved. Here, I will show you a relatively painless and simple workflow that will enable you to complete such analysis with clean and short code using tibbles from the tidyverse.</description>
     </item>
     <item>
       <title>Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images</title>
-      <link>https://davidhofmann.github.io/post/megadetector/</link>
+      <link>https://daviddhofmann.github.io/post/megadetector/</link>
       <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/post/megadetector/</guid>
+      <guid>https://daviddhofmann.github.io/post/megadetector/</guid>
       <description>Camera trap studies usually deal with thousands of camera trap images that have to be organized and sorted. In this blog-post, I&amp;rsquo;m going to illustrate how you can use Microsoft&amp;rsquo;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals.</description>
     </item>
     <item>
       <title>Elevation Data in R</title>
-      <link>https://davidhofmann.github.io/post/elevation/</link>
+      <link>https://daviddhofmann.github.io/post/elevation/</link>
       <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/post/elevation/</guid>
+      <guid>https://daviddhofmann.github.io/post/elevation/</guid>
       <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
     </item>
   </channel>

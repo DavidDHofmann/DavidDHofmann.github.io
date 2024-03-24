@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Cameratrap on David D. Hofmann</title>
-    <link>https://davidhofmann.github.io/tags/cameratrap/</link>
+    <link>https://daviddhofmann.github.io/tags/cameratrap/</link>
     <description>Recent content in Cameratrap on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Thu, 15 Apr 2021 18:00:00 -0500</lastBuildDate>
-    <atom:link href="https://davidhofmann.github.io/tags/cameratrap/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://daviddhofmann.github.io/tags/cameratrap/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images</title>
-      <link>https://davidhofmann.github.io/post/megadetector/</link>
+      <link>https://daviddhofmann.github.io/post/megadetector/</link>
       <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
-      <guid>https://davidhofmann.github.io/post/megadetector/</guid>
+      <guid>https://daviddhofmann.github.io/post/megadetector/</guid>
       <description>Camera trap studies usually deal with thousands of camera trap images that have to be organized and sorted. In this blog-post, I&amp;rsquo;m going to illustrate how you can use Microsoft&amp;rsquo;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals.</description>
     </item>
   </channel>
