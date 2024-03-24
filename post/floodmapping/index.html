@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=4321&amp;path=livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -104,7 +104,7 @@
 		    
                         <li><a href="/about//">ABOUT</a></li>
                     
-                        <li><a href="/publications/">PUBLICATIONS</a></li>
+                        <li><a href="/publications//">PUBLICATIONS</a></li>
                     
                         <li><a href="/gallery//">GALLERY</a></li>
                     
@@ -215,7 +215,7 @@
 
                 
                 
-<script src="http://localhost:1313/post/floodmapping/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="/post/floodmapping/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -468,9 +468,9 @@ Figure 3:  a) Calibration polygons that are used to inform the algorithm about t
 <pre><code>## [1] FALSE</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co"># Visualize the reflectance properties</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">modis_specs</span>(flood_dry)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/floodmapping/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="/post/floodmapping/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">modis_specs</span>(flood_wet)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/floodmapping/index_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="/post/floodmapping/index_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <p>In our case, it appears that only the first map is bimodal, whereas the second
 is not. This can quite clearly be seen from the spectral reflectance images
 that show a substantial overlap in the second case. For the sake of this
@@ -493,7 +493,7 @@ unreliable flood maps.</p>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a><span class="kw">plot</span>(flood_dry_class, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>), <span class="dt">main =</span> <span class="st">&quot;Flood 2022-09-16&quot;</span>)</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a><span class="kw">plot</span>(flood_wet_class, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>), <span class="dt">main =</span> <span class="st">&quot;Flood 2023-03-10&quot;</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="http://localhost:1313/post/floodmapping/index_files/figure-html/unnamed-chunk-9-1.png" alt="Classified flood maps." width="100%" />
+<img src="/post/floodmapping/index_files/figure-html/unnamed-chunk-9-1.png" alt="Classified flood maps." width="100%" />
 <p class="caption">
 Figure 4: Classified flood maps.
 </p>
