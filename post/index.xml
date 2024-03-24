@@ -64,12 +64,5 @@
       <guid>https://davidhofmann.github.io/post/elevation/</guid>
       <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
     </item>
-    <item>
-      <title></title>
-      <link>https://davidhofmann.github.io/post/testblog/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://davidhofmann.github.io/post/testblog/</guid>
-      <description>Title This is a test blog</description>
-    </item>
   </channel>
 </rss>
