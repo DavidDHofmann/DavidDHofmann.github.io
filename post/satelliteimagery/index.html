@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -215,7 +215,7 @@
 
                 
                 
-<script src="http://localhost:1313/post/satelliteimagery/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="https://daviddhofmann.github.io/post/satelliteimagery/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -341,7 +341,7 @@ interest (aoi) for which we want to download satellite data.</p>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="kw">plot</span>(study_area, <span class="dt">add =</span> T, <span class="dt">lty =</span> <span class="dv">2</span>, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">col =</span> <span class="kw">adjustcolor</span>(<span class="st">&quot;red&quot;</span>, <span class="dt">alpha.f =</span> <span class="fl">0.2</span>))</span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="kw">axis</span>(<span class="dv">1</span>)</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">axis</span>(<span class="dv">2</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/satelliteimagery/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/satelliteimagery/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>Neat! Now it’s time to download satellite data for the aoi. The package that
 we’re going to use for this is called <code>tmaptools</code> (which in the background uses
 the package <code>OpenStreetMap</code>). Instead of relying on satellite data provided
@@ -373,7 +373,7 @@ image (band 1 = red, band 2 = green, band 3 = blue). Let’s take a look at each
 of the bands and plot them.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co"># Visualize the three layers</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="kw">plot</span>(sat, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>))</span></code></pre></div>
-<p><img src="http://localhost:1313/post/satelliteimagery/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/satelliteimagery/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 <p>As you can see, the layers are not perfectly aligned horizontally. This is
 because we reprojected the data to the local LV-95 projection. To make sure
 everything is perfectly aligned, we can crop the bands to our aoi.</p>
@@ -382,7 +382,7 @@ everything is perfectly aligned, we can crop the bands to our aoi.</p>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="co"># Plot them again</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="kw">plot</span>(sat, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">0</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/satelliteimagery/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/satelliteimagery/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="plotting-the-downloaded-imagery" class="section level1">
 <h1>Plotting the Downloaded Imagery</h1>
@@ -414,7 +414,7 @@ also add a north arrow and a scale bar to the final image.</p>
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>  , <span class="dt">below =</span> <span class="st">&quot;meters&quot;</span></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>  , <span class="dt">col   =</span> <span class="st">&quot;white&quot;</span></span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/satelliteimagery/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/satelliteimagery/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="using-ggplot" class="section level2">
 <h2>Using Ggplot</h2>
@@ -470,7 +470,7 @@ coordinates of each pixel in the rasters are retained.</p>
 <span id="cb11-34"><a href="#cb11-34" aria-hidden="true"></a>    , <span class="dt">pad_y    =</span> <span class="kw">unit</span>(<span class="dv">1</span>, <span class="st">&quot;cm&quot;</span>)</span>
 <span id="cb11-35"><a href="#cb11-35" aria-hidden="true"></a>    , <span class="dt">text_col =</span> <span class="st">&quot;white&quot;</span></span>
 <span id="cb11-36"><a href="#cb11-36" aria-hidden="true"></a>  )</span></code></pre></div>
-<p><img src="http://localhost:1313/post/satelliteimagery/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/satelliteimagery/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="using-tmap" class="section level2">
 <h2>Using Tmap</h2>
@@ -502,7 +502,7 @@ Anyways, let’s plot our satellite imagery with tmap using the <code>tm_shape()
 <span id="cb12-19"><a href="#cb12-19" aria-hidden="true"></a>    , <span class="dt">text.color =</span> <span class="st">&quot;white&quot;</span></span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true"></a>  ) <span class="op">+</span></span>
 <span id="cb12-21"><a href="#cb12-21" aria-hidden="true"></a><span class="st">  </span><span class="kw">tm_graticules</span>(<span class="dt">lines =</span> F)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/satelliteimagery/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/satelliteimagery/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 </div>
 </div>
 <div id="summary" class="section level1">

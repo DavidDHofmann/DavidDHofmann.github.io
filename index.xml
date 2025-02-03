@@ -2,101 +2,101 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>David D. Hofmann</title>
-    <link>http://localhost:1313/</link>
+    <link>https://daviddhofmann.github.io/</link>
     <description>Recent content on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Mon, 18 Dec 2023 18:00:00 -0500</lastBuildDate>
-    <atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://daviddhofmann.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Mapping the Flood Extent of the Okavango Delta in R</title>
-      <link>http://localhost:1313/post/floodmapping/</link>
+      <link>https://daviddhofmann.github.io/post/floodmapping/</link>
       <pubDate>Mon, 18 Dec 2023 18:00:00 -0500</pubDate>
-      <guid>http://localhost:1313/post/floodmapping/</guid>
+      <guid>https://daviddhofmann.github.io/post/floodmapping/</guid>
       <description>The Okavango Delta is one of the world&amp;rsquo;s most pristine ecosystems, hosting a large diversity of animal and plant species. It represents the planet&amp;rsquo;s largest inland delta and is characterized by significant seasonal fluctuations of its flood extent. In this blog post, I will introduce you to a simple, yet effective approach to remote sense the Delta&amp;rsquo;s flood extent using MODIS satellite imagery and the &lt;code&gt;floodmapr&lt;/code&gt; R-package.</description>
     </item>
     <item>
       <title>Bat-Eared Fox (Otocyon megalotis)</title>
-      <link>http://localhost:1313/animals/batearedfox/</link>
+      <link>https://daviddhofmann.github.io/animals/batearedfox/</link>
       <pubDate>Sat, 09 Sep 2023 09:00:00 -0500</pubDate>
-      <guid>http://localhost:1313/animals/batearedfox/</guid>
+      <guid>https://daviddhofmann.github.io/animals/batearedfox/</guid>
       <description>The bat-eared fox (Otocyon megalotis) is a medium-sized canid that calls sub-Saharan Africa its home. Adult individuals typically weigh less than 6 kg and measure between 70 and 90 cm from nose to tail. Within the canid family, the bat-eared fox stands alone as the sole representative of the genus Otocyon. Its closest relatives include domestic dogs, wolves and foxes. Thanks to its eponymous and extraordinary set of ears, however, the bat-eared fox cannot be mistaken for any other species (Figure 1).</description>
     </item>
     <item>
       <title>A Fair Share to De-Snare</title>
-      <link>http://localhost:1313/post/snareddogs/</link>
+      <link>https://daviddhofmann.github.io/post/snareddogs/</link>
       <pubDate>Wed, 17 Aug 2022 12:00:00 -0500</pubDate>
-      <guid>http://localhost:1313/post/snareddogs/</guid>
+      <guid>https://daviddhofmann.github.io/post/snareddogs/</guid>
       <description>During my last season of field work in Botswana, we encountered a pack of wild dogs where some individuals carried a wire snare around their neck. Luckily, with the aid of a wildlife veterinarian, we were able to remove the snares.</description>
     </item>
     <item>
       <title>A Simulation-Based Introduction to Hidden-Markov Movement Models</title>
-      <link>http://localhost:1313/post/hiddenmarkovmodel/</link>
+      <link>https://daviddhofmann.github.io/post/hiddenmarkovmodel/</link>
       <pubDate>Thu, 30 Jun 2022 12:00:00 -0500</pubDate>
-      <guid>http://localhost:1313/post/hiddenmarkovmodel/</guid>
+      <guid>https://daviddhofmann.github.io/post/hiddenmarkovmodel/</guid>
       <description>Hidden Markov Movement Models (HMMMs) are increasingly popular in movement ecology to learn more about unobserved behavioral modes from telemetry data. In this blog post, we will simulate telemetry data with known movement parameters and estimate the parameters and associated behavioral modes using the moveHMM package.</description>
     </item>
     <item>
       <title>Download and Visualize Satellite Images in R</title>
-      <link>http://localhost:1313/post/satelliteimagery/</link>
+      <link>https://daviddhofmann.github.io/post/satelliteimagery/</link>
       <pubDate>Fri, 31 Dec 2021 12:00:00 -0500</pubDate>
-      <guid>http://localhost:1313/post/satelliteimagery/</guid>
+      <guid>https://daviddhofmann.github.io/post/satelliteimagery/</guid>
       <description>When you visualize spatial data on a map, it is often useful to plot a satellite image in the background. Hence, I would like to show you can use R to access and download satellite imagery that is free of charge. Once downloaded, we will plot the imagery using either base plot, ggplot, or the magnificent tmap package.</description>
     </item>
     <item>
       <title>Some Insights on Scaling/Standardizing</title>
-      <link>http://localhost:1313/post/scaling/</link>
+      <link>https://daviddhofmann.github.io/post/scaling/</link>
       <pubDate>Sun, 19 Sep 2021 20:00:05 -0500</pubDate>
-      <guid>http://localhost:1313/post/scaling/</guid>
+      <guid>https://daviddhofmann.github.io/post/scaling/</guid>
       <description>When we fit a statistical model, we usually scale our covariates to a mean of zero and standard deviation of one. But how does this actually influence the model and how does scaling change the way in which we need to interpret resulting model coefficients? Moreover, can we backtransform model coefficients from the scaled into the unscaled world? In this blog post, we&amp;rsquo;ll take a detailed look at scaling and examine why we scale, how to scale, and how to backtransform a model containing scaled covariates.</description>
     </item>
     <item>
       <title>Quick Sensitivity Analyses in R</title>
-      <link>http://localhost:1313/post/sensitivity/</link>
+      <link>https://daviddhofmann.github.io/post/sensitivity/</link>
       <pubDate>Sun, 27 Jun 2021 15:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/post/sensitivity/</guid>
+      <guid>https://daviddhofmann.github.io/post/sensitivity/</guid>
       <description>Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Doing this in R can be incredibly frustrating, especially when a large number of parameters are involved. Here, I will show you a relatively painless and simple workflow that will enable you to complete such analysis with clean and short code using tibbles from the tidyverse.</description>
     </item>
     <item>
       <title>Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images</title>
-      <link>http://localhost:1313/post/megadetector/</link>
+      <link>https://daviddhofmann.github.io/post/megadetector/</link>
       <pubDate>Thu, 15 Apr 2021 18:00:00 -0500</pubDate>
-      <guid>http://localhost:1313/post/megadetector/</guid>
+      <guid>https://daviddhofmann.github.io/post/megadetector/</guid>
       <description>Camera trap studies usually deal with thousands of camera trap images that have to be organized and sorted. In this blog-post, I&amp;rsquo;m going to illustrate how you can use Microsoft&amp;rsquo;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals.</description>
     </item>
     <item>
       <title>Elevation Data in R</title>
-      <link>http://localhost:1313/post/elevation/</link>
+      <link>https://daviddhofmann.github.io/post/elevation/</link>
       <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
-      <guid>http://localhost:1313/post/elevation/</guid>
+      <guid>https://daviddhofmann.github.io/post/elevation/</guid>
       <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
     </item>
     <item>
       <title>Gallery</title>
-      <link>http://localhost:1313/gallery/</link>
+      <link>https://daviddhofmann.github.io/gallery/</link>
       <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/gallery/</guid>
+      <guid>https://daviddhofmann.github.io/gallery/</guid>
       <description>Aston&#xA;Bateleur&#xA;Black backed jackal&#xA;Buffalo&#xA;Campanula&#xA;Cheetah&#xA;Cheetah looking&#xA;Cheetah tree&#xA;Dactylo&#xA;Dog pup&#xA;Elephant&#xA;Elephant sunset&#xA;Hippos&#xA;Hyena&#xA;Jessie&#xA;Juvenile lion&#xA;Kaziikini&#xA;Kingfisher&#xA;Leopard&#xA;Leopard in atree&#xA;Leopard rain&#xA;Leopardesse&#xA;Lilac&#xA;Lion cub&#xA;Lion cub2&#xA;Lion cub ear&#xA;Lion family&#xA;Lion laying&#xA;Lion mother&#xA;Lioness&#xA;Oryx&#xA;Raptor&#xA;Starling&#xA;Trollius&#xA;Wild dog&#xA;Wild dog2&#xA;Wild dogs&#xA;Wild dogs sunset&#xA;Wildebeest&#xA;Zebra</description>
     </item>
     <item>
       <title></title>
-      <link>http://localhost:1313/about/</link>
+      <link>https://daviddhofmann.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/about/</guid>
+      <guid>https://daviddhofmann.github.io/about/</guid>
       <description>Hi there! My name is David D. Hofmann and I am a PhD student in ecology at the University of Zurich in Switzerland. Prior to my PhD, I did a master’s degree in economics and soonafter a master&amp;rsquo;s degree in environmental sciences. The latter ultimatelly led to my current position as a PhD student. My research interests mainly include spatial data analysis, remote sensing, movement ecology, and conservation science. Together with my colleagues at Popecol, I am currently working on the African wild dog dispersal project in Botswana.</description>
     </item>
     <item>
       <title>Animal Portraits</title>
-      <link>http://localhost:1313/animals/</link>
+      <link>https://daviddhofmann.github.io/animals/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/animals/</guid>
+      <guid>https://daviddhofmann.github.io/animals/</guid>
       <description>Click on an image to learn more about the respective animal.&#xA;Large Carnivores Others </description>
     </item>
     <item>
       <title>Publications</title>
-      <link>http://localhost:1313/publications/</link>
+      <link>https://daviddhofmann.github.io/publications/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/publications/</guid>
+      <guid>https://daviddhofmann.github.io/publications/</guid>
       <description>Papers Claase, MJ, Cherry, MI, Hofmann DD, Apps, PJ, McNutt, JW, Jordan, NR. Patterns of Scent Marking by African Wild Dogs, Lycaon pictus, at Shared Marking Sites. Animal Behavior, 2024; 207; 77-86. https://doi.org/10.1016/j.anbehav.2023.10.012.&#xA;Cozzi, G, Reilly, M, Abegg, D, Behr, DM, Brack, P, Claase, MJ, Holmberg, J, Hofmann, DD, Kalil, P, Ndlovu, S, Neelo, J, McNutt, JW. An AI‐Based Platform to Investigate African Large Carnivore Dispersal and Demography Across Broad Landscapes: A Case Study and Future Directions Using African Wild Dogs.</description>
     </item>
   </channel>

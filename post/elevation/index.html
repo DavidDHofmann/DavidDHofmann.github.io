@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -223,7 +223,7 @@
 
                 
                 
-<script src="http://localhost:1313/post/elevation/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="https://daviddhofmann.github.io/post/elevation/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -334,7 +334,7 @@ packages that we’ll use later.</p>
 <pre><code>## Warning in getData(&quot;GADM&quot;, country = &quot;CHE&quot;, level = 0): getData will be removed in a future version of raster
 ## . Please use the geodata package instead</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">plot</span>(swiss)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>Now that we decided on an area of interest, we have two options to download a
 DEM:</p>
 <ul>
@@ -351,7 +351,7 @@ Switzerland (country code <em>CHE</em>).</p>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="co"># Visualize it</span></span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="kw">plot</span>(elev, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>The download does not take long at all! While the downloaded raster has a rather
 low resolution of 925 by 925 meters, this should suffice for most purposes (you
 canactually calculate the resolution in meters using the approximation that 1
@@ -378,7 +378,7 @@ downloaded DEM to the exact area of Switzerland.</p>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="co"># Visualize it</span></span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="kw">plot</span>(elev, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co"># Check resolution (could be increased even further)</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="kw">res</span>(elev) <span class="op">*</span><span class="st"> </span><span class="dv">111000</span></span></code></pre></div>
 <pre><code>## [1] 521.7562 521.7562</code></pre>
@@ -401,7 +401,7 @@ the locations and their respective elevation on a nice map.</p>
 <span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span>
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a><span class="kw">plot</span>(locs, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">pch =</span> <span class="dv">20</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>)</span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a><span class="kw">text</span>(locs, <span class="dt">label =</span> <span class="st">&quot;Elevation&quot;</span>, <span class="dt">col =</span> <span class="st">&quot;orange&quot;</span>, <span class="dt">cex =</span> <span class="fl">0.5</span>, <span class="dt">pos =</span> <span class="dv">3</span>, <span class="dt">offset =</span> <span class="fl">0.2</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="deriving-terrain-features" class="section level1">
 <h1>Deriving Terrain Features</h1>
@@ -419,7 +419,7 @@ the <em>hillshade</em>, which we will use to create some nice relief plots.</p>
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a><span class="co"># Visualize it</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a><span class="kw">plot</span>(hillshade, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
 <span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 <p>If you want to increase the “strength” of the hillshade, you can introduce a
 <em>modifier</em> that artificially increases the variability in elevation as follows.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="co"># Calculate &quot;aspect&quot; and &quot;slope&quot; using a modified DEM</span></span>
@@ -433,7 +433,7 @@ the <em>hillshade</em>, which we will use to create some nice relief plots.</p>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a><span class="co"># Visualize it</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a><span class="kw">plot</span>(hillshade2, <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 <p>You may also be interested in the ruggedness of the terrain. For this, there’s
 the <em>terrain</em> <em>ruggedness</em> <em>index</em> (TRI). The TRI is defined as the square root
 of the average of the squared differences in elevation of a focal cell and its
@@ -454,7 +454,7 @@ ruggedness to this window. For our purposes, a 3x3 cell window will suffice.</p>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a><span class="co"># Visualize</span></span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true"></a><span class="kw">plot</span>(tri, <span class="dt">col =</span> <span class="kw">viridis</span>(<span class="dv">50</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true"></a><span class="kw">plot</span>(swiss, <span class="dt">add =</span> T, <span class="dt">border =</span> <span class="st">&quot;red&quot;</span>, <span class="dt">lwd =</span> <span class="dv">2</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>These are just a few examples that should get you started with elevation data.
 We’ll now turn to more fun things and try to get some nice plots using the
 <code>rayshader</code> package.</p>
@@ -476,7 +476,7 @@ the elevation raster into a matrix. We can do this using the function
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>elmat <span class="op">%&gt;%</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <p>At this stage, the map looks somewhat boring. We can make it a bit more
 interesting using two modifications. First, we can apply a mask and pretend that
 anything outside of Switzerland has an elevation of 0. This will make the
@@ -491,7 +491,7 @@ country literally pop.</p>
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>elmat <span class="op">%&gt;%</span></span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <p>This already looks much better. As a second modification, we can add waterbodies
 to our plot. This should add a bit of colour and really help to sell the map.
 While the <code>rayshader</code> package comes with a function called <code>detect_water(elev)</code>
@@ -521,7 +521,7 @@ download the shapefile from github and load it into R as follows.</p>
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true"></a><span class="co"># Visualize them on top of the hillshade map</span></span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true"></a><span class="kw">plot</span>(<span class="kw">mask</span>(hillshade, swiss), <span class="dt">col =</span> <span class="kw">gray</span>(<span class="dv">60</span><span class="op">:</span><span class="dv">100</span><span class="op">/</span><span class="dv">100</span>), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">legend =</span> F)</span>
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true"></a><span class="kw">plot</span>(water, <span class="dt">add =</span> T, <span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">border =</span> <span class="ot">NA</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 <p>Rayshader requires that waterbodies are represented in raster format, hence
 we’ll have to rasterize them. In addition (and don’t ask me why) we need to
 “flip” the resulting raster (mirror it on the x axis) so that it aligns with the
@@ -540,7 +540,7 @@ elevation raster.</p>
 <span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">sphere_shade</span>(., <span class="dt">texture =</span> <span class="st">&quot;imhof1&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true"></a><span class="st">  </span><span class="kw">add_water</span>(., wamat, <span class="dt">color =</span> <span class="st">&quot;lightblue&quot;</span>) <span class="op">%&gt;%</span></span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true"></a><span class="st">  </span><span class="kw">plot_map</span>()</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-12-1.png" width="672" /></p>
 <p>Awesome! This already looks much cooler. But it’s not really in 3d yet. So let’s
 give it a final twist by putting everything into proper 3d. We’ll also add some
 shadows, make the water slightly transparent, and add bit of depth of field.</p>
@@ -564,7 +564,7 @@ shadows, make the water slightly transparent, and add bit of depth of field.</p>
 <span id="cb18-18"><a href="#cb18-18" aria-hidden="true"></a>  )</span>
 <span id="cb18-19"><a href="#cb18-19" aria-hidden="true"></a><span class="kw">Sys.sleep</span>(<span class="fl">0.2</span>)</span>
 <span id="cb18-20"><a href="#cb18-20" aria-hidden="true"></a><span class="kw">render_depth</span>(<span class="dt">focus =</span> <span class="fl">0.6</span>, <span class="dt">focallength =</span> <span class="dv">80</span>, <span class="dt">clear =</span> <span class="ot">TRUE</span>)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 </div>
 <div id="bathymetry-data" class="section level1">
 <h1>Bathymetry Data</h1>
@@ -593,7 +593,7 @@ doing so far with it.</p>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true"></a></span>
 <span id="cb19-16"><a href="#cb19-16" aria-hidden="true"></a><span class="co"># Visualize it</span></span>
 <span id="cb19-17"><a href="#cb19-17" aria-hidden="true"></a><span class="kw">plot</span>(bathy, <span class="dt">col =</span> <span class="kw">rev</span>(<span class="kw">viridis</span>(<span class="dv">50</span>)), <span class="dt">box =</span> F, <span class="dt">axes =</span> F, <span class="dt">horizontal =</span> T)</span></code></pre></div>
-<p><img src="http://localhost:1313/post/elevation/index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/elevation/index_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
 <p>I won’t go into further details but the package offers many more useful
 functions and has great plotting capabilities that allow you to generate
 publication ready plots. You can find out about all the nifty little tricks and
