@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head>
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -215,7 +215,7 @@
 
                 
                 
-<script src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="http://localhost:1313/post/hiddenmarkovmodel/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -351,7 +351,7 @@ switch from one state to another (hence to change their movement mode).</p>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) <span class="op">+</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_colourbar</span>(<span class="dt">title.position=</span><span class="st">&quot;top&quot;</span>, <span class="dt">title.hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>To now simulate movement across this landscape, we need three ingredients. (1) A
 function to sample step lengths, (2) a function to sample turning angles, and
 (3) a function to determine transition probabilities</p>
@@ -382,7 +382,7 @@ hypothetical states (e.g. resting vs. moving).</p>
 <span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Step Length&quot;</span>) <span class="op">+</span></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>State)</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 </div>
 <div id="function-to-sample-turning-angles" class="section level2">
 <h2>Function to Sample Turning Angles</h2>
@@ -426,7 +426,7 @@ Mises distribution, we have to write those ourselves.</p>
 <span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
 <span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Turning Angle&quot;</span>) <span class="op">+</span></span>
 <span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span><span class="st"> </span>State)</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
 </div>
 <div id="function-to-determine-transition-probabilities" class="section level2">
 <h2>Function to Determine Transition-Probabilities</h2>
@@ -465,7 +465,7 @@ is the inverse of the logit. Hence, let’s write it down.</p>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true"></a><span class="st">  </span><span class="kw">geom_line</span>(<span class="dt">col =</span> <span class="st">&quot;cornflowerblue&quot;</span>, <span class="dt">lwd =</span> <span class="fl">1.2</span>) <span class="op">+</span></span>
 <span id="cb6-29"><a href="#cb6-29" aria-hidden="true"></a><span class="st">  </span><span class="kw">ylab</span>(<span class="st">&quot;Transition Probability&quot;</span>) <span class="op">+</span></span>
 <span id="cb6-30"><a href="#cb6-30" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>()</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
 </div>
 <div id="simulation-parameters" class="section level2">
 <h2>Simulation Parameters</h2>
@@ -541,7 +541,7 @@ everything works fine and that we’re not generating unreasonable data.</p>
 <span id="cb8-45"><a href="#cb8-45" aria-hidden="true"></a></span>
 <span id="cb8-46"><a href="#cb8-46" aria-hidden="true"></a><span class="co"># Put the plots together</span></span>
 <span id="cb8-47"><a href="#cb8-47" aria-hidden="true"></a><span class="kw">ggarrange</span>(p1, p2, p3, <span class="dt">nrow =</span> <span class="dv">3</span>)</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>This looks good! When the animal is in the “Moving” state, the step lengths tend
 to be larger, turning angles tend to be narrower (closer to 0) and the
 transition probability reacts quite strongly to changes in food-availability. In
@@ -662,7 +662,7 @@ at the center, which is why it will by quite crowded there!</p>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
 <span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) <span class="op">+</span></span>
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a><span class="st">  </span><span class="kw">guides</span>(<span class="dt">fill =</span> <span class="kw">guide_colourbar</span>(<span class="dt">title.position=</span><span class="st">&quot;top&quot;</span>, <span class="dt">title.hjust =</span> <span class="fl">0.5</span>))</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
 </div>
 </div>
 <div id="fitting-the-model" class="section level1">
@@ -696,7 +696,7 @@ deviation from the shape and scale of a gamma distribution are given above).</p>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a><span class="st">  </span><span class="kw">theme_minimal</span>() <span class="op">+</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Turning Angle&quot;</span>)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a><span class="kw">ggarrange</span>(p1, p2, <span class="dt">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co"># Define initial values for step length distribution(s)</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>mu0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>)    <span class="co"># Resting (5) and moving (10) parameters</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>sd0 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">5</span>, <span class="dv">10</span>)    <span class="co"># Resting (5) and moving (10) parameters</span></span>
@@ -775,7 +775,7 @@ states.</p>
 almost identical to the one we produced in the beginning.</p>
 <div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true"></a><span class="co"># Plot transition probs</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true"></a><span class="kw">plotStationary</span>(mod, <span class="dt">plotCI =</span> T)</span></code></pre></div>
-<p><img src="https://daviddhofmann.github.io/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
+<p><img src="http://localhost:1313/post/hiddenmarkovmodel/index_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
 </div>
 <div id="conclusion" class="section level1">
 <h1>Conclusion</h1>
@@ -968,7 +968,7 @@ the behavioral modes with high accuracy.</p>
            
              </ul>
 		<p class="copyright text-muted">
-                    Copyright &copy; David D. Hofmann 2024
+                    Copyright &copy; David D. Hofmann 2025
                     
                 </p>
             </div>

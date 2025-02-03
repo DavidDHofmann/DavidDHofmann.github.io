@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Animals on David D. Hofmann</title>
-    <link>https://daviddhofmann.github.io/tags/animals/</link>
+    <link>http://localhost:1313/tags/animals/</link>
     <description>Recent content in Animals on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 09 Sep 2023 09:00:00 -0500</lastBuildDate>
-    <atom:link href="https://daviddhofmann.github.io/tags/animals/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/tags/animals/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Bat-Eared Fox (Otocyon megalotis)</title>
-      <link>https://daviddhofmann.github.io/animals/batearedfox/</link>
+      <link>http://localhost:1313/animals/batearedfox/</link>
       <pubDate>Sat, 09 Sep 2023 09:00:00 -0500</pubDate>
-      <guid>https://daviddhofmann.github.io/animals/batearedfox/</guid>
+      <guid>http://localhost:1313/animals/batearedfox/</guid>
       <description>The bat-eared fox (Otocyon megalotis) is a medium-sized canid that calls sub-Saharan Africa its home. Adult individuals typically weigh less than 6 kg and measure between 70 and 90 cm from nose to tail. Within the canid family, the bat-eared fox stands alone as the sole representative of the genus Otocyon. Its closest relatives include domestic dogs, wolves and foxes. Thanks to its eponymous and extraordinary set of ears, however, the bat-eared fox cannot be mistaken for any other species (Figure 1).</description>
     </item>
   </channel>

@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Botswana on David D. Hofmann</title>
-    <link>https://daviddhofmann.github.io/categories/botswana/</link>
+    <link>http://localhost:1313/categories/botswana/</link>
     <description>Recent content in Botswana on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 17 Aug 2022 12:00:00 -0500</lastBuildDate>
-    <atom:link href="https://daviddhofmann.github.io/categories/botswana/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://localhost:1313/categories/botswana/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>A Fair Share to De-Snare</title>
-      <link>https://daviddhofmann.github.io/post/snareddogs/</link>
+      <link>http://localhost:1313/post/snareddogs/</link>
       <pubDate>Wed, 17 Aug 2022 12:00:00 -0500</pubDate>
-      <guid>https://daviddhofmann.github.io/post/snareddogs/</guid>
+      <guid>http://localhost:1313/post/snareddogs/</guid>
       <description>During my last season of field work in Botswana, we encountered a pack of wild dogs where some individuals carried a wire snare around their neck. Luckily, with the aid of a wildlife veterinarian, we were able to remove the snares.</description>
     </item>
   </channel>
