@@ -6,8 +6,29 @@
     <description>Recent content on David D. Hofmann</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 18 Dec 2023 18:00:00 -0500</lastBuildDate>
+    <lastBuildDate>Sun, 20 Jul 2025 00:00:00 +0000</lastBuildDate>
     <atom:link href="https://daviddhofmann.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Animal Portraits</title>
+      <link>https://daviddhofmann.github.io/animals/</link>
+      <pubDate>Sun, 20 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://daviddhofmann.github.io/animals/</guid>
+      <description>Click on an image to learn more about the respective animal.&#xA;Large Carnivores Others </description>
+    </item>
+    <item>
+      <title>Gallery</title>
+      <link>https://daviddhofmann.github.io/gallery/</link>
+      <pubDate>Sun, 20 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://daviddhofmann.github.io/gallery/</guid>
+      <description>Aston&#xA;Backyard&#xA;Bateleur&#xA;Black backed jackal&#xA;Buffalo&#xA;Campanula&#xA;Cheetah&#xA;Cheetah looking&#xA;Cheetah tree&#xA;Curious elephants&#xA;Dactylo&#xA;Dog pup&#xA;Elephant&#xA;Elephant sunset&#xA;Evening elephant&#xA;Evening follow&#xA;Floppy lion&#xA;Hippos&#xA;Hoopoe&#xA;Hyena&#xA;Jessie&#xA;Juvenile lion&#xA;Kaziikini&#xA;Kingfisher&#xA;Leopard&#xA;Leopard cub&#xA;Leopard in atree&#xA;Leopard rain&#xA;Leopardesse&#xA;Lilac&#xA;Lion cub&#xA;Lion cub2&#xA;Lion cub ear&#xA;Lion family&#xA;Lion laying&#xA;Lion mother&#xA;Lioness&#xA;Oryx&#xA;Playing cheetahs&#xA;Raptor&#xA;Sirena&#xA;Starling&#xA;Sunset&#xA;Trollius&#xA;Wild dog</description>
+    </item>
+    <item>
+      <title>Publications</title>
+      <link>https://daviddhofmann.github.io/publications/</link>
+      <pubDate>Sun, 20 Jul 2025 00:00:00 +0000</pubDate>
+      <guid>https://daviddhofmann.github.io/publications/</guid>
+      <description>Papers 2024 Claase, MJ, Cherry, MI, Hofmann, DD, Apps, PJ, McNutt, JW, and Jordan, NR. “Patterns of Scent Marking by African Wild Dogs, Lycaon Pictus, at Shared Marking Sites.” Animal Behaviour 207: 77–86. https://doi.org/10.1016/j.anbehav.2023.10.012.&#xA;2024 Hofmann, DD, Behr, DM, McNutt, JW, Ozgul, A, and Cozzi, G. “Dispersal and Connectivity in Increasingly Extreme Climatic Conditions.” Global Change Biology 30(5): e17299. https://doi.org/10.1111/gcb.17299.&#xA;2023 Cozzi, G, Reilly, M, Abegg, D, Behr, DM, Brack, P, Claase, MJ, Holmberg, J, et al.</description>
+    </item>
     <item>
       <title>Mapping the Flood Extent of the Okavango Delta in R</title>
       <link>https://daviddhofmann.github.io/post/floodmapping/</link>
@@ -72,32 +93,11 @@
       <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
     </item>
     <item>
-      <title>Gallery</title>
-      <link>https://daviddhofmann.github.io/gallery/</link>
-      <pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate>
-      <guid>https://daviddhofmann.github.io/gallery/</guid>
-      <description>Aston&#xA;Bateleur&#xA;Black backed jackal&#xA;Buffalo&#xA;Campanula&#xA;Cheetah&#xA;Cheetah looking&#xA;Cheetah tree&#xA;Dactylo&#xA;Dog pup&#xA;Elephant&#xA;Elephant sunset&#xA;Hippos&#xA;Hyena&#xA;Jessie&#xA;Juvenile lion&#xA;Kaziikini&#xA;Kingfisher&#xA;Leopard&#xA;Leopard in atree&#xA;Leopard rain&#xA;Leopardesse&#xA;Lilac&#xA;Lion cub&#xA;Lion cub2&#xA;Lion cub ear&#xA;Lion family&#xA;Lion laying&#xA;Lion mother&#xA;Lioness&#xA;Oryx&#xA;Raptor&#xA;Starling&#xA;Trollius&#xA;Wild dog&#xA;Wild dog2&#xA;Wild dogs&#xA;Wild dogs sunset&#xA;Wildebeest&#xA;Zebra</description>
-    </item>
-    <item>
       <title></title>
       <link>https://daviddhofmann.github.io/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       <guid>https://daviddhofmann.github.io/about/</guid>
-      <description>Hi there! My name is David D. Hofmann and I am a PhD student in ecology at the University of Zurich in Switzerland. Prior to my PhD, I did a master’s degree in economics and soonafter a master&amp;rsquo;s degree in environmental sciences. The latter ultimatelly led to my current position as a PhD student. My research interests mainly include spatial data analysis, remote sensing, movement ecology, and conservation science. Together with my colleagues at Popecol, I am currently working on the African wild dog dispersal project in Botswana.</description>
-    </item>
-    <item>
-      <title>Animal Portraits</title>
-      <link>https://daviddhofmann.github.io/animals/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://daviddhofmann.github.io/animals/</guid>
-      <description>Click on an image to learn more about the respective animal.&#xA;Large Carnivores Others </description>
-    </item>
-    <item>
-      <title>Publications</title>
-      <link>https://daviddhofmann.github.io/publications/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>https://daviddhofmann.github.io/publications/</guid>
-      <description>Papers Claase, MJ, Cherry, MI, Hofmann DD, Apps, PJ, McNutt, JW, Jordan, NR. Patterns of Scent Marking by African Wild Dogs, Lycaon pictus, at Shared Marking Sites. Animal Behavior, 2024; 207; 77-86. https://doi.org/10.1016/j.anbehav.2023.10.012.&#xA;Cozzi, G, Reilly, M, Abegg, D, Behr, DM, Brack, P, Claase, MJ, Holmberg, J, Hofmann, DD, Kalil, P, Ndlovu, S, Neelo, J, McNutt, JW. An AI‐Based Platform to Investigate African Large Carnivore Dispersal and Demography Across Broad Landscapes: A Case Study and Future Directions Using African Wild Dogs.</description>
+      <description>Hi, I&amp;rsquo;m David D. Hofmann, a postdoctoral researcher at the University of Zurich in Switzerland. I also serve as the research coordinator for the Botswana Predator Conservation Program, a field-based research initiative focused on African carnivores in the Okavango Delta, Botswana.&#xA;My research centers on spatial data analysis, remote sensing, movement ecology, and conservation science. I’m currently leading the African Wild Dog Dispersal Project, which aims to better understand the movement behavior of African wild dogs during dispersal and to quantify landscape connectivity across the Kavango-Zambezi Transfrontier Conservation Area, the world&amp;rsquo;s largest transboundary conservation area Kavango-Zambezi Transfrontier Conservation Area.</description>
     </item>
   </channel>
 </rss>
