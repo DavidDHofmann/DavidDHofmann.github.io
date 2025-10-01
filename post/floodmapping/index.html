@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=4321&amp;path=livereload" data-no-instant defer></script>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +26,8 @@
     <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
     
 
+    <meta property="og:url" content="https://daviddhofmann.github.io/post/floodmapping/" />
+
     
     <meta property="twitter:card" content="The Okavango Delta is one of the world&#39;s most pristine ecosystems, hosting a large diversity of animal and plant species. It represents the planet&#39;s largest inland delta and is characterized by significant seasonal fluctuations of its flood extent. In this blog post, I will introduce you to a simple, yet effective approach to remote sense the Delta&#39;s flood extent using MODIS satellite imagery and the `floodmapr` R-package." />
     
@@ -39,7 +41,7 @@
     <link rel="canonical" href="/post/floodmapping/">
 
     
-    
+
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
@@ -47,11 +49,13 @@
     <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
     
-    <link rel="stylesheet" href="/css/zanshang.css">
+    <link rel="stylesheet" href="/css/zanshang.min.css">
 
     
     <link rel="stylesheet" href="/css/font-awesome.all.min.css">
 
+    
+    
     
     
 
@@ -71,7 +75,6 @@
     
 
 </head>
-
 
 
 
@@ -151,49 +154,14 @@
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/backgrounds/OkavangoDelta.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/Campanula.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/r" title="R">
-                            R
-                        </a>
-                        
-                        <a class="tag" href="/tags/okavango-delta" title="Okavango Delta">
-                            Okavango Delta
-                        </a>
-                        
-                        <a class="tag" href="/tags/floodmapping" title="floodmapping">
-                            floodmapping
-                        </a>
-                        
-                    </div>
-                    <h1>Mapping the Flood Extent of the Okavango Delta in R</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                David D. Hofmann
-                             
-                            on 
-                            Monday, December 18, 2023
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>David D. Hofmann </h1>
+                    
+		    <span class="subheading">PostDoc, University of Zurich</span>
                 </div>
             </div>
         </div>
@@ -206,16 +174,16 @@
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 
-                
-<script src="/post/floodmapping/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="https://daviddhofmann.github.io/post/floodmapping/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -468,9 +436,9 @@ Figure 3:  a) Calibration polygons that are used to inform the algorithm about t
 <pre><code>## [1] FALSE</code></pre>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="co"># Visualize the reflectance properties</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="kw">modis_specs</span>(flood_dry)</span></code></pre></div>
-<p><img src="/post/floodmapping/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/floodmapping/index_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">modis_specs</span>(flood_wet)</span></code></pre></div>
-<p><img src="/post/floodmapping/index_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/floodmapping/index_files/figure-html/unnamed-chunk-8-2.png" width="672" /></p>
 <p>In our case, it appears that only the first map is bimodal, whereas the second
 is not. This can quite clearly be seen from the spectral reflectance images
 that show a substantial overlap in the second case. For the sake of this
@@ -493,7 +461,7 @@ unreliable flood maps.</p>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a><span class="kw">plot</span>(flood_dry_class, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>), <span class="dt">main =</span> <span class="st">&quot;Flood 2022-09-16&quot;</span>)</span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a><span class="kw">plot</span>(flood_wet_class, <span class="dt">col =</span> <span class="kw">c</span>(<span class="st">&quot;white&quot;</span>, <span class="st">&quot;cornflowerblue&quot;</span>), <span class="dt">main =</span> <span class="st">&quot;Flood 2023-03-10&quot;</span>)</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-9"></span>
-<img src="/post/floodmapping/index_files/figure-html/unnamed-chunk-9-1.png" alt="Classified flood maps." width="100%" />
+<img src="https://daviddhofmann.github.io/post/floodmapping/index_files/figure-html/unnamed-chunk-9-1.png" alt="Classified flood maps." width="100%" />
 <p class="caption">
 Figure 4: Classified flood maps.
 </p>
@@ -546,43 +514,100 @@ dates with only few lines of code.</p>
 ## [53] cachem_1.0.8</code></pre>
 </div>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/snareddogs/" data-toggle="tooltip" data-placement="top" title="A Fair Share to De-Snare">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/David.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Ecologist, Economist, Photographer, and Outdoor Enthusiast</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:daviddenishofmann@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               <li>
+                   <a href="https://twitter.com/daviddhofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/DavidDHofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+            
+            
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
+    </section>
+	
+    
+    
+    
+    
 
-            
-            
+    
+    
+    
+    
+</div>
 
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -590,15 +615,11 @@ dates with only few lines of code.</p>
 
 
 
-<script src="//yihui.org/js/math-code.js"></script>
-<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script async src="//yihui.org/js/center-img.js"></script>
-
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">                  
+                <ul class="list-inline text-center">
                     
                     <li>
                         <a href="mailto:daviddenishofmann@gmail.com">

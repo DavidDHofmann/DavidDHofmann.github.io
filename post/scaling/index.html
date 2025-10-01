@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=4321&amp;path=livereload" data-no-instant defer></script>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +26,8 @@
     <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
     
 
+    <meta property="og:url" content="https://daviddhofmann.github.io/post/scaling/" />
+
     
     <meta property="twitter:card" content="When we fit a statistical model, we usually scale our covariates to a mean of zero and standard deviation of one. But how does this actually influence the model and how does scaling change the way in which we need to interpret resulting model coefficients? Moreover, can we backtransform model coefficients from the scaled into the unscaled world? In this blog post, we&#39;ll take a detailed look at scaling and examine why we scale, how to scale, and how to backtransform a model containing scaled covariates." />
     
@@ -39,7 +41,7 @@
     <link rel="canonical" href="/post/scaling/">
 
     
-    
+
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
@@ -47,11 +49,13 @@
     <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
     
-    <link rel="stylesheet" href="/css/zanshang.css">
+    <link rel="stylesheet" href="/css/zanshang.min.css">
 
     
     <link rel="stylesheet" href="/css/font-awesome.all.min.css">
 
+    
+    
     
     
 
@@ -71,7 +75,6 @@
     
 
 </head>
-
 
 
 
@@ -151,49 +154,14 @@
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/backgrounds/Scaling.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/Campanula.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/r" title="R">
-                            R
-                        </a>
-                        
-                        <a class="tag" href="/tags/scaling" title="scaling">
-                            scaling
-                        </a>
-                        
-                        <a class="tag" href="/tags/standardizing" title="standardizing">
-                            standardizing
-                        </a>
-                        
-                    </div>
-                    <h1>Some Insights on Scaling/Standardizing</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                David D. Hofmann
-                             
-                            on 
-                            Sunday, September 19, 2021
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>David D. Hofmann </h1>
+                    
+		    <span class="subheading">PostDoc, University of Zurich</span>
                 </div>
             </div>
         </div>
@@ -206,16 +174,16 @@
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 
-                
-<script src="/post/scaling/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="https://daviddhofmann.github.io/post/scaling/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -321,7 +289,7 @@ the distribution to the left and makes it much narrower. In fact, it moves the
 distribution such that it’s mean is at zero and it squeezes the distribution so
 that the standard deviation is equals one. Note, however, that scaling doesn’t
 affect the skewness of the distribution.</p>
-<p><img src="/post/scaling/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/scaling/index_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <p>The idea is then to use the scaled covariate <span class="math inline">\(X_{scaled}\)</span> instead of the
 unscaled covariate <span class="math inline">\(X\)</span> in our regression model. Importantly though, including
 a scaled covariate instead of its unscaled counterpart does <strong>not</strong> affect the
@@ -754,48 +722,100 @@ If you’re interested, you can find some additional material and reading below.
 ## [21] sass_0.4.6</code></pre>
 </div>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/sensitivity/" data-toggle="tooltip" data-placement="top" title="Quick Sensitivity Analyses in R">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/post/satelliteimagery/" data-toggle="tooltip" data-placement="top" title="Download and Visualize Satellite Images in R">Next
-                            Post &rarr;</a>
-                    </li>
-                    
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/David.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Ecologist, Economist, Photographer, and Outdoor Enthusiast</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:daviddenishofmann@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               <li>
+                   <a href="https://twitter.com/daviddhofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/DavidDHofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+            
+            
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
+    </section>
+	
+    
+    
+    
+    
 
-            
-            
+    
+    
+    
+    
+</div>
 
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -803,15 +823,11 @@ If you’re interested, you can find some additional material and reading below.
 
 
 
-<script src="//yihui.org/js/math-code.js"></script>
-<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script async src="//yihui.org/js/center-img.js"></script>
-
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">                  
+                <ul class="list-inline text-center">
                     
                     <li>
                         <a href="mailto:daviddenishofmann@gmail.com">

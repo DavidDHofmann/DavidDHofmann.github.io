@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>3D on David D. Hofmann</title>
-    <link>http://localhost:4321/tags/3d/</link>
+    <link>https://daviddhofmann.github.io/tags/3d/</link>
     <description>Recent content in 3D on David D. Hofmann</description>
-    <generator>Hugo -- gohugo.io</generator>
+    <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 23 Mar 2021 18:00:00 -0500</lastBuildDate>
-    <atom:link href="http://localhost:4321/tags/3d/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://daviddhofmann.github.io/tags/3d/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Elevation Data in R</title>
-      <link>http://localhost:4321/post/elevation/</link>
+      <link>https://daviddhofmann.github.io/post/elevation/</link>
       <pubDate>Tue, 23 Mar 2021 18:00:00 -0500</pubDate>
-      <guid>http://localhost:4321/post/elevation/</guid>
+      <guid>https://daviddhofmann.github.io/post/elevation/</guid>
       <description>Elevation data is a crucial element of many ecological studies. Unfortunately, collecting, cleaning, and stitching tiles from a digital elevation model is often tedious. Thus, I&amp;rsquo;ll show you how you can access elevation data straight from within R. In addition, you&amp;rsquo;ll learn how to derive terrain features and how to use the rayshader package, a package for beautiful 3d plots.</description>
     </item>
   </channel>

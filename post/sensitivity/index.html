@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=4321&amp;path=livereload" data-no-instant defer></script>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +26,8 @@
     <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
     
 
+    <meta property="og:url" content="https://daviddhofmann.github.io/post/sensitivity/" />
+
     
     <meta property="twitter:card" content="Have you ever tried to conduct a sensitivity analysis of your ecological models? Usually this involves running a model repeatedly using different parameters and investigating how predictions are influenced by varying different parameters. Doing this in R can be incredibly frustrating, especially when a large number of parameters are involved. Here, I will show you a relatively painless and simple workflow that will enable you to complete such analysis with clean and short code using tibbles from the tidyverse." />
     
@@ -39,7 +41,7 @@
     <link rel="canonical" href="/post/sensitivity/">
 
     
-    
+
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
@@ -47,11 +49,13 @@
     <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
     
-    <link rel="stylesheet" href="/css/zanshang.css">
+    <link rel="stylesheet" href="/css/zanshang.min.css">
 
     
     <link rel="stylesheet" href="/css/font-awesome.all.min.css">
 
+    
+    
     
     
 
@@ -71,7 +75,6 @@
     
 
 </head>
-
 
 
 
@@ -151,49 +154,14 @@
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/backgrounds/Sensitivity.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/Campanula.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/r" title="R">
-                            R
-                        </a>
-                        
-                        <a class="tag" href="/tags/sensitivity" title="sensitivity">
-                            sensitivity
-                        </a>
-                        
-                        <a class="tag" href="/tags/population" title="population">
-                            population
-                        </a>
-                        
-                    </div>
-                    <h1>Quick Sensitivity Analyses in R</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                David D. Hofmann
-                             
-                            on 
-                            Sunday, June 27, 2021
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>David D. Hofmann </h1>
+                    
+		    <span class="subheading">PostDoc, University of Zurich</span>
                 </div>
             </div>
         </div>
@@ -206,16 +174,16 @@
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 
-                
-<script src="/post/sensitivity/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="https://daviddhofmann.github.io/post/sensitivity/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -399,7 +367,7 @@ temperature and population size.</p>
 <span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>  , <span class="dt">main =</span> <span class="st">&quot;Density Dependence&quot;</span></span>
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>  , <span class="dt">las  =</span> <span class="dv">1</span></span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>)</span></code></pre></div>
-<p><img src="/post/sensitivity/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/sensitivity/index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>As you can see, with this set of parameters, juvenile survival (<span class="math inline">\(S_j\)</span>) is
 highest at around 20 degrees Celsius, whereas adult fecundity (<span class="math inline">\(F_a\)</span>) is
 highest when the population size is at its minimum. Thus, there is negative
@@ -737,7 +705,7 @@ combinations and add the confidence bands previously calculated.</p>
 ## This warning is displayed once every 8 hours.
 ## Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
 ## generated.</code></pre>
-<p><img src="/post/sensitivity/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+<p><img src="https://daviddhofmann.github.io/post/sensitivity/index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
 <p>And there you have it. A nice sensitivity analysis with relatively few lines of
 code.</p>
 </div>
@@ -791,48 +759,100 @@ using ggplot.</p>
 ## [41] stringi_1.8.1    munsell_0.5.0    cachem_1.0.8     crayon_1.5.2</code></pre>
 </div>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/megadetector/" data-toggle="tooltip" data-placement="top" title="Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/post/scaling/" data-toggle="tooltip" data-placement="top" title="Some Insights on Scaling/Standardizing">Next
-                            Post &rarr;</a>
-                    </li>
-                    
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/David.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Ecologist, Economist, Photographer, and Outdoor Enthusiast</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:daviddenishofmann@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               <li>
+                   <a href="https://twitter.com/daviddhofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/DavidDHofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+            
+            
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
+    </section>
+	
+    
+    
+    
+    
 
-            
-            
+    
+    
+    
+    
+</div>
 
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -840,15 +860,11 @@ using ggplot.</p>
 
 
 
-<script src="//yihui.org/js/math-code.js"></script>
-<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script async src="//yihui.org/js/center-img.js"></script>
-
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">                  
+                <ul class="list-inline text-center">
                     
                     <li>
                         <a href="mailto:daviddenishofmann@gmail.com">

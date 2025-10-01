@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-us">
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=4321&amp;path=livereload" data-no-instant defer></script>
+<head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -26,6 +26,8 @@
     <meta property="twitter:description" content="David D. Hofmann&#39;s Personal Website" />
     
 
+    <meta property="og:url" content="https://daviddhofmann.github.io/post/megadetector/" />
+
     
     <meta property="twitter:card" content="Camera trap studies usually deal with thousands of camera trap images that have to be organized and sorted. In this blog-post, I&#39;m going to illustrate how you can use Microsoft&#39;s MegaDetector to automatically detect animals in camera trap images. This can be very useful to automate the identification and removal of images that do not contain any animals." />
     
@@ -39,7 +41,7 @@
     <link rel="canonical" href="/post/megadetector/">
 
     
-    
+
     
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
@@ -47,11 +49,13 @@
     <link rel="stylesheet" href="/css/hugo-theme-cleanwhite.min.css">
 
     
-    <link rel="stylesheet" href="/css/zanshang.css">
+    <link rel="stylesheet" href="/css/zanshang.min.css">
 
     
     <link rel="stylesheet" href="/css/font-awesome.all.min.css">
 
+    
+    
     
     
 
@@ -71,7 +75,6 @@
     
 
 </head>
-
 
 
 
@@ -151,53 +154,14 @@
 
 
 
-
-<style type="text/css">
-    header.intro-header {
-        background-image: url('/img/backgrounds/Megadetector.jpg')
-    }
-</style>
-
-<header class="intro-header" >
-
+<header class="intro-header" style="background-image: url('/img/Campanula.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                        <a class="tag" href="/tags/r" title="R">
-                            R
-                        </a>
-                        
-                        <a class="tag" href="/tags/deep-learning" title="deep learning">
-                            deep learning
-                        </a>
-                        
-                        <a class="tag" href="/tags/cameratrap" title="cameratrap">
-                            cameratrap
-                        </a>
-                        
-                        <a class="tag" href="/tags/megadetector" title="megadetector">
-                            megadetector
-                        </a>
-                        
-                    </div>
-                    <h1>Using Microsoft&#39;s MegaDetector to Detect Animals on Cameratrap Images</h1>
-                    <h2 class="subheading"></h2>
-                    <span class="meta">
-                        
-                            Posted by 
-                            
-                                David D. Hofmann
-                             
-                            on 
-                            Thursday, April 15, 2021
-                            
-                            
-                            
-                            
-                    </span>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>David D. Hofmann </h1>
+                    
+		    <span class="subheading">PostDoc, University of Zurich</span>
                 </div>
             </div>
         </div>
@@ -210,16 +174,16 @@
 <article>
     <div class="container">
         <div class="row">
-
             
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
+            col-lg-8 col-lg-offset-1
+            col-md-8 col-md-offset-1
+            col-sm-12
+            col-xs-12
+            post-container">
+            
                 
-                
-<script src="/post/megadetector/index_files/accessible-code-block/empty-anchor.js"></script>
+<script src="https://daviddhofmann.github.io/post/megadetector/index_files/accessible-code-block/empty-anchor.js"></script>
 <style type="text/css">
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
@@ -807,7 +771,7 @@ uncertain, which you can see by plotting a histogram of the “Confidence” val
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>  , <span class="dt">col    =</span> <span class="st">&quot;cornflowerblue&quot;</span></span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a>  , <span class="dt">border =</span> <span class="ot">NA</span></span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>)</span></code></pre></div>
-<p><img src="/post/megadetector/index_files/figure-html/unnamed-chunk-20-1.png" width="75%" /></p>
+<p><img src="https://daviddhofmann.github.io/post/megadetector/index_files/figure-html/unnamed-chunk-20-1.png" width="75%" /></p>
 <p>For now, we only want to consider detections with relatively high confidence. So
 let’s subset the data accordingly.</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="co"># Subset to detections with high confidence</span></span>
@@ -935,7 +899,7 @@ everything. We can write a function that allows us to automate these tasks:</p>
 <span id="cb28-47"><a href="#cb28-47" aria-hidden="true"></a><span class="kw">par</span>(<span class="dt">mfrow =</span> <span class="kw">c</span>(<span class="dv">3</span>, <span class="dv">2</span>), <span class="dt">mar =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>))</span>
 <span id="cb28-48"><a href="#cb28-48" aria-hidden="true"></a>plots &lt;-<span class="st"> </span><span class="kw">lapply</span>(<span class="dv">1</span><span class="op">:</span><span class="dv">6</span>, <span class="cf">function</span>(i){<span class="kw">showDetection</span>(i)})</span></code></pre></div>
 <div class="figure"><span style="display:block;" id="fig:unnamed-chunk-23"></span>
-<img src="/post/megadetector/index_files/figure-html/unnamed-chunk-23-1.png" alt="Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!" width="100%" />
+<img src="https://daviddhofmann.github.io/post/megadetector/index_files/figure-html/unnamed-chunk-23-1.png" alt="Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!" width="100%" />
 <p class="caption">
 Figure 3: Some example detections on cameratrap images. Differently colored bounding boxes represent the different categories. The MegaDetector is able to distinguish animals, humans (person), and vehicles. As you can see on the image on the lower right, the detector even detects animals that are not fully within the picture!
 </p>
@@ -1000,48 +964,100 @@ automatically detect animals on cameratrap images.</p>
 ## [41] utf8_1.2.4       stringi_1.8.1    munsell_0.5.0    cachem_1.0.8</code></pre>
 </div>
 
+            
+             
+            
 
-                
 
-                
-                <hr>
-                <ul class="pager">
-                    
-                    <li class="previous">
-                        <a href="/post/elevation/" data-toggle="tooltip" data-placement="top" title="Elevation Data in R">&larr;
-                            Previous Post</a>
-                    </li>
-                    
-                    
-                    <li class="next">
-                        <a href="/post/sensitivity/" data-toggle="tooltip" data-placement="top" title="Quick Sensitivity Analyses in R">Next
-                            Post &rarr;</a>
-                    </li>
-                    
+
+
+            
+            </div>
+            
+            
+
+<div class="
+    col-lg-3 col-lg-offset-0
+    col-md-3 col-md-offset-0
+    col-sm-12
+    col-xs-12
+    sidebar-container
+">
+    
+	
+    <section class="visible-md visible-lg">
+	
+        <div class="short-about">
+            
+            <a href="/about">
+               <img src="/img/David.jpg" alt="avatar" style="cursor: pointer" />
+            </a>
+            
+            
+                <p>Ecologist, Economist, Photographer, and Outdoor Enthusiast</p>
+            
+           
+           <ul class="list-inline">
+               
+               <li>
+                   <a href="mailto:daviddenishofmann@gmail.com">
+                      <span class="fa-stack fa-lg">
+                          <i class="fa fa-circle fa-stack-2x"></i>
+                          <i class="fa fa-envelope fa-stack-1x fa-inverse"></i>
+                      </span>
+                   </a>
+               </li>
+               
+               
+               <li>
+                   <a href="https://twitter.com/daviddhofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-twitter fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+               <li>
+                   <a target="_blank" href="https://github.com/DavidDHofmann">
+                       <span class="fa-stack fa-lg">
+                           <i class="fas fa-circle fa-stack-2x"></i>
+                           <i class="fab fa-github fa-stack-1x fa-inverse"></i>
+                       </span>
+                   </a>
+               </li>
+               
+               
+               
+               
+               
+               
+            
+            
+               
+               
+               
+               
                 </ul>
-                
-
-                
-
-
-
             </div>
+    </section>
+	
+    
+    
+    
+    
 
-            
-            
+    
+    
+    
+    
+</div>
 
-            
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                
-                
-
-                
-                
-            </div>
         </div>
     </div>
 </article>
@@ -1049,15 +1065,11 @@ automatically detect animals on cameratrap images.</p>
 
 
 
-<script src="//yihui.org/js/math-code.js"></script>
-<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
-<script async src="//yihui.org/js/center-img.js"></script>
-
 <footer>
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <ul class="list-inline text-center">                  
+                <ul class="list-inline text-center">
                     
                     <li>
                         <a href="mailto:daviddenishofmann@gmail.com">
